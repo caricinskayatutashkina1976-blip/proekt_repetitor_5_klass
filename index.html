@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI School Quest</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!--
+    Основной контейнер приложения.
+    Внутри находятся все "экраны" (секции), а JS будет показывать только нужный.
+  -->
+  <main class="app">
+    <!-- Декоративный фон с градиентными кругами -->
+    <div class="bg-decoration bg-decoration--top"></div>
+    <div class="bg-decoration bg-decoration--bottom"></div>
+
+    <!-- Экран 1: старт -->
+    <section id="screen-start" class="screen screen--active card">
+      <div class="screen__content">
+        <p class="badge">AI School Quest</p>
+        <h1>AI School Quest</h1>
+        <p class="subtitle">Учёба как игра с AI-наставником</p>
+        <p class="description">
+          Выбери школьный предмет, познакомься с героем-наставником и проходи
+          учебный квест в формате дружелюбного чата.
+        </p>
+        <button id="start-btn" class="btn btn--primary">Начать приключение</button>
+      </div>
+    </section>
+
+    <!-- Экран 2: выбор предмета -->
+    <section id="screen-subject" class="screen card">
+      <div class="screen__content">
+        <h2>Выбери предмет</h2>
+        <p class="description">Каждый предмет — это отдельная игровая миссия.</p>
+        <div id="subject-grid" class="grid"></div>
+      </div>
+    </section>
+
+    <!-- Экран 3: выбор героя -->
+    <section id="screen-hero" class="screen card">
+      <div class="screen__content">
+        <h2>Выбери героя-наставника</h2>
+        <p class="description">Твой герой будет помогать и подсказывать в чате.</p>
+        <div id="hero-grid" class="grid"></div>
+        <button id="back-to-subject-btn" class="btn btn--ghost">Назад к предметам</button>
+      </div>
+    </section>
+
+    <!-- Экран 4: чат -->
+    <section id="screen-chat" class="screen card">
+      <div class="screen__content screen__content--chat">
+        <!-- Верхняя панель с выбором предмета и героя -->
+        <header class="chat-header">
+          <div>
+            <p class="chat-label">Предмет</p>
+            <p id="chat-subject" class="chat-value">—</p>
+          </div>
+          <div>
+            <p class="chat-label">Наставник</p>
+            <p id="chat-hero" class="chat-value">—</p>
+          </div>
+        </header>
+        <div class="chat-actions">
+          <button id="change-hero-btn" type="button" class="btn btn--ghost btn--small">Сменить героя</button>
+          <button id="change-subject-btn" type="button" class="btn btn--ghost btn--small">Сменить предмет</button>
+          <button id="soft-reset-btn" type="button" class="btn btn--ghost btn--small">Мягкий сброс</button>
+          <button id="reset-progress-btn" type="button" class="btn btn--danger btn--small">Сбросить прогресс</button>
+        </div>
+
+        <!-- Блок прогресса -->
+        <section class="progress">
+          <h3>Прогресс квеста</h3>
+          <div class="progress-stats">
+            <p>Уровень: <span id="level-value">1</span></p>
+            <p>XP: <span id="xp-value">0</span></p>
+            <p>Медаль: <span id="medal-value">Пока нет</span></p>
+          </div>
+          <div class="xp-bar">
+            <div id="xp-bar-fill" class="xp-bar__fill"></div>
+          </div>
+        </section>
+
+        <!-- Дополнительный квестовый блок -->
+        <section class="quest-panel">
+          <h3>Квест-дневник</h3>
+          <div class="quest-panel__stats">
+            <p>🔥 Серия дней: <span id="streak-value">0</span></p>
+            <p>🎯 Ежедневная цель: <span id="daily-goal-value">0/3</span></p>
+          </div>
+          <p id="daily-task-text" class="quest-panel__task">Задание дня: —</p>
+          <p id="achievement-text" class="quest-panel__achievement">Достижение: пока нет</p>
+        </section>
+
+        <!-- Область сообщений -->
+        <div id="messages" class="messages" aria-live="polite"></div>
+
+        <!-- Форма отправки сообщения -->
+        <form id="chat-form" class="chat-form">
+          <input
+            id="chat-input"
+            type="text"
+            placeholder="Напиши вопрос по теме..."
+            autocomplete="off"
+            maxlength="200"
+            required
+          />
+          <button type="submit" class="btn btn--primary">Отправить</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
