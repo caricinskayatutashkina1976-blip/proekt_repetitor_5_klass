@@ -30,6 +30,16 @@
           </ul>
         </section>
 
+        <section class="what-tutor" aria-label="Что умеет AI-репетитор">
+          <h2 class="what-tutor__title">Что умеет AI-репетитор</h2>
+          <ul class="what-tutor__list">
+            <li><strong>Объясняет простыми словами</strong> — без «взрослой» воды, шаг за шагом.</li>
+            <li><strong>Превращает задания в квесты</strong> — цель, подсказки, чувство приключения.</li>
+            <li><strong>Помогает с домашкой без готового списывания</strong> — наводящие вопросы вместо готового решения.</li>
+            <li><strong>Мотивирует XP и медалями</strong> — ребёнок видит рост и хочет продолжать.</li>
+          </ul>
+        </section>
+
         <button type="button" id="start-btn" class="btn btn--primary">Начать приключение</button>
       </div>
     </section>
@@ -142,31 +152,36 @@
 
         <div id="messages" class="messages" aria-live="polite"></div>
 
-        <section id="parent-report" class="parent-report parent-report--hidden">
-          <h3>Родительский отчёт</h3>
-          <p>Предмет: <span id="report-subject">—</span></p>
-          <p>Активность ученика: <span id="report-activity">—</span></p>
-          <p>XP: <span id="report-xp">0</span></p>
-          <p>Рекомендация: <span id="report-recommendation">—</span></p>
-        </section>
-
-        <section class="cta">
-          <h3>Хотите такого AI-репетитора для своего ребёнка?</h3>
-          <button type="button" id="show-details-btn" class="btn btn--primary btn--small">Узнать подробнее</button>
-          <article id="offer-card" class="offer-card offer-card--hidden">
-            <p class="offer-card__lead">
-              Наталья Царицинская — создаю AI-ассистентов, обучающих ботов и мини-сервисы для семьи, экспертов и бизнеса.
-            </p>
-            <p class="offer-card__text">Помогаю превращать идеи в работающие AI-продукты.</p>
-            <p class="offer-card__contact">Контакт: <a href="tel:+79129145382">89129145382</a></p>
-          </article>
-        </section>
-
         <div class="quick-replies" role="group" aria-label="Быстрые действия">
           <button type="button" class="btn btn--ghost btn--small quick-replies__btn" data-quick="Объясни проще">Объясни проще</button>
           <button type="button" class="btn btn--ghost btn--small quick-replies__btn" data-quick="Дай пример">Дай пример</button>
           <button type="button" class="btn btn--ghost btn--small quick-replies__btn" data-quick="Дай задание">Дай задание</button>
         </div>
+
+        <section id="parent-report" class="parent-report parent-report--hidden">
+          <h3>Родительский отчёт</h3>
+          <p>Что сделал ребёнок: <span id="report-what-done">—</span></p>
+          <p>XP всего: <span id="report-xp-total">0</span> · за эту сессию: <span id="report-xp-session">0</span></p>
+          <p>Что стоит повторить: <span id="report-repeat">—</span></p>
+          <p>Следующий урок: <span id="report-next-lesson">—</span></p>
+        </section>
+
+        <section class="cta">
+          <h3 class="cta__title">Хочу такого помощника</h3>
+          <p class="cta__value">
+            Персональный наставник в чате: ребёнок учится без стресса, родители видят прогресс, а ответы не «списываются» — формируется мышление и привычка доводить дело до конца.
+          </p>
+          <div class="cta__actions">
+            <button type="button" id="contact-natalia-btn" class="btn btn--primary btn--small">Связаться с Натальей</button>
+          </div>
+          <article id="offer-card" class="offer-card offer-card--hidden">
+            <p class="offer-card__lead">
+              Наталья Царицинская — создаю AI-ассистентов, обучающих ботов и мини-сервисы для семьи, экспертов и бизнеса.
+            </p>
+            <p class="offer-card__text">Помогаю превращать идеи в работающие AI-продукты.</p>
+            <p class="offer-card__contact">Контакт в Telegram: <span class="offer-card__handle">@указать_ник</span></p>
+          </article>
+        </section>
 
         <form id="chat-form" class="chat-form">
           <input id="chat-input" type="text" placeholder="Напиши вопрос по теме..." autocomplete="off" maxlength="200" required>

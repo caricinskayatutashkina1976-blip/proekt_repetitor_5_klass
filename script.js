@@ -185,11 +185,12 @@ const dailyGoalValue = document.getElementById("daily-goal-value");
 const dailyTaskText = document.getElementById("daily-task-text");
 const achievementText = document.getElementById("achievement-text");
 const parentReport = document.getElementById("parent-report");
-const reportSubject = document.getElementById("report-subject");
-const reportActivity = document.getElementById("report-activity");
-const reportXp = document.getElementById("report-xp");
-const reportRecommendation = document.getElementById("report-recommendation");
-const showDetailsBtn = document.getElementById("show-details-btn");
+const reportWhatDone = document.getElementById("report-what-done");
+const reportXpTotal = document.getElementById("report-xp-total");
+const reportXpSession = document.getElementById("report-xp-session");
+const reportRepeat = document.getElementById("report-repeat");
+const reportNextLesson = document.getElementById("report-next-lesson");
+const contactNataliaBtn = document.getElementById("contact-natalia-btn");
 const offerCard = document.getElementById("offer-card");
 const parentModal = document.getElementById("parent-modal");
 const closeParentModalBtn = document.getElementById("close-parent-modal-btn");
@@ -670,25 +671,33 @@ function updateQuestUI() {
   показываем после 3 сообщений ученика и обновляем динамически.
 */
 function updateParentReport() {
-  if (!reportSubject || !parentReport) {
+  if (!parentReport || !reportWhatDone || !reportXpTotal || !reportXpSession || !reportRepeat || !reportNextLesson) {
     return;
   }
-  reportSubject.textContent = state.selectedSubject ? state.selectedSubject.name : "—";
-  reportXp.textContent = String(state.xp);
 
   if (state.totalMessages < 3) {
     parentReport.classList.add("parent-report--hidden");
     return;
   }
 
-  const activityLabel = state.totalMessages >= 8 ? "Высокая" : "Стабильная";
-  reportActivity.textContent = `${activityLabel} (${state.totalMessages} сообщений)`;
+  const subj = state.selectedSubject ? state.selectedSubject.name : "предмет не выбран";
+  const mode = state.selectedMode ? state.selectedMode.name : "режим не выбран";
+  const child = state.studentName || "Ребёнок";
+  reportWhatDone.textContent = `${child}: в этой сессии ${state.sessionMessages} сообщ. наставнику по «${subj}» (режим «${mode}»). За всё время в чате — ${state.totalMessages} сообщ.`;
 
-  if (state.selectedSubject) {
-    reportRecommendation.textContent = `Повторить базовые темы по предмету "${state.selectedSubject.name}" и закрепить 2-3 задания.`;
-  } else {
-    reportRecommendation.textContent = "Продолжить занятия в выбранном формате.";
-  }
+  reportXpTotal.textContent = String(state.xp);
+  reportXpSession.textContent = String(state.sessionXpGained);
+
+  const sortedTopics = Object.entries(state.weakTopics)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 2)
+    .map((entry) => entry[0]);
+  reportRepeat.textContent = sortedTopics.length
+    ? `Повторить спокойно темы: ${sortedTopics.join(", ")} — там больше всего «запросов на подсказку».`
+    : `Закрепить базу по «${subj}»: коротко проговорить правило и решить 2 типовых примера без спешки.`;
+
+  const goal = state.learningGoal || "подтянуть знания";
+  reportNextLesson.textContent = `На следующий урок: 10–15 минут «${subj}», упор на «${goal}» — начать с мини-вопроса к ребёнку «что уже понятно?», затем один квест-шаг или пересказ условия своими словами.`;
 
   parentReport.classList.remove("parent-report--hidden");
 }
@@ -769,6 +778,30 @@ function generateBotReply(subjectId) {
 }
 
 /*
+  Оборачиваем ответ: короткая поддержка + вопрос в конце (кроме домашки — там свой сценарий).
+*/
+function withCoachTone(body, name, modeId) {
+  const n = name || "герой";
+  const hearts = [
+    `Я с тобой, ${n} — это как чекпоинт в игре, не экзамен.`,
+    `${n}, ты уже молодец: вопрос задан — половина уровня пройдена.`,
+    `${n}, дышим ровно: учимся маленькими прыжками, как в платформере.`,
+  ];
+  const heart = hearts[body.length % hearts.length];
+
+  if (modeId === "homework") {
+    return `${heart}\n\n${body}`;
+  }
+
+  const closing =
+    modeId === "test"
+      ? "Напиши букву A/B/C или одну фразу «я думаю так, потому что…» — сомнения тоже засчитыются."
+      : "Твой ход: ответь одним коротким сообщением на любой вопрос из текста выше — так мы откроем следующий «сундук» с подсказкой.";
+
+  return `${heart}\n\n${body}\n\n${closing}`;
+}
+
+/*
   Улучшенная генерация ответа в зависимости от выбранного режима урока.
 */
 function isQuickPhrase(text) {
@@ -785,9 +818,16 @@ function generateQuickReply(phrase) {
   const topic = subj ? subj.name : "урок";
   const id = subj ? subj.id : "math";
 
+  const wrapQuick = (text) => {
+    if (modeId === "homework") {
+      return text;
+    }
+    return `${text}\n\n${name}, твой ход: одно короткое сообщение — что стало понятнее или что всё ещё «крутит в голове»?`;
+  };
+
   if (phrase === "Объясни проще") {
     if (modeId === "homework") {
-      return `${name}, включаю «простой переводчик» — но честно: готовую строчку из тетради я не скажу. Сделаем микро-шаг: перескажи задачу своими словами, как бабушке за чаем. Один короткий пересказ — и я подстрою объяснение под тебя.`;
+      return `${name}, держусь рядом 💬 Готовую строчку из тетради не скажу — это не честный квест.\nШаг 1: перескажи условие своими словами (2 предложения).\nШаг 2: что в задании «самое колючее» — одним словом?\nОтветь на шаги — и я дам объяснение ещё проще, под тебя.`;
     }
     const hints = {
       math: "Представь задачу как рецепт торта: что за ингредиенты уже на столе? Что должно получиться в конце? Мы уберём «сложные слова» и оставим только два шага.",
@@ -797,12 +837,12 @@ function generateQuickReply(phrase) {
       biology: "Живое = конструктор: из каких деталей собрано и зачем каждая деталь? Назови одну часть, которая кажется странной — «размагичим» её простыми словами.",
       geography: "Карта как платье на кукле: слои — климат, реки, города. Что наденем первым на твой регион? Один слой — и картинка прояснится.",
     };
-    return hints[id] || hints.math;
+    return wrapQuick(hints[id] || hints.math);
   }
 
   if (phrase === "Дай пример") {
     if (modeId === "homework") {
-      return `${name}, для домашки я не подкидываю «готовый листочек», зато могу дать пример-аналог в другой вселенной — как тренировочный манекен для карате. Напиши: это про числа, про слова или про факты? Я придумаю безопасный пример рядом, не из твоего номера.`;
+      return `${name}, супер-запрос! Готовый ответ из твоего номера не подкину — зато соберём «тренажёр-аналог».\nШаг 1: это ближе к числам, к словам или к фактам?\nШаг 2: назови тему одним словом (дроби, падеж, даты…).\nПосле ответа придумаю пример из другой вселенной — тот же принцип, но не списать.`;
     }
     const examples = {
       math: "Пример-мишка: если 12 конфет поделить на 3 друга — у каждого по 4. Тот же дух, что и в дробях: «делим поровну, считаем по одному кусочку».",
@@ -812,17 +852,19 @@ function generateQuickReply(phrase) {
       biology: "Пример: сердце — как насос в аквариуме: качает «воду-кровь», чтобы рыбки-клетки дышали и плавали веселее.",
       geography: "Пример: у побережья климат «как с мокрым полотенцем», в центре материка — «как под сухим одеялом». Влажность разная — природа разная.",
     };
-    return examples[id] || examples.math;
+    return wrapQuick(examples[id] || examples.math);
   }
 
   if (phrase === "Дай задание") {
     if (modeId === "homework") {
-      return `${name}, задание без списывания: ① прочитай номер и подчеркни только вопрос; ② напиши одну догадку (даже если неверная); ③ скажи, чего тебе не хватает: формулы, слова или факта? Я подсвечу следующий крошечный шаг — без финального ответа.`;
+      return `${name}, квест «без списывания»:\n① Подчеркни в номере, что именно нужно найти.\n② Напиши одну догадку — пусть даже неверную.\n③ Скажи, чего не хватает: формула / слово / факт?\nЯ подсвечу следующий крошечный шаг — финальный ответ остаётся твоим трофеем.`;
     }
-    return `Мини-квест на 3 минуты по «${topic}»: шаг 1 — одно предложение «что я уже знаю»; шаг 2 — один вопрос «что непонятно»; шаг 3 — попробуй угадать ответ наполовину. Я рядом и подбодрю!`;
+    return wrapQuick(
+      `Мини-квест 3 минуты по «${topic}» 🎮\n① Одно предложение: «что я уже знаю».\n② Один вопрос: «что туманит».\n③ Полу-угадка ответа — как скетч, не шедевр.\nНапиши всё в одном сообщении — я отреагирую и дам следующий этап!`
+    );
   }
 
-  return generateBotReply(id);
+  return withCoachTone(generateBotReply(id), name, modeId);
 }
 
 function generateModeAwareReply(userText) {
@@ -839,23 +881,32 @@ function generateModeAwareReply(userText) {
   const name = state.studentName || "исследователь";
 
   if (modeId === "quest") {
-    return `Квест «${state.selectedSubject.name}»: ${name}, точка сохранения пройдена! Миссия — маленький шаг, как прыжок на платформе в игре.\n${baseReply}\nНапиши, что получилось на первом шаге — откроем следующую дверь.`;
+    const core = `Квест «${state.selectedSubject.name}» 🗺️ Точка сохранения! Миссия — один короткий шаг, как прыжок на платформе.\n\n${baseReply}`;
+    return withCoachTone(core, name, modeId);
   }
 
   if (modeId === "test") {
-    return `Арена проверки по «${state.selectedSubject.name}»! Выбери букву, как в игре-викторине:\nA) Первый вариант\nB) Второй вариант\nC) Третий вариант\nНапиши букву и одну фразу «почему так думаю» — даже если сомневаешься, это очки смелости!`;
+    const core =
+      `Арена «${state.selectedSubject.name}»! Викторина без стресса — сначала думаем, потом буква.\n` +
+      `A) Первый вариант\nB) Второй вариант\nC) Третий вариант\n\n` +
+      `Подсказка: не обязано быть идеально — важно, чтобы голова пошевелилась.`;
+    return withCoachTone(core, name, modeId);
   }
 
   if (modeId === "simple") {
-    return `Объясняю как сказку на ночь — коротко и по шагам:\n${baseReply}\nПредставь, что тема — это уровень в игре: сначала туториал, потом практика. Ты уже на туториале!`;
+    const core = `Режим «простыми словами» 🧩 Три коротких шага:\n① Смотрим на суть.\n② Убираем сложные слова.\n③ Пробуем на пальцах.\n\n${baseReply}`;
+    return withCoachTone(core, name, modeId);
   }
 
   const snippet = userText.slice(0, 55).trim() || "эта тема";
-  return `${name}, режим «помощь с домашкой» — я как фонарик в походе: свечу на тропинку, но не несу тебя на руках до финиша (готовый ответ не выдам).\n` +
-    `Шаг 1: что в задании для тебя «туман» — одно слово.\n` +
-    `Шаг 2: какая микро-деталь уже ясна на 10%?\n` +
-    `Шаг 3: какой крошечный шаг сделаешь за 2 минуты?\n` +
-    `(Про: «${snippet}…») Ты справишься — я мягко подскажу дальше, когда ответишь.`;
+  const hw =
+    `${name}, домашка — это босс-уровень, но мы с чит-кодом «без списывания».\n` +
+    `Я как фонарик: подсвечу тропинку, но финальный «лут» — твой.\n\n` +
+    `Шаг 1: что в задании для тебя «туман» — одним словом?\n` +
+    `Шаг 2: какая крошечная деталь уже ясна хотя бы на капельку?\n` +
+    `Шаг 3: какой микро-шаг сделаешь за 2 минуты — перечитать, набросать, посчитать в уме?\n\n` +
+    `(Про твой вопрос: «${snippet}…») Ответь на три шага — и подстрою следующую подсказку вопросами, без готового решения.`;
+  return withCoachTone(hw, name, modeId);
 }
 
 function buildBotReply(userText) {
@@ -1025,9 +1076,10 @@ if (resetProgressBtn) {
   });
 }
 
-if (showDetailsBtn && offerCard) {
-  showDetailsBtn.addEventListener("click", () => {
+if (contactNataliaBtn && offerCard) {
+  contactNataliaBtn.addEventListener("click", () => {
     offerCard.classList.remove("offer-card--hidden");
+    offerCard.scrollIntoView({ behavior: "smooth", block: "nearest" });
   });
 }
 

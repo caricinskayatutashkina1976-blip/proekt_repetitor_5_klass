@@ -173,7 +173,38 @@ h2 {
   color: var(--text-main);
 }
 
-.why-kids + .btn--primary {
+.what-tutor {
+  margin-top: 16px;
+  padding: 16px 18px;
+  background: linear-gradient(145deg, #f4fff8 0%, #f0f7ff 100%);
+  border: 1px solid #c8ead9;
+  border-radius: var(--radius-lg);
+  text-align: left;
+}
+
+.what-tutor__title {
+  font-size: 1.05rem;
+  color: #1d6b52;
+  margin-bottom: 10px;
+}
+
+.what-tutor__list {
+  margin: 0;
+  padding-left: 1.15rem;
+  color: var(--text-soft);
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+.what-tutor__list li + li {
+  margin-top: 8px;
+}
+
+.what-tutor__list strong {
+  color: var(--text-main);
+}
+
+.what-tutor + .btn--primary {
   margin-top: 18px;
 }
 
@@ -442,8 +473,24 @@ h2 {
   padding: 12px 14px;
 }
 
-.cta h3 {
-  font-size: 1rem;
+.cta__title {
+  font-size: 1.05rem;
+  color: #8a3d18;
+  margin-bottom: 8px;
+}
+
+.cta__value {
+  margin: 0;
+  font-size: 0.92rem;
+  color: #6b4428;
+  line-height: 1.5;
+}
+
+.cta__actions {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .offer-card {
@@ -477,6 +524,12 @@ h2 {
 
 .offer-card__contact a:hover {
   text-decoration: underline;
+}
+
+.offer-card__handle {
+  font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+  color: #2294c7;
+  font-weight: 800;
 }
 
 .quick-replies {
