@@ -87,15 +87,18 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.65);
 }
 
-/* Каждый экран скрыт по умолчанию */
-.screen {
-  display: none;
+/*
+  Экраны: только один виден. Прямой потомок main — чтобы вложенные section
+  (например блок на старте) не попали под правило.
+  !important — перебивает возможные конфликты при публикации (GitHub Pages).
+*/
+main.app > section.screen {
+  display: none !important;
   min-height: 640px;
 }
 
-/* Активный экран показываем */
-.screen--active {
-  display: block;
+main.app > section.screen.screen--active {
+  display: block !important;
 }
 
 .screen__content {

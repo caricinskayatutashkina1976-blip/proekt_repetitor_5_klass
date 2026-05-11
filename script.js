@@ -208,11 +208,14 @@ function showScreen(screenKey) {
   }
   Object.keys(screens).forEach((key) => {
     const el = screens[key];
-    if (el) {
-      el.classList.remove("screen--active");
+    if (!el) {
+      return;
     }
+    el.classList.remove("screen--active");
+    el.setAttribute("hidden", "hidden");
   });
   next.classList.add("screen--active");
+  next.removeAttribute("hidden");
 }
 
 /*
