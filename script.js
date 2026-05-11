@@ -207,16 +207,10 @@ function showScreen(screenKey) {
     console.error("Неизвестный экран:", screenKey);
     return;
   }
-  Object.keys(screens).forEach((key) => {
-    const el = screens[key];
-    if (!el) {
-      return;
-    }
+  document.querySelectorAll(".screen").forEach((el) => {
     el.classList.remove("screen--active");
-    el.setAttribute("hidden", "hidden");
   });
   next.classList.add("screen--active");
-  next.removeAttribute("hidden");
 }
 
 /*
