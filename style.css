@@ -1,3 +1,8 @@
+html {
+  height: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
 :root {
   --bg-main: linear-gradient(135deg, #5b7cfa 0%, #7f53ff 45%, #fd5e9a 100%);
   --card-bg: rgba(255, 255, 255, 0.9);
@@ -140,6 +145,10 @@ h2 {
   display: grid;
   gap: 14px;
   max-width: 540px;
+}
+
+.onboarding-form .btn--primary {
+  margin-top: 8px;
 }
 
 .field {
@@ -477,6 +486,8 @@ h2 {
 
 /* Сообщения чата */
 .messages {
+  min-height: 200px;
+  max-height: min(420px, 50vh);
   background: #f9fbff;
   border: 1px solid #e3e8ff;
   border-radius: var(--radius-md);

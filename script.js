@@ -198,15 +198,19 @@ const parentSessionProgress = document.getElementById("parent-session-progress")
 const parentWeakTopics = document.getElementById("parent-weak-topics");
 const parentPlanList = document.getElementById("parent-plan-list");
 
-/*
-  Функция переключения экранов.
-  Убираем класс активности у всех и добавляем только нужному экрану.
-*/
 function showScreen(screenKey) {
-  Object.values(screens).forEach((screen) => {
-    screen.classList.remove("screen--active");
+  const next = screens[screenKey];
+  if (!next) {
+    console.error("Неизвестный экран:", screenKey);
+    return;
+  }
+  Object.keys(screens).forEach((key) => {
+    const el = screens[key];
+    if (el) {
+      el.classList.remove("screen--active");
+    }
   });
-  screens[screenKey].classList.add("screen--active");
+  next.classList.add("screen--active");
 }
 
 /*
@@ -356,6 +360,10 @@ function buildWeeklyPlan() {
   Обновляем контент модального окна родительского режима.
 */
 function updateParentModal() {
+  if (!parentStudentName || !parentPlanList) {
+    return;
+  }
+
   parentStudentName.textContent = `${state.studentName || "Ученик"} (${state.studentGrade || "5 класс"})`;
   parentCurrentSubject.textContent = state.selectedSubject ? state.selectedSubject.name : "—";
   parentCurrentMode.textContent = state.selectedMode ? state.selectedMode.name : "—";
@@ -413,6 +421,9 @@ function syncDailySession() {
   Рендерим карточки режимов урока.
 */
 function renderModeCards() {
+  if (!modeGrid) {
+    return;
+  }
   modeGrid.innerHTML = "";
 
   lessonModes.forEach((mode) => {
@@ -464,16 +475,46 @@ function resetProgress() {
   state.sessionHistory = [];
   state.weakTopics = {};
 
-  chatStudent.textContent = "—";
-  chatSubject.textContent = "—";
-  chatHero.textContent = "—";
-  chatMode.textContent = "—";
-  medalValue.textContent = "Пока нет";
-  messages.innerHTML = "";
-  chatInput.value = "";
-  parentReport.classList.add("parent-report--hidden");
-  offerCard.classList.add("offer-card--hidden");
-  parentModal.classList.add("parent-modal--hidden");
+  if (chatStudent) {
+    chatStudent.textContent = "—";
+  }
+  if (chatSubject) {
+    chatSubject.textContent = "—";
+  }
+  if (chatHero) {
+    chatHero.textContent = "—";
+  }
+  if (chatMode) {
+    chatMode.textContent = "—";
+  }
+  if (medalValue) {
+    medalValue.textContent = "Пока нет";
+  }
+  if (messages) {
+    messages.innerHTML = "";
+  }
+  if (chatInput) {
+    chatInput.value = "";
+  }
+  if (parentReport) {
+    parentReport.classList.add("parent-report--hidden");
+  }
+  if (offerCard) {
+    offerCard.classList.add("offer-card--hidden");
+  }
+  if (parentModal) {
+    parentModal.classList.add("parent-modal--hidden");
+  }
+
+  if (studentNameInput) {
+    studentNameInput.value = "";
+  }
+  if (studentGradeInput) {
+    studentGradeInput.value = "";
+  }
+  if (learningGoalSelect) {
+    learningGoalSelect.value = "";
+  }
 
   updateProgressUI();
   updateQuestUI();
@@ -496,10 +537,18 @@ function softResetSession() {
   state.sessionMessages = 0;
   state.sessionXpGained = 0;
 
-  medalValue.textContent = "Пока нет";
-  messages.innerHTML = "";
-  chatInput.value = "";
-  parentReport.classList.add("parent-report--hidden");
+  if (medalValue) {
+    medalValue.textContent = "Пока нет";
+  }
+  if (messages) {
+    messages.innerHTML = "";
+  }
+  if (chatInput) {
+    chatInput.value = "";
+  }
+  if (parentReport) {
+    parentReport.classList.add("parent-report--hidden");
+  }
 
   updateProgressUI();
   updateQuestUI();
@@ -513,6 +562,9 @@ function softResetSession() {
   Такой подход удобен: предметы можно менять только в одном массиве.
 */
 function renderSubjectCards() {
+  if (!subjectGrid) {
+    return;
+  }
   subjectGrid.innerHTML = "";
 
   subjects.forEach((subject) => {
@@ -540,6 +592,9 @@ function renderSubjectCards() {
   который соответствует выбранному предмету.
 */
 function renderHeroCard(subject) {
+  if (!heroGrid) {
+    return;
+  }
   heroGrid.innerHTML = "";
 
   const heroButton = document.createElement("button");
@@ -567,12 +622,13 @@ function renderHeroCard(subject) {
   - "system" => техническое/наградное сообщение
 */
 function addMessage(type, text) {
+  if (!messages) {
+    return;
+  }
   const message = document.createElement("div");
   message.className = `message message--${type}`;
   message.textContent = text;
   messages.append(message);
-
-  // Автопрокрутка вниз, чтобы всегда видеть последнее сообщение.
   messages.scrollTop = messages.scrollHeight;
 }
 
@@ -583,17 +639,24 @@ function addMessage(type, text) {
   - последнее полученное достижение
 */
 function updateQuestUI() {
+  if (!streakValue || !dailyGoalValue) {
+    return;
+  }
   streakValue.textContent = String(state.streakDays);
   dailyGoalValue.textContent = `${state.dailyGoalCount}/3`;
 
   const taskIndex = new Date().getDate() % dailyTasks.length;
-  dailyTaskText.textContent = `Задание дня: ${dailyTasks[taskIndex]}`;
+  if (dailyTaskText) {
+    dailyTaskText.textContent = `Задание дня: ${dailyTasks[taskIndex]}`;
+  }
 
-  if (state.achievements.length > 0) {
-    const latest = state.achievements[state.achievements.length - 1];
-    achievementText.textContent = `Достижение: ${latest}`;
-  } else {
-    achievementText.textContent = "Достижение: пока нет";
+  if (achievementText) {
+    if (state.achievements.length > 0) {
+      const latest = state.achievements[state.achievements.length - 1];
+      achievementText.textContent = `Достижение: ${latest}`;
+    } else {
+      achievementText.textContent = "Достижение: пока нет";
+    }
   }
 }
 
@@ -602,6 +665,9 @@ function updateQuestUI() {
   показываем после 3 сообщений ученика и обновляем динамически.
 */
 function updateParentReport() {
+  if (!reportSubject || !parentReport) {
+    return;
+  }
   reportSubject.textContent = state.selectedSubject ? state.selectedSubject.name : "—";
   reportXp.textContent = String(state.xp);
 
@@ -630,7 +696,9 @@ function updateParentReport() {
 */
 function updateProgressUI() {
   state.level = Math.floor(state.xp / 50) + 1;
-
+  if (!levelValue || !xpValue || !xpBarFill) {
+    return;
+  }
   levelValue.textContent = String(state.level);
   xpValue.textContent = String(state.xp);
 
@@ -676,7 +744,9 @@ function addXp(amount) {
 
   if (state.xp >= 30 && !state.medalAwarded) {
     state.medalAwarded = true;
-    medalValue.textContent = "Смекалка 🏅";
+    if (medalValue) {
+      medalValue.textContent = "Смекалка 🏅";
+    }
     addMessage("system", "Ты получил медаль за смекалку!");
   }
 
@@ -731,179 +801,224 @@ function startChat(subject) {
 
   state.selectedSubject = subject;
   state.totalMessages = state.totalMessages || 0;
-  chatStudent.textContent = `${state.studentName || "Ученик"}, ${state.studentGrade || "5 класс"}`;
-  chatSubject.textContent = `${subject.emoji} ${subject.name}`;
-  chatHero.textContent = `${subject.heroEmoji} ${subject.hero}`;
-  chatMode.textContent = state.selectedMode ? `${state.selectedMode.emoji} ${state.selectedMode.name}` : "—";
+  if (chatStudent) {
+    chatStudent.textContent = `${state.studentName || "Ученик"}, ${state.studentGrade || "5 класс"}`;
+  }
+  if (chatSubject) {
+    chatSubject.textContent = `${subject.emoji} ${subject.name}`;
+  }
+  if (chatHero) {
+    chatHero.textContent = `${subject.heroEmoji} ${subject.hero}`;
+  }
+  if (chatMode) {
+    chatMode.textContent = state.selectedMode ? `${state.selectedMode.emoji} ${state.selectedMode.name}` : "—";
+  }
 
-  messages.innerHTML = "";
-  chatInput.value = "";
+  if (messages) {
+    messages.innerHTML = "";
+  }
+  if (chatInput) {
+    chatInput.value = "";
+  }
   state.hasGreetedInChat = false;
   state.sessionMessages = 0;
   state.sessionXpGained = 0;
-  parentReport.classList.add("parent-report--hidden");
+  if (parentReport) {
+    parentReport.classList.add("parent-report--hidden");
+  }
 
-  medalValue.textContent = state.medalAwarded ? "Смекалка 🏅" : "Пока нет";
+  if (medalValue) {
+    medalValue.textContent = state.medalAwarded ? "Смекалка 🏅" : "Пока нет";
+  }
   updateProgressUI();
   updateQuestUI();
   updateParentReport();
   saveProgress();
 }
 
-/*
-  Обработчик отправки сообщения:
-  1) показываем сообщение пользователя
-  2) при первом сообщении добавляем приветствие героя
-  3) показываем имитированный ответ наставника
-  4) начисляем +10 XP
-*/
-chatForm.addEventListener("submit", (event) => {
-  event.preventDefault();
+if (startBtn) {
+  startBtn.addEventListener("click", () => {
+    showScreen("onboarding");
+  });
+}
 
-  const text = chatInput.value.trim();
-  if (!text || !state.selectedSubject) {
-    return;
-  }
+if (onboardingForm) {
+  onboardingForm.addEventListener("submit", (event) => {
+    event.preventDefault();
 
-  addMessage("user", text);
-  chatInput.value = "";
-
-  // Небольшая задержка делает чат более "живым".
-  window.setTimeout(() => {
-    if (!state.hasGreetedInChat) {
-      const introName = state.studentName || "друг";
-      addMessage(
-        "bot",
-        `${heroGreetings[state.selectedSubject.id]} ${introName}, твоя цель: ${state.learningGoal || "учиться в игре"}!`
-      );
-      state.hasGreetedInChat = true;
+    const name = studentNameInput.value.trim();
+    const grade = studentGradeInput.value.trim();
+    const goal = learningGoalSelect.value;
+    if (!name || !grade || !goal) {
+      return;
     }
 
-    const reply = generateModeAwareReply(text);
-    addMessage("bot", reply);
-
-    // По условиям MVP за каждый ответ начисляем +10 XP.
-    addXp(10);
-    trackWeakTopic();
-    state.dailyGoalCount += 1;
-    state.totalMessages += 1;
-    state.sessionMessages += 1;
-    state.sessionXpGained += 10;
-    checkAchievements();
-    updateParentReport();
-    updateParentModal();
+    state.studentName = name;
+    state.studentGrade = grade;
+    state.learningGoal = goal;
     saveProgress();
-  }, 450);
-});
-
-/*
-  Навигационные события:
-  - старт -> предметы
-  - герой -> назад к предметам
-*/
-startBtn.addEventListener("click", () => {
-  showScreen("onboarding");
-});
-
-onboardingForm.addEventListener("submit", (event) => {
-  event.preventDefault();
-
-  const name = studentNameInput.value.trim();
-  const grade = studentGradeInput.value.trim();
-  const goal = learningGoalSelect.value;
-  if (!name || !grade || !goal) {
-    return;
-  }
-
-  state.studentName = name;
-  state.studentGrade = grade;
-  state.learningGoal = goal;
-  saveProgress();
-  showScreen("subject");
-});
-
-backToSubjectBtn.addEventListener("click", () => {
-  showScreen("subject");
-});
-
-changeHeroBtn.addEventListener("click", () => {
-  if (!state.selectedSubject) {
     showScreen("subject");
-    return;
-  }
+  });
+}
 
-  renderHeroCard(state.selectedSubject);
-  showScreen("hero");
-});
+if (backToSubjectBtn) {
+  backToSubjectBtn.addEventListener("click", () => {
+    showScreen("subject");
+  });
+}
 
-changeSubjectBtn.addEventListener("click", () => {
-  showScreen("subject");
-});
+if (changeHeroBtn) {
+  changeHeroBtn.addEventListener("click", () => {
+    if (!state.selectedSubject) {
+      showScreen("subject");
+      return;
+    }
 
-changeModeBtn.addEventListener("click", () => {
-  finalizePreviousSession();
-  saveProgress();
-  showScreen("mode");
-});
+    renderHeroCard(state.selectedSubject);
+    showScreen("hero");
+  });
+}
 
-backToHeroBtn.addEventListener("click", () => {
-  showScreen("hero");
-});
+if (changeSubjectBtn) {
+  changeSubjectBtn.addEventListener("click", () => {
+    showScreen("subject");
+  });
+}
 
-softResetBtn.addEventListener("click", () => {
-  const isConfirmed = window.confirm("Сбросить текущую сессию (без удаления достижений)?");
-  if (!isConfirmed) {
-    return;
-  }
+if (changeModeBtn) {
+  changeModeBtn.addEventListener("click", () => {
+    finalizePreviousSession();
+    saveProgress();
+    showScreen("mode");
+  });
+}
 
-  softResetSession();
-});
+if (backToHeroBtn) {
+  backToHeroBtn.addEventListener("click", () => {
+    showScreen("hero");
+  });
+}
 
-resetProgressBtn.addEventListener("click", () => {
-  const isConfirmed = window.confirm("Сбросить весь прогресс? Это действие нельзя отменить.");
-  if (!isConfirmed) {
-    return;
-  }
+if (softResetBtn) {
+  softResetBtn.addEventListener("click", () => {
+    const isConfirmed = window.confirm("Сбросить текущую сессию (без удаления достижений)?");
+    if (!isConfirmed) {
+      return;
+    }
 
-  resetProgress();
-});
+    softResetSession();
+  });
+}
 
-showOfferBtn.addEventListener("click", () => {
-  offerCard.classList.remove("offer-card--hidden");
-});
+if (resetProgressBtn) {
+  resetProgressBtn.addEventListener("click", () => {
+    const isConfirmed = window.confirm("Сбросить весь прогресс? Это действие нельзя отменить.");
+    if (!isConfirmed) {
+      return;
+    }
 
-parentModeBtn.addEventListener("click", () => {
-  updateParentModal();
-  parentModal.classList.remove("parent-modal--hidden");
-  parentModal.setAttribute("aria-hidden", "false");
-});
+    resetProgress();
+  });
+}
 
-closeParentModalBtn.addEventListener("click", () => {
-  parentModal.classList.add("parent-modal--hidden");
-  parentModal.setAttribute("aria-hidden", "true");
-});
+if (showOfferBtn && offerCard) {
+  showOfferBtn.addEventListener("click", () => {
+    offerCard.classList.remove("offer-card--hidden");
+  });
+}
 
-parentModal.addEventListener("click", (event) => {
-  const target = event.target;
-  if (target.classList && target.classList.contains("parent-modal__backdrop")) {
+if (parentModeBtn && parentModal) {
+  parentModeBtn.addEventListener("click", () => {
+    updateParentModal();
+    parentModal.classList.remove("parent-modal--hidden");
+    parentModal.setAttribute("aria-hidden", "false");
+  });
+}
+
+if (closeParentModalBtn && parentModal) {
+  closeParentModalBtn.addEventListener("click", () => {
     parentModal.classList.add("parent-modal--hidden");
     parentModal.setAttribute("aria-hidden", "true");
+  });
+}
+
+if (parentModal) {
+  parentModal.addEventListener("click", (event) => {
+    const target = event.target;
+    if (target.classList && target.classList.contains("parent-modal__backdrop")) {
+      parentModal.classList.add("parent-modal--hidden");
+      parentModal.setAttribute("aria-hidden", "true");
+    }
+  });
+}
+
+if (chatForm) {
+  chatForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!chatInput) {
+      return;
+    }
+
+    const text = chatInput.value.trim();
+    if (!text || !state.selectedSubject) {
+      return;
+    }
+
+    addMessage("user", text);
+    chatInput.value = "";
+
+    window.setTimeout(() => {
+      if (!state.hasGreetedInChat) {
+        const introName = state.studentName || "друг";
+        addMessage(
+          "bot",
+          `${heroGreetings[state.selectedSubject.id]} ${introName}, твоя цель: ${state.learningGoal || "учиться в игре"}!`
+        );
+        state.hasGreetedInChat = true;
+      }
+
+      const reply = generateModeAwareReply(text);
+      addMessage("bot", reply);
+
+      addXp(10);
+      trackWeakTopic();
+      state.dailyGoalCount += 1;
+      state.totalMessages += 1;
+      state.sessionMessages += 1;
+      state.sessionXpGained += 10;
+      checkAchievements();
+      updateParentReport();
+      updateParentModal();
+      saveProgress();
+    }, 450);
+  });
+}
+
+function initApp() {
+  loadProgress();
+  syncDailySession();
+  renderSubjectCards();
+  renderModeCards();
+  updateProgressUI();
+  updateQuestUI();
+  updateParentReport();
+  updateParentModal();
+
+  if (studentNameInput) {
+    studentNameInput.value = state.studentName;
   }
-});
+  if (studentGradeInput) {
+    studentGradeInput.value = state.studentGrade;
+  }
+  if (learningGoalSelect) {
+    learningGoalSelect.value = state.learningGoal;
+  }
 
-// Первичный запуск: рендерим карточки предметов и стартуем со стартового экрана.
-loadProgress();
-syncDailySession();
-renderSubjectCards();
-renderModeCards();
-updateProgressUI();
-updateQuestUI();
-updateParentReport();
-updateParentModal();
+  showScreen("start");
+}
 
-// Если данные онбординга уже были сохранены, подставляем в поля.
-studentNameInput.value = state.studentName;
-studentGradeInput.value = state.studentGrade;
-learningGoalSelect.value = state.learningGoal;
-
-showScreen("start");
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initApp);
+} else {
+  initApp();
+}
