@@ -19,6 +19,17 @@
         <p class="description">
           Выбери школьный предмет, познакомься с героем-наставником и проходи учебный квест в формате дружелюбного чата.
         </p>
+
+        <section class="why-kids" aria-label="Почему ребёнку понравится">
+          <h2 class="why-kids__title">Почему ребёнку понравится</h2>
+          <ul class="why-kids__list">
+            <li><strong>Обучение как игра</strong> — задания ощущаются как квест, а не скучная тетрадь.</li>
+            <li><strong>Герои-наставники</strong> — каждый предмет со своим персонажем и стилем общения.</li>
+            <li><strong>XP и медали</strong> — видно прогресс, хочется возвращаться и «прокачиваться».</li>
+            <li><strong>Помощь с домашкой без готовых ответов</strong> — наставник ведёт вопросами, а не списывает за тебя.</li>
+          </ul>
+        </section>
+
         <button type="button" id="start-btn" class="btn btn--primary">Начать приключение</button>
       </div>
     </section>
@@ -139,18 +150,28 @@
           <p>Рекомендация: <span id="report-recommendation">—</span></p>
         </section>
 
+        <section class="cta">
+          <h3>Хотите такого AI-репетитора для своего ребёнка?</h3>
+          <button type="button" id="show-details-btn" class="btn btn--primary btn--small">Узнать подробнее</button>
+          <article id="offer-card" class="offer-card offer-card--hidden">
+            <p class="offer-card__lead">
+              Наталья Царицинская — создаю AI-ассистентов, обучающих ботов и мини-сервисы для семьи, экспертов и бизнеса.
+            </p>
+            <p class="offer-card__text">Помогаю превращать идеи в работающие AI-продукты.</p>
+            <p class="offer-card__contact">Контакт: <a href="tel:+79129145382">89129145382</a></p>
+          </article>
+        </section>
+
+        <div class="quick-replies" role="group" aria-label="Быстрые действия">
+          <button type="button" class="btn btn--ghost btn--small quick-replies__btn" data-quick="Объясни проще">Объясни проще</button>
+          <button type="button" class="btn btn--ghost btn--small quick-replies__btn" data-quick="Дай пример">Дай пример</button>
+          <button type="button" class="btn btn--ghost btn--small quick-replies__btn" data-quick="Дай задание">Дай задание</button>
+        </div>
+
         <form id="chat-form" class="chat-form">
           <input id="chat-input" type="text" placeholder="Напиши вопрос по теме..." autocomplete="off" maxlength="200" required>
           <button type="submit" class="btn btn--primary">Отправить</button>
         </form>
-
-        <section class="cta">
-          <h3>Хотите такого AI-репетитора для своего ребёнка?</h3>
-          <button type="button" id="show-offer-btn" class="btn btn--primary btn--small">Оставить заявку</button>
-          <article id="offer-card" class="offer-card offer-card--hidden">
-            Наталья Царицинская — создаю AI-ассистентов, обучающих ботов и сервисы под задачи семьи, экспертов и бизнеса.
-          </article>
-        </section>
       </div>
     </section>
   </main>

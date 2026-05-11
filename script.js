@@ -67,36 +67,38 @@ const heroGreetings = {
 
 const responseTemplates = {
   math: [
-    "Отличный вопрос! Давай разложим задачу на шаги: сначала найди известные числа, потом выбери действие. Ты справишься! 🧮",
-    "Супер ход! В математике главное — порядок действий. Попробуй решить первый шаг и напиши, что получилось. ⚡",
-    "Класс! Ты уже как настоящий маг чисел. Подсказка: проверь, можно ли упростить выражение перед вычислением. ✨",
+    "Представь, что числа — это кубики LEGO: сначала собери «основание» из того, что дано, потом докинь одну деталь-действие. Шаг 1: что уже известно? Шаг 2: что ищем? Ты почти у финишной черты! 🧮",
+    "Супер-ход! Математика любит порядок, как очередь в автобусе: сначала скобки, потом сильные действия, потом остальное. Сделай один маленький шаг — и расскажи, что получилось. ⚡",
+    "Ты как маг с волшебной палочкой — только палочка это логика! Подсказка: иногда выражение можно «облегчить», как рюкзак перед походом. Попробуй упростить и снова взгляни на задачу. ✨",
   ],
   russian: [
-    "Отличная попытка! Секрет русского языка: сначала определи часть речи, потом правило. 📖",
-    "Прекрасный вопрос! Давай вместе: выделим корень слова и проверим орфограмму. 📝",
-    "Ты молодец! Чтобы не ошибиться, прочитай предложение вслух и проверь, как звучит слово. 🎯",
+    "Слово — как дом: есть корень (фундамент), приставка (крыльцо), суффикс (окошки). Сначала найди «фундамент», потом правило станет дружелюбнее. 📖",
+    "Отличный вопрос! Прочитай фразу вслух, как будто ты диктор на радио: ухо часто подсказывает, где буква прячется. Потом проверим правило вместе. 📝",
+    "Ты молодец! Русский язык — как тренажёр: один повтор — и мышца памяти крепче. Выбери одно слово и разберём его по частям, шаг за шагом. 🎯",
   ],
   english: [
-    "Great effort! Try making a short sentence with this word. I will check it with you! 🇬🇧",
-    "Awesome! Small steps win: first meaning, then pronunciation, then sentence. 🚀",
-    "Nice question! Let's practice together: write 3 simple words on this topic. 🌟",
+    "Think of English like a treasure map: first find the «X» (meaning), then the path (words), then the flag (sentence). Try one short sentence — I'll cheer you on! 🇬🇧",
+    "Awesome! Words are like stickers: first stick the meaning, then the sound, then the whole phrase. Tiny steps = big win. 🚀",
+    "Nice! Let's play «three words»: write three simple words on this topic — like collecting coins in a game. 🌟",
   ],
   history: [
-    "Интересный вопрос! Представь, что ты репортёр той эпохи: кто, где и когда? Это помогает запомнить. 🗞️",
-    "Отлично! В истории важны причины и последствия. Попробуй назвать по одному пункту каждого. 🏛️",
-    "Сильный ход! Запоминай события как сюжет приключения — так даты учатся легче. 📜",
+    "История — как сериал: кто герой, где сцена, в какой серии (год) случился поворот? Нарисуй в голове постер: КТО — ГДЕ — КОГДА — и сюжет запомнится легче. 🗞️",
+    "Сильно! Причины и последствия — как домино: одно падает — движется цепочка. Назови по одному «камешку» причины и одному «камешку» следствия. 🏛️",
+    "Представь, что ты журналист в прошлом: сделай мини-заголовок к событию. Заголовки цепляют память лучше, чем сухие даты. 📜",
   ],
   biology: [
-    "Крутой вопрос! В биологии помогает схема: что это, как устроено, какую функцию выполняет. 🔍",
-    "Отлично думаешь! Представь организм как команду, где у каждого органа своя роль. 🧠",
-    "Супер! Давай закрепим: назови один факт и один пример из жизни. 🌿",
+    "Биология — как зоопарк в голове: у каждого «животного» (органа) своя будка и работа. Спроси себя: что это? из чего сделано? зачем нужно? 🔍",
+    "Класс! Организм — команда супергероев: сердце — доставка, лёгкие — ветер в парусах. Кто в твоём вопросе главный герой? 🧠",
+    "Супер! Давай как в научном шоу: один факт «вау!» и один пример из жизни (кухня, двор, питомец) — и тема оживёт. 🌿",
   ],
   geography: [
-    "Замечательный вопрос! Начни с карты: материк, страна, климат — и картина сразу яснее. 🧭",
-    "Класс! Чтобы запомнить место, свяжи его с природой, погодой и интересным фактом. 🌦️",
-    "Отличная работа! География любит сравнения: чем похожи и чем отличаются регионы? 🗺️",
+    "География — как пазл планеты: сначала материк, потом страна, потом климат «одень» регион в погоду. Карта в голове станет ярче! 🧭",
+    "Отлично! Запоминай место как персонажа: какая у него «одежда» (природа), какой «характер» (климат), какой «факт-анекдот»? 🌦️",
+    "Сравни два места, как два мороженых вкуса: чем похожи шарики, чем отличаются посыпки? Сравнение — суперсила географа. 🗺️",
   ],
 };
+
+const QUICK_PHRASES = ["Объясни проще", "Дай пример", "Дай задание"];
 
 /*
   Состояние приложения.
@@ -187,7 +189,7 @@ const reportSubject = document.getElementById("report-subject");
 const reportActivity = document.getElementById("report-activity");
 const reportXp = document.getElementById("report-xp");
 const reportRecommendation = document.getElementById("report-recommendation");
-const showOfferBtn = document.getElementById("show-offer-btn");
+const showDetailsBtn = document.getElementById("show-details-btn");
 const offerCard = document.getElementById("offer-card");
 const parentModal = document.getElementById("parent-modal");
 const closeParentModalBtn = document.getElementById("close-parent-modal-btn");
@@ -766,27 +768,126 @@ function generateBotReply(subjectId) {
 /*
   Улучшенная генерация ответа в зависимости от выбранного режима урока.
 */
+function isQuickPhrase(text) {
+  return QUICK_PHRASES.includes(text.trim());
+}
+
+/*
+  Ответы на быстрые кнопки: коротко, по-игровому; в режиме домашки — без готовых решений.
+*/
+function generateQuickReply(phrase) {
+  const subj = state.selectedSubject;
+  const modeId = state.selectedMode ? state.selectedMode.id : "";
+  const name = state.studentName || "герой";
+  const topic = subj ? subj.name : "урок";
+  const id = subj ? subj.id : "math";
+
+  if (phrase === "Объясни проще") {
+    if (modeId === "homework") {
+      return `${name}, включаю «простой переводчик» — но честно: готовую строчку из тетради я не скажу. Сделаем микро-шаг: перескажи задачу своими словами, как бабушке за чаем. Один короткий пересказ — и я подстрою объяснение под тебя.`;
+    }
+    const hints = {
+      math: "Представь задачу как рецепт торта: что за ингредиенты уже на столе? Что должно получиться в конце? Мы уберём «сложные слова» и оставим только два шага.",
+      russian: "Представь правило как дорожный знак: сначала «стоп» — что нельзя, потом «можно» — как сказать правильно. Скажи вслух одно слово, которое путает — и разберём его по кирпичикам.",
+      english: "English can be like a sticker album: first picture (meaning), then letters (spelling), then a tiny phrase. Pick one word you like — we’ll make it super easy.",
+      history: "История как комикс: один кадр = одно событие. Кто в кадре? что делает? что изменилось после? Ответь в трёх словах — и станет проще.",
+      biology: "Живое = конструктор: из каких деталей собрано и зачем каждая деталь? Назови одну часть, которая кажется странной — «размагичим» её простыми словами.",
+      geography: "Карта как платье на кукле: слои — климат, реки, города. Что наденем первым на твой регион? Один слой — и картинка прояснится.",
+    };
+    return hints[id] || hints.math;
+  }
+
+  if (phrase === "Дай пример") {
+    if (modeId === "homework") {
+      return `${name}, для домашки я не подкидываю «готовый листочек», зато могу дать пример-аналог в другой вселенной — как тренировочный манекен для карате. Напиши: это про числа, про слова или про факты? Я придумаю безопасный пример рядом, не из твоего номера.`;
+    }
+    const examples = {
+      math: "Пример-мишка: если 12 конфет поделить на 3 друга — у каждого по 4. Тот же дух, что и в дробях: «делим поровну, считаем по одному кусочку».",
+      russian: "Пример: «бежать» — глагол, «бег» — существительное. Как музыка и песня: одно звучит, другое — название трека.",
+      english: "Mini-example: «I like cats» → «She likes cats». Маленькое правило, как переключатель света: щёлк — и форма слова меняется.",
+      history: "Пример-лестница: причина → событие → следствие. Как «забыли полить цветок» → «цветок устал» → «листья поникли».",
+      biology: "Пример: сердце — как насос в аквариуме: качает «воду-кровь», чтобы рыбки-клетки дышали и плавали веселее.",
+      geography: "Пример: у побережья климат «как с мокрым полотенцем», в центре материка — «как под сухим одеялом». Влажность разная — природа разная.",
+    };
+    return examples[id] || examples.math;
+  }
+
+  if (phrase === "Дай задание") {
+    if (modeId === "homework") {
+      return `${name}, задание без списывания: ① прочитай номер и подчеркни только вопрос; ② напиши одну догадку (даже если неверная); ③ скажи, чего тебе не хватает: формулы, слова или факта? Я подсвечу следующий крошечный шаг — без финального ответа.`;
+    }
+    return `Мини-квест на 3 минуты по «${topic}»: шаг 1 — одно предложение «что я уже знаю»; шаг 2 — один вопрос «что непонятно»; шаг 3 — попробуй угадать ответ наполовину. Я рядом и подбодрю!`;
+  }
+
+  return generateBotReply(id);
+}
+
 function generateModeAwareReply(userText) {
   if (!state.selectedSubject || !state.selectedMode) {
     return "Я рядом! Давай начнём с выбора предмета и режима урока.";
   }
 
+  if (isQuickPhrase(userText)) {
+    return generateQuickReply(userText.trim());
+  }
+
   const baseReply = generateBotReply(state.selectedSubject.id);
   const modeId = state.selectedMode.id;
+  const name = state.studentName || "исследователь";
 
   if (modeId === "quest") {
-    return `Миссия: ${state.studentName || "ученик"}, выполни шаг 1 по теме "${state.selectedSubject.name}". ${baseReply}`;
+    return `Квест «${state.selectedSubject.name}»: ${name}, точка сохранения пройдена! Миссия — маленький шаг, как прыжок на платформе в игре.\n${baseReply}\nНапиши, что получилось на первом шаге — откроем следующую дверь.`;
   }
 
   if (modeId === "test") {
-    return `Мини-тест по теме "${state.selectedSubject.name}":\n1) Какой вариант верный?\nA) Первый вариант\nB) Второй вариант\nC) Третий вариант\nНапиши букву ответа и коротко объясни почему.`;
+    return `Арена проверки по «${state.selectedSubject.name}»! Выбери букву, как в игре-викторине:\nA) Первый вариант\nB) Второй вариант\nC) Третий вариант\nНапиши букву и одну фразу «почему так думаю» — даже если сомневаешься, это очки смелости!`;
   }
 
   if (modeId === "simple") {
-    return `Объясняю просто: ${baseReply}\nПример: представь это как ситуацию из школы или игры, где каждый шаг выполняется по порядку.`;
+    return `Объясняю как сказку на ночь — коротко и по шагам:\n${baseReply}\nПредставь, что тема — это уровень в игре: сначала туториал, потом практика. Ты уже на туториале!`;
   }
 
-  return `Не даю готовый ответ сразу, но помогу тебе дойти самому 💪\nВопрос 1: что тебе уже известно по задаче "${userText.slice(0, 60)}"?\nВопрос 2: какой первый шаг можно сделать?`;
+  const snippet = userText.slice(0, 55).trim() || "эта тема";
+  return `${name}, режим «помощь с домашкой» — я как фонарик в походе: свечу на тропинку, но не несу тебя на руках до финиша (готовый ответ не выдам).\n` +
+    `Шаг 1: что в задании для тебя «туман» — одно слово.\n` +
+    `Шаг 2: какая микро-деталь уже ясна на 10%?\n` +
+    `Шаг 3: какой крошечный шаг сделаешь за 2 минуты?\n` +
+    `(Про: «${snippet}…») Ты справишься — я мягко подскажу дальше, когда ответишь.`;
+}
+
+function buildBotReply(userText) {
+  return generateModeAwareReply(userText);
+}
+
+function runBotTurn(userText) {
+  window.setTimeout(() => {
+    if (!state.selectedSubject) {
+      return;
+    }
+
+    if (!state.hasGreetedInChat) {
+      const introName = state.studentName || "друг";
+      addMessage(
+        "bot",
+        `${heroGreetings[state.selectedSubject.id]} ${introName}, твоя цель: ${state.learningGoal || "учиться в игре"}!`
+      );
+      state.hasGreetedInChat = true;
+    }
+
+    const reply = buildBotReply(userText);
+    addMessage("bot", reply);
+
+    addXp(10);
+    trackWeakTopic();
+    state.dailyGoalCount += 1;
+    state.totalMessages += 1;
+    state.sessionMessages += 1;
+    state.sessionXpGained += 10;
+    checkAchievements();
+    updateParentReport();
+    updateParentModal();
+    saveProgress();
+  }, 450);
 }
 
 /*
@@ -921,8 +1022,8 @@ if (resetProgressBtn) {
   });
 }
 
-if (showOfferBtn && offerCard) {
-  showOfferBtn.addEventListener("click", () => {
+if (showDetailsBtn && offerCard) {
+  showDetailsBtn.addEventListener("click", () => {
     offerCard.classList.remove("offer-card--hidden");
   });
 }
@@ -966,33 +1067,20 @@ if (chatForm) {
 
     addMessage("user", text);
     chatInput.value = "";
-
-    window.setTimeout(() => {
-      if (!state.hasGreetedInChat) {
-        const introName = state.studentName || "друг";
-        addMessage(
-          "bot",
-          `${heroGreetings[state.selectedSubject.id]} ${introName}, твоя цель: ${state.learningGoal || "учиться в игре"}!`
-        );
-        state.hasGreetedInChat = true;
-      }
-
-      const reply = generateModeAwareReply(text);
-      addMessage("bot", reply);
-
-      addXp(10);
-      trackWeakTopic();
-      state.dailyGoalCount += 1;
-      state.totalMessages += 1;
-      state.sessionMessages += 1;
-      state.sessionXpGained += 10;
-      checkAchievements();
-      updateParentReport();
-      updateParentModal();
-      saveProgress();
-    }, 450);
+    runBotTurn(text);
   });
 }
+
+document.querySelectorAll(".quick-replies__btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const text = btn.getAttribute("data-quick");
+    if (!text || !state.selectedSubject) {
+      return;
+    }
+    addMessage("user", text);
+    runBotTurn(text);
+  });
+});
 
 function initApp() {
   loadProgress();

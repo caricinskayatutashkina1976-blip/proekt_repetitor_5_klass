@@ -105,7 +105,7 @@ body {
 .screen__content--chat {
   display: grid;
   gap: 16px;
-  grid-template-rows: auto auto auto auto 1fr auto auto auto;
+  grid-template-rows: auto auto auto auto 1fr auto auto auto auto;
   min-height: 640px;
 }
 
@@ -137,6 +137,41 @@ h2 {
   color: var(--text-soft);
   max-width: 720px;
   line-height: 1.45;
+}
+
+.why-kids {
+  margin-top: 20px;
+  padding: 16px 18px;
+  background: linear-gradient(145deg, #f0f4ff 0%, #fff5fb 100%);
+  border: 1px solid #e0e8ff;
+  border-radius: var(--radius-lg);
+  text-align: left;
+}
+
+.why-kids__title {
+  font-size: 1.05rem;
+  color: #3a2db8;
+  margin-bottom: 10px;
+}
+
+.why-kids__list {
+  margin: 0;
+  padding-left: 1.15rem;
+  color: var(--text-soft);
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+.why-kids__list li + li {
+  margin-top: 8px;
+}
+
+.why-kids__list strong {
+  color: var(--text-main);
+}
+
+.why-kids + .btn--primary {
+  margin-top: 18px;
 }
 
 /* Формы (онбординг) */
@@ -413,9 +448,43 @@ h2 {
   background: #fff;
   border: 1px solid #ffd6bf;
   border-radius: 12px;
-  padding: 10px 12px;
+  padding: 12px 14px;
   color: #7f4a2b;
-  line-height: 1.4;
+  line-height: 1.45;
+}
+
+.offer-card__lead {
+  margin: 0;
+  font-weight: 700;
+}
+
+.offer-card__text {
+  margin: 8px 0 0;
+}
+
+.offer-card__contact {
+  margin: 10px 0 0;
+  font-weight: 700;
+}
+
+.offer-card__contact a {
+  color: #c44a2a;
+  text-decoration: none;
+}
+
+.offer-card__contact a:hover {
+  text-decoration: underline;
+}
+
+.quick-replies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.quick-replies__btn {
+  flex: 1 1 auto;
+  min-width: 120px;
 }
 
 .offer-card--hidden {
