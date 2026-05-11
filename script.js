@@ -104,6 +104,10 @@ const responseTemplates = {
 */
 const state = {
   selectedSubject: null,
+  selectedMode: null,
+  studentName: "",
+  studentGrade: "",
+  learningGoal: "",
   xp: 0,
   level: 1,
   medalAwarded: false,
@@ -113,9 +117,20 @@ const state = {
   dailyGoalCount: 0,
   totalMessages: 0,
   achievements: [],
+  sessionMessages: 0,
+  sessionXpGained: 0,
+  sessionHistory: [],
+  weakTopics: {},
 };
 
 const STORAGE_KEY = "ai-school-quest-progress-v1";
+
+const lessonModes = [
+  { id: "quest", name: "Квест", emoji: "🗺️", subtitle: "Формат миссий и заданий" },
+  { id: "test", name: "Тест", emoji: "✅", subtitle: "Вопросы с вариантами ответа" },
+  { id: "simple", name: "Объясни простыми словами", emoji: "🧩", subtitle: "Коротко и с примером" },
+  { id: "homework", name: "Помощь с домашкой", emoji: "📘", subtitle: "Подсказки через вопросы" },
+];
 
 const dailyTasks = [
   "Задай наставнику 3 вопроса и получи бонус опыта.",
@@ -127,22 +142,34 @@ const dailyTasks = [
 // Получаем ссылки на DOM-элементы, с которыми будем работать.
 const screens = {
   start: document.getElementById("screen-start"),
+  onboarding: document.getElementById("screen-onboarding"),
   subject: document.getElementById("screen-subject"),
   hero: document.getElementById("screen-hero"),
+  mode: document.getElementById("screen-mode"),
   chat: document.getElementById("screen-chat"),
 };
 
 const startBtn = document.getElementById("start-btn");
+const onboardingForm = document.getElementById("onboarding-form");
+const studentNameInput = document.getElementById("student-name-input");
+const studentGradeInput = document.getElementById("student-grade-input");
+const learningGoalSelect = document.getElementById("learning-goal-select");
 const subjectGrid = document.getElementById("subject-grid");
 const heroGrid = document.getElementById("hero-grid");
+const modeGrid = document.getElementById("mode-grid");
 const backToSubjectBtn = document.getElementById("back-to-subject-btn");
+const backToHeroBtn = document.getElementById("back-to-hero-btn");
 const changeHeroBtn = document.getElementById("change-hero-btn");
 const changeSubjectBtn = document.getElementById("change-subject-btn");
+const changeModeBtn = document.getElementById("change-mode-btn");
+const parentModeBtn = document.getElementById("parent-mode-btn");
 const softResetBtn = document.getElementById("soft-reset-btn");
 const resetProgressBtn = document.getElementById("reset-progress-btn");
 
+const chatStudent = document.getElementById("chat-student");
 const chatSubject = document.getElementById("chat-subject");
 const chatHero = document.getElementById("chat-hero");
+const chatMode = document.getElementById("chat-mode");
 const messages = document.getElementById("messages");
 const chatForm = document.getElementById("chat-form");
 const chatInput = document.getElementById("chat-input");
@@ -155,6 +182,21 @@ const streakValue = document.getElementById("streak-value");
 const dailyGoalValue = document.getElementById("daily-goal-value");
 const dailyTaskText = document.getElementById("daily-task-text");
 const achievementText = document.getElementById("achievement-text");
+const parentReport = document.getElementById("parent-report");
+const reportSubject = document.getElementById("report-subject");
+const reportActivity = document.getElementById("report-activity");
+const reportXp = document.getElementById("report-xp");
+const reportRecommendation = document.getElementById("report-recommendation");
+const showOfferBtn = document.getElementById("show-offer-btn");
+const offerCard = document.getElementById("offer-card");
+const parentModal = document.getElementById("parent-modal");
+const closeParentModalBtn = document.getElementById("close-parent-modal-btn");
+const parentStudentName = document.getElementById("parent-student-name");
+const parentCurrentSubject = document.getElementById("parent-current-subject");
+const parentCurrentMode = document.getElementById("parent-current-mode");
+const parentSessionProgress = document.getElementById("parent-session-progress");
+const parentWeakTopics = document.getElementById("parent-weak-topics");
+const parentPlanList = document.getElementById("parent-plan-list");
 
 /*
   Функция переключения экранов.
@@ -199,8 +241,13 @@ function getDayDiff(prevDateString, nextDateString) {
 */
 function saveProgress() {
   const subjectId = state.selectedSubject ? state.selectedSubject.id : "";
+  const modeId = state.selectedMode ? state.selectedMode.id : "";
   const safeData = {
     subjectId,
+    modeId,
+    studentName: state.studentName,
+    studentGrade: state.studentGrade,
+    learningGoal: state.learningGoal,
     xp: state.xp,
     level: state.level,
     medalAwarded: state.medalAwarded,
@@ -209,6 +256,8 @@ function saveProgress() {
     dailyGoalCount: state.dailyGoalCount,
     totalMessages: state.totalMessages,
     achievements: state.achievements,
+    sessionHistory: state.sessionHistory,
+    weakTopics: state.weakTopics,
   };
 
   localStorage.setItem(STORAGE_KEY, JSON.stringify(safeData));
@@ -227,8 +276,13 @@ function loadProgress() {
   try {
     const parsed = JSON.parse(raw);
     const savedSubject = subjects.find((subject) => subject.id === parsed.subjectId) || null;
+    const savedMode = lessonModes.find((mode) => mode.id === parsed.modeId) || null;
 
     state.selectedSubject = savedSubject;
+    state.selectedMode = savedMode;
+    state.studentName = parsed.studentName || "";
+    state.studentGrade = parsed.studentGrade || "";
+    state.learningGoal = parsed.learningGoal || "";
     state.xp = Number(parsed.xp) || 0;
     state.level = Number(parsed.level) || 1;
     state.medalAwarded = Boolean(parsed.medalAwarded);
@@ -237,9 +291,94 @@ function loadProgress() {
     state.dailyGoalCount = Number(parsed.dailyGoalCount) || 0;
     state.totalMessages = Number(parsed.totalMessages) || 0;
     state.achievements = Array.isArray(parsed.achievements) ? parsed.achievements : [];
+    state.sessionHistory = Array.isArray(parsed.sessionHistory) ? parsed.sessionHistory : [];
+    state.weakTopics = parsed.weakTopics && typeof parsed.weakTopics === "object" ? parsed.weakTopics : {};
   } catch (error) {
     console.error("Не удалось загрузить прогресс из localStorage:", error);
   }
+}
+
+/*
+  Подсчёт аналитики: обновляем счётчик "слабых тем" по предмету.
+*/
+function trackWeakTopic() {
+  if (!state.selectedSubject) {
+    return;
+  }
+
+  const key = state.selectedSubject.name;
+  const current = Number(state.weakTopics[key]) || 0;
+  state.weakTopics[key] = current + 1;
+}
+
+/*
+  При запуске нового чата фиксируем статистику предыдущей сессии
+  и начинаем новую.
+*/
+function finalizePreviousSession() {
+  if (!state.selectedSubject || state.sessionMessages === 0) {
+    return;
+  }
+
+  const entry = {
+    date: getTodayString(),
+    subject: state.selectedSubject.name,
+    mode: state.selectedMode ? state.selectedMode.name : "Без режима",
+    messages: state.sessionMessages,
+    xp: state.sessionXpGained,
+  };
+
+  state.sessionHistory.push(entry);
+  if (state.sessionHistory.length > 8) {
+    state.sessionHistory = state.sessionHistory.slice(-8);
+  }
+}
+
+/*
+  Генерируем недельный план из текущей цели обучения.
+*/
+function buildWeeklyPlan() {
+  const subjectName = state.selectedSubject ? state.selectedSubject.name : "выбранный предмет";
+  const goal = state.learningGoal || "Подтянуть знания";
+
+  return [
+    `День 1: мини-диагностика по теме "${subjectName}" (10-12 минут).`,
+    `День 2: короткое объяснение + 3 практических примера (${goal.toLowerCase()}).`,
+    "День 3: тренировка в формате вопросов и ответов с проверкой ошибок.",
+    "День 4: повторение сложных мест из прошлых сообщений.",
+    "День 5: мини-тест на закрепление (5 вопросов).",
+    "День 6: разбор типичных ошибок и стратегия на контрольную/домашку.",
+    "День 7: итоговый квест-урок и проверка прогресса.",
+  ];
+}
+
+/*
+  Обновляем контент модального окна родительского режима.
+*/
+function updateParentModal() {
+  parentStudentName.textContent = `${state.studentName || "Ученик"} (${state.studentGrade || "5 класс"})`;
+  parentCurrentSubject.textContent = state.selectedSubject ? state.selectedSubject.name : "—";
+  parentCurrentMode.textContent = state.selectedMode ? state.selectedMode.name : "—";
+
+  const sessionsCount = state.sessionHistory.length;
+  const avgXp = sessionsCount
+    ? Math.round(state.sessionHistory.reduce((sum, entry) => sum + (Number(entry.xp) || 0), 0) / sessionsCount)
+    : 0;
+  parentSessionProgress.textContent = `Сессий: ${sessionsCount}, средний XP за сессию: ${avgXp}`;
+
+  const sortedTopics = Object.entries(state.weakTopics)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 2)
+    .map((entry) => entry[0]);
+  parentWeakTopics.textContent = sortedTopics.length ? sortedTopics.join(", ") : "Пока недостаточно данных";
+
+  const planItems = buildWeeklyPlan();
+  parentPlanList.innerHTML = "";
+  planItems.forEach((item) => {
+    const li = document.createElement("li");
+    li.textContent = item;
+    parentPlanList.append(li);
+  });
 }
 
 /*
@@ -271,6 +410,33 @@ function syncDailySession() {
 }
 
 /*
+  Рендерим карточки режимов урока.
+*/
+function renderModeCards() {
+  modeGrid.innerHTML = "";
+
+  lessonModes.forEach((mode) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "choice-card";
+    button.innerHTML = `
+      <div class="choice-card__emoji">${mode.emoji}</div>
+      <div class="choice-card__title">${mode.name}</div>
+      <div class="choice-card__subtitle">${mode.subtitle}</div>
+    `;
+
+    button.addEventListener("click", () => {
+      state.selectedMode = mode;
+      if (state.selectedSubject) {
+        startChat(state.selectedSubject);
+      }
+    });
+
+    modeGrid.append(button);
+  });
+}
+
+/*
   Полный сброс прогресса для демо:
   - очищаем localStorage
   - возвращаем состояние к стартовым значениям
@@ -280,6 +446,10 @@ function resetProgress() {
   localStorage.removeItem(STORAGE_KEY);
 
   state.selectedSubject = null;
+  state.selectedMode = null;
+  state.studentName = "";
+  state.studentGrade = "";
+  state.learningGoal = "";
   state.xp = 0;
   state.level = 1;
   state.medalAwarded = false;
@@ -289,12 +459,21 @@ function resetProgress() {
   state.dailyGoalCount = 0;
   state.totalMessages = 0;
   state.achievements = [];
+  state.sessionMessages = 0;
+  state.sessionXpGained = 0;
+  state.sessionHistory = [];
+  state.weakTopics = {};
 
+  chatStudent.textContent = "—";
   chatSubject.textContent = "—";
   chatHero.textContent = "—";
+  chatMode.textContent = "—";
   medalValue.textContent = "Пока нет";
   messages.innerHTML = "";
   chatInput.value = "";
+  parentReport.classList.add("parent-report--hidden");
+  offerCard.classList.add("offer-card--hidden");
+  parentModal.classList.add("parent-modal--hidden");
 
   updateProgressUI();
   updateQuestUI();
@@ -314,10 +493,13 @@ function softResetSession() {
   state.medalAwarded = false;
   state.hasGreetedInChat = false;
   state.dailyGoalCount = 0;
+  state.sessionMessages = 0;
+  state.sessionXpGained = 0;
 
   medalValue.textContent = "Пока нет";
   messages.innerHTML = "";
   chatInput.value = "";
+  parentReport.classList.add("parent-report--hidden");
 
   updateProgressUI();
   updateQuestUI();
@@ -370,7 +552,8 @@ function renderHeroCard(subject) {
   `;
 
   heroButton.addEventListener("click", () => {
-    startChat(subject);
+    state.selectedSubject = subject;
+    showScreen("mode");
   });
 
   heroGrid.append(heroButton);
@@ -412,6 +595,31 @@ function updateQuestUI() {
   } else {
     achievementText.textContent = "Достижение: пока нет";
   }
+}
+
+/*
+  Родительский отчёт:
+  показываем после 3 сообщений ученика и обновляем динамически.
+*/
+function updateParentReport() {
+  reportSubject.textContent = state.selectedSubject ? state.selectedSubject.name : "—";
+  reportXp.textContent = String(state.xp);
+
+  if (state.totalMessages < 3) {
+    parentReport.classList.add("parent-report--hidden");
+    return;
+  }
+
+  const activityLabel = state.totalMessages >= 8 ? "Высокая" : "Стабильная";
+  reportActivity.textContent = `${activityLabel} (${state.totalMessages} сообщений)`;
+
+  if (state.selectedSubject) {
+    reportRecommendation.textContent = `Повторить базовые темы по предмету "${state.selectedSubject.name}" и закрепить 2-3 задания.`;
+  } else {
+    reportRecommendation.textContent = "Продолжить занятия в выбранном формате.";
+  }
+
+  parentReport.classList.remove("parent-report--hidden");
 }
 
 /*
@@ -486,25 +694,59 @@ function generateBotReply(subjectId) {
 }
 
 /*
+  Улучшенная генерация ответа в зависимости от выбранного режима урока.
+*/
+function generateModeAwareReply(userText) {
+  if (!state.selectedSubject || !state.selectedMode) {
+    return "Я рядом! Давай начнём с выбора предмета и режима урока.";
+  }
+
+  const baseReply = generateBotReply(state.selectedSubject.id);
+  const modeId = state.selectedMode.id;
+
+  if (modeId === "quest") {
+    return `Миссия: ${state.studentName || "ученик"}, выполни шаг 1 по теме "${state.selectedSubject.name}". ${baseReply}`;
+  }
+
+  if (modeId === "test") {
+    return `Мини-тест по теме "${state.selectedSubject.name}":\n1) Какой вариант верный?\nA) Первый вариант\nB) Второй вариант\nC) Третий вариант\nНапиши букву ответа и коротко объясни почему.`;
+  }
+
+  if (modeId === "simple") {
+    return `Объясняю просто: ${baseReply}\nПример: представь это как ситуацию из школы или игры, где каждый шаг выполняется по порядку.`;
+  }
+
+  return `Не даю готовый ответ сразу, но помогу тебе дойти самому 💪\nВопрос 1: что тебе уже известно по задаче "${userText.slice(0, 60)}"?\nВопрос 2: какой первый шаг можно сделать?`;
+}
+
+/*
   Инициализация чата:
   - очищаем старые сообщения
   - показываем выбранные предмет и героя
   - сбрасываем прогресс для новой сессии
 */
 function startChat(subject) {
+  finalizePreviousSession();
   showScreen("chat");
 
   state.selectedSubject = subject;
+  state.totalMessages = state.totalMessages || 0;
+  chatStudent.textContent = `${state.studentName || "Ученик"}, ${state.studentGrade || "5 класс"}`;
   chatSubject.textContent = `${subject.emoji} ${subject.name}`;
   chatHero.textContent = `${subject.heroEmoji} ${subject.hero}`;
+  chatMode.textContent = state.selectedMode ? `${state.selectedMode.emoji} ${state.selectedMode.name}` : "—";
 
   messages.innerHTML = "";
   chatInput.value = "";
   state.hasGreetedInChat = false;
+  state.sessionMessages = 0;
+  state.sessionXpGained = 0;
+  parentReport.classList.add("parent-report--hidden");
 
   medalValue.textContent = state.medalAwarded ? "Смекалка 🏅" : "Пока нет";
   updateProgressUI();
   updateQuestUI();
+  updateParentReport();
   saveProgress();
 }
 
@@ -529,18 +771,27 @@ chatForm.addEventListener("submit", (event) => {
   // Небольшая задержка делает чат более "живым".
   window.setTimeout(() => {
     if (!state.hasGreetedInChat) {
-      addMessage("bot", heroGreetings[state.selectedSubject.id]);
+      const introName = state.studentName || "друг";
+      addMessage(
+        "bot",
+        `${heroGreetings[state.selectedSubject.id]} ${introName}, твоя цель: ${state.learningGoal || "учиться в игре"}!`
+      );
       state.hasGreetedInChat = true;
     }
 
-    const reply = generateBotReply(state.selectedSubject.id);
+    const reply = generateModeAwareReply(text);
     addMessage("bot", reply);
 
     // По условиям MVP за каждый ответ начисляем +10 XP.
     addXp(10);
+    trackWeakTopic();
     state.dailyGoalCount += 1;
     state.totalMessages += 1;
+    state.sessionMessages += 1;
+    state.sessionXpGained += 10;
     checkAchievements();
+    updateParentReport();
+    updateParentModal();
     saveProgress();
   }, 450);
 });
@@ -551,6 +802,23 @@ chatForm.addEventListener("submit", (event) => {
   - герой -> назад к предметам
 */
 startBtn.addEventListener("click", () => {
+  showScreen("onboarding");
+});
+
+onboardingForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const name = studentNameInput.value.trim();
+  const grade = studentGradeInput.value.trim();
+  const goal = learningGoalSelect.value;
+  if (!name || !grade || !goal) {
+    return;
+  }
+
+  state.studentName = name;
+  state.studentGrade = grade;
+  state.learningGoal = goal;
+  saveProgress();
   showScreen("subject");
 });
 
@@ -572,6 +840,16 @@ changeSubjectBtn.addEventListener("click", () => {
   showScreen("subject");
 });
 
+changeModeBtn.addEventListener("click", () => {
+  finalizePreviousSession();
+  saveProgress();
+  showScreen("mode");
+});
+
+backToHeroBtn.addEventListener("click", () => {
+  showScreen("hero");
+});
+
 softResetBtn.addEventListener("click", () => {
   const isConfirmed = window.confirm("Сбросить текущую сессию (без удаления достижений)?");
   if (!isConfirmed) {
@@ -590,10 +868,42 @@ resetProgressBtn.addEventListener("click", () => {
   resetProgress();
 });
 
+showOfferBtn.addEventListener("click", () => {
+  offerCard.classList.remove("offer-card--hidden");
+});
+
+parentModeBtn.addEventListener("click", () => {
+  updateParentModal();
+  parentModal.classList.remove("parent-modal--hidden");
+  parentModal.setAttribute("aria-hidden", "false");
+});
+
+closeParentModalBtn.addEventListener("click", () => {
+  parentModal.classList.add("parent-modal--hidden");
+  parentModal.setAttribute("aria-hidden", "true");
+});
+
+parentModal.addEventListener("click", (event) => {
+  const target = event.target;
+  if (target.classList && target.classList.contains("parent-modal__backdrop")) {
+    parentModal.classList.add("parent-modal--hidden");
+    parentModal.setAttribute("aria-hidden", "true");
+  }
+});
+
 // Первичный запуск: рендерим карточки предметов и стартуем со стартового экрана.
 loadProgress();
 syncDailySession();
 renderSubjectCards();
+renderModeCards();
 updateProgressUI();
 updateQuestUI();
+updateParentReport();
+updateParentModal();
+
+// Если данные онбординга уже были сохранены, подставляем в поля.
+studentNameInput.value = state.studentName;
+studentGradeInput.value = state.studentGrade;
+learningGoalSelect.value = state.learningGoal;
+
 showScreen("start");

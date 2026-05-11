@@ -86,7 +86,7 @@ body {
 .screen__content--chat {
   display: grid;
   gap: 16px;
-  grid-template-rows: auto auto auto auto 1fr auto;
+  grid-template-rows: auto auto auto auto 1fr auto auto auto;
   min-height: 640px;
 }
 
@@ -118,6 +118,40 @@ h2 {
   color: var(--text-soft);
   max-width: 720px;
   line-height: 1.45;
+}
+
+/* Формы (онбординг) */
+.onboarding-form {
+  margin-top: 18px;
+  display: grid;
+  gap: 14px;
+  max-width: 540px;
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.field span {
+  font-weight: 700;
+  color: #3e4598;
+}
+
+.field input,
+.field select {
+  border: 1px solid #d3d9ff;
+  background: #fff;
+  border-radius: 12px;
+  padding: 11px 12px;
+  font-size: 1rem;
+  outline: none;
+}
+
+.field input:focus,
+.field select:focus {
+  border-color: #818df6;
+  box-shadow: 0 0 0 3px rgba(129, 141, 246, 0.2);
 }
 
 .badge {
@@ -228,6 +262,7 @@ h2 {
   display: flex;
   gap: 14px;
   justify-content: space-between;
+  flex-wrap: wrap;
   background: #f5f6ff;
   border-radius: var(--radius-md);
   padding: 12px 14px;
@@ -314,6 +349,116 @@ h2 {
   margin-top: 6px;
   font-weight: 700;
   color: #157a5e;
+}
+
+/* Родительский блок (показываем после активности в чате) */
+.parent-report {
+  background: #eef6ff;
+  border: 1px solid #c9dcff;
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  color: #2f458a;
+}
+
+.parent-report h3 {
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+
+.parent-report p + p {
+  margin-top: 6px;
+}
+
+.parent-report--hidden {
+  display: none;
+}
+
+/* Финальная карточка-презентация */
+.cta {
+  background: #fff7f2;
+  border: 1px solid #ffd8c2;
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+}
+
+.cta h3 {
+  font-size: 1rem;
+}
+
+.offer-card {
+  margin-top: 10px;
+  background: #fff;
+  border: 1px solid #ffd6bf;
+  border-radius: 12px;
+  padding: 10px 12px;
+  color: #7f4a2b;
+  line-height: 1.4;
+}
+
+.offer-card--hidden {
+  display: none;
+}
+
+/* Модальное окно родительского режима */
+.parent-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 14px;
+}
+
+.parent-modal--hidden {
+  display: none;
+}
+
+.parent-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(29, 38, 89, 0.45);
+}
+
+.parent-modal__content {
+  position: relative;
+  width: min(720px, 100%);
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #d8e1ff;
+  box-shadow: 0 20px 42px rgba(36, 44, 104, 0.3);
+  padding: 18px;
+}
+
+.parent-modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.parent-modal__line {
+  color: #32417f;
+  margin-top: 6px;
+}
+
+.parent-plan {
+  margin-top: 12px;
+  background: #f5f8ff;
+  border: 1px solid #d7e1ff;
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+.parent-plan h4 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+#parent-plan-list {
+  margin: 8px 0 0;
+  padding-left: 18px;
+  color: #3d4e93;
 }
 
 /* Сообщения чата */
