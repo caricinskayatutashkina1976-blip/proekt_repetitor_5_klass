@@ -124,6 +124,7 @@
           <button type="button" id="change-subject-btn" class="btn btn--ghost btn--small">Сменить предмет</button>
           <button type="button" id="change-mode-btn" class="btn btn--ghost btn--small">Сменить режим</button>
           <button type="button" id="parent-mode-btn" class="btn btn--ghost btn--small">Режим родителя</button>
+          <button type="button" id="end-lesson-btn" class="btn btn--primary btn--small">Завершить урок</button>
           <button type="button" id="soft-reset-btn" class="btn btn--ghost btn--small">Мягкий сброс</button>
           <button type="button" id="reset-progress-btn" class="btn btn--danger btn--small">Сбросить прогресс</button>
         </div>
@@ -141,7 +142,7 @@
         </section>
 
         <section class="quest-panel">
-          <h3>Квест-дневник</h3>
+          <h3>Квест-дневник и миссия дня</h3>
           <div class="quest-panel__stats">
             <p>Серия дней: <span id="streak-value">0</span></p>
             <p>Ежедневная цель: <span id="daily-goal-value">0/3</span></p>
@@ -187,6 +188,20 @@
           <input id="chat-input" type="text" placeholder="Напиши вопрос по теме..." autocomplete="off" maxlength="200" required>
           <button type="submit" class="btn btn--primary">Отправить</button>
         </form>
+      </div>
+    </section>
+
+    <section id="screen-lesson-summary" class="screen card">
+      <div class="screen__content lesson-summary">
+        <p class="badge">Урок пройден</p>
+        <h2>Квест завершён!</h2>
+        <p id="lesson-summary-motivation" class="lesson-summary__lead">Ты молодец!</p>
+        <ul class="lesson-summary__stats">
+          <li>XP за этот урок: <strong id="lesson-xp-earned">0</strong></li>
+          <li>Медаль: <strong id="lesson-medal-text">—</strong></li>
+          <li>Сообщений наставнику: <strong id="lesson-messages-count">0</strong></li>
+        </ul>
+        <button type="button" id="lesson-continue-btn" class="btn btn--primary">Продолжить обучение</button>
       </div>
     </section>
   </main>

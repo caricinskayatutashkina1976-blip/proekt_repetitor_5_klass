@@ -52,53 +52,118 @@ const subjects = [
 ];
 
 const heroGreetings = {
-  math: "Привет, ученик! Я Математик-маг. Сегодня мы расколдуем задачи и превратим цифры в победу! ✨",
-  russian:
-    "Здравствуй! Я Хранитель Слова. Вместе мы сделаем речь красивой, а правила — понятными! ✍️",
-  english:
-    "Hello, explorer! Я Путешественник по Миру Языков. Let's learn English step by step! 🌍",
-  history:
-    "Приветствую, юный исследователь! Я Проводник во Времени, и нас ждут великие эпохи! 🕰️",
-  biology:
-    "Привет! Я Исследователь Жизни. Готов отправиться в мир клеток, растений и удивительных существ? 🌱",
-  geography:
-    "Привет, путешественник! Я Картограф Приключений. Откроем страны, материки и секреты планеты! 🌎",
+  math: "Математик-маг 🧙‍♂️ Тайные коды и +10 к логике — поехали!",
+  russian: "Хранитель Слова 🛡️ Свитки и шпионы-ошибки — спасём буквы!",
+  english: "Путешественник 🧭 Мини-диалоги и +1 к словарю!",
+  history: "Проводник во Времени ⏳ Миссии и медаль хроникёра!",
+  biology: "Исследователь Жизни 🔬 Лаборатория на максимум!",
+  geography: "Картограф 🗺️ Карта-сокровище ждёт!",
 };
 
-const responseTemplates = {
+/*
+  Короткие ответы в стиле героя (магия, свитки, путешествия, время, лаборатория, карта).
+*/
+const heroVoices = {
+  math: {
+    templates: [
+      "Заклинание «РАЗ-КЛА-Д»: что дано → что ищем → один шаг. Тайный код любит порядок! ✨",
+      "Руны задачи: сначала скобки и сильные знаки, потом остальное — как очередь в портал.",
+      "Магия упрощения: выкинь лишнее из выражения, как лишний свиток из рюкзака.",
+    ],
+    buffs: ["+10 к силе логики!", "+5 к внимательности!", "Квестовый бонус: логика растёт!"],
+  },
+  russian: {
+    templates: [
+      "На свитке: корень — фундамент слова. Назови корень — и ты спас букву от ошибки!",
+      "Шпион «Ошибка» прячется в окончании: прочитай фразу вслух — ухо подскажет.",
+      "Новый свиток: выбери одно «колючее» слово — разберём по частям, шаг за шагом.",
+    ],
+    buffs: ["Ты спас букву! 📜", "Свиток засиял — правило ближе!", "Хранитель доволен: +1 к ясности!"],
+  },
+  english: {
+    templates: [
+      "Чек-ин: смысл → слова → короткая фраза. +1 к словарю путешественника!",
+      "Мини-диалог: начни с I see / I think и одной мыслью по теме.",
+      "Виза в Grammar: одно правило = один пример, как билет на новую станцию.",
+    ],
+    buffs: ["+1 к словарю путешественника!", "Новая стоянка: слово запомнилось!", "Штамп в паспорт знаний! ✈️"],
+  },
+  history: {
+    templates: [
+      "Миссия хроникёра: КТО — ГДЕ — КОГДА в трёх коротких словах.",
+      "Портал времени: причина → событие → следствие — по одному звену цепи.",
+      "Летопись: придумай мини-заголовок к событию — память любит истории.",
+    ],
+    buffs: ["Медаль хроникёра ближе! 🏅", "Эпоха открыта на щёлчок!", "+1 к знанию дат и причин!"],
+  },
+  biology: {
+    templates: [
+      "Лаборатория: кто герой — орган, клетка или процесс? Назови одного.",
+      "Опыт: один факт «вау!» + пример из кухни, двора или питомца.",
+      "Цепочка жизни: что за чем — опиши в одном коротком сообщении.",
+    ],
+    buffs: ["Пробирка светится — гипотеза верна!", "+1 к наблюдательности!", "Лабораторный бонус! 🔬"],
+  },
+  geography: {
+    templates: [
+      "Карта-сокровище: слой за слоем — климат, реки или соседи региона.",
+      "Навигация: сравни два места как два вкуса мороженого — в чём отличие?",
+      "Квест «пин на карте»: один яркий факт о месте — и контур прояснится.",
+    ],
+    buffs: ["Компас указывает на успех!", "+1 к чтению карты!", "Новый материк в коллекции! 🌍"],
+  },
+};
+
+const DAILY_MISSIONS = {
   math: [
-    "Представь, что числа — это кубики LEGO: сначала собери «основание» из того, что дано, потом докинь одну деталь-действие. Шаг 1: что уже известно? Шаг 2: что ищем? Ты почти у финишной черты! 🧮",
-    "Супер-ход! Математика любит порядок, как очередь в автобусе: сначала скобки, потом сильные действия, потом остальное. Сделай один маленький шаг — и расскажи, что получилось. ⚡",
-    "Ты как маг с волшебной палочкой — только палочка это логика! Подсказка: иногда выражение можно «облегчить», как рюкзак перед походом. Попробуй упростить и снова взгляни на задачу. ✨",
+    "Сегодня помоги Математику-магу открыть Башню Дробей.",
+    "Миссия: расшифровать тайный код одной задачи без спешки.",
+    "Квест дня: три маленьких шага логики — и портал «понял» откроется.",
   ],
   russian: [
-    "Слово — как дом: есть корень (фундамент), приставка (крыльцо), суффикс (окошки). Сначала найди «фундамент», потом правило станет дружелюбнее. 📖",
-    "Отличный вопрос! Прочитай фразу вслух, как будто ты диктор на радио: ухо часто подсказывает, где буква прячется. Потом проверим правило вместе. 📝",
-    "Ты молодец! Русский язык — как тренажёр: один повтор — и мышца памяти крепче. Выбери одно слово и разберём его по частям, шаг за шагом. 🎯",
+    "Сегодня с Хранителем Слова защити один свиток от шпиона Ошибки.",
+    "Миссия: спасти одну букву через правило или корень слова.",
+    "Квест дня: прочитать вслух одну фразу и поймать подсказку уха.",
   ],
   english: [
-    "Think of English like a treasure map: first find the «X» (meaning), then the path (words), then the flag (sentence). Try one short sentence — I'll cheer you on! 🇬🇧",
-    "Awesome! Words are like stickers: first stick the meaning, then the sound, then the whole phrase. Tiny steps = big win. 🚀",
-    "Nice! Let's play «three words»: write three simple words on this topic — like collecting coins in a game. 🌟",
+    "Сегодня с Путешественником: новая станция — три слова по теме.",
+    "Миссия: один мини-диалог на английском (2 короткие реплики).",
+    "Квест дня: +1 к словарю — выучи и используй одно новое слово.",
   ],
   history: [
-    "История — как сериал: кто герой, где сцена, в какой серии (год) случился поворот? Нарисуй в голове постер: КТО — ГДЕ — КОГДА — и сюжет запомнится легче. 🗞️",
-    "Сильно! Причины и последствия — как домино: одно падает — движется цепочка. Назови по одному «камешку» причины и одному «камешку» следствия. 🏛️",
-    "Представь, что ты журналист в прошлом: сделай мини-заголовок к событию. Заголовки цепляют память лучше, чем сухие даты. 📜",
+    "Сегодня с Проводником: одна историческая миссия «кто-где-когда».",
+    "Миссия: составить мини-заголовок к событию, как хроникёр.",
+    "Квест дня: цепочка причина → событие → следствие в трёх словах.",
   ],
   biology: [
-    "Биология — как зоопарк в голове: у каждого «животного» (органа) своя будка и работа. Спроси себя: что это? из чего сделано? зачем нужно? 🔍",
-    "Класс! Организм — команда супергероев: сердце — доставка, лёгкие — ветер в парусах. Кто в твоём вопросе главный герой? 🧠",
-    "Супер! Давай как в научном шоу: один факт «вау!» и один пример из жизни (кухня, двор, питомец) — и тема оживёт. 🌿",
+    "Сегодня в лаборатории Исследователя: один факт и один пример из жизни.",
+    "Миссия: назвать главного героя в вопросе — орган, клетка или процесс.",
+    "Квест дня: объяснить другу на пальцах, как работает «эта штука» в теле.",
   ],
   geography: [
-    "География — как пазл планеты: сначала материк, потом страна, потом климат «одень» регион в погоду. Карта в голове станет ярче! 🧭",
-    "Отлично! Запоминай место как персонажа: какая у него «одежда» (природа), какой «характер» (климат), какой «факт-анекдот»? 🌦️",
-    "Сравни два места, как два мороженых вкуса: чем похожи шарики, чем отличаются посыпки? Сравнение — суперсила географа. 🗺️",
+    "Сегодня с Картографом: отметить на карте мысленно один регион и его климат.",
+    "Миссия: сравнить два места одним предложением.",
+    "Квест дня: найти «соседа» страны или материка на карте в голове.",
   ],
 };
 
+const QUEST_FLARES = [
+    "Щёлк — чекпоинт сохранён!",
+    "Опыт капает… кап… кап!",
+    "Лут сундука: уверенность +1!",
+    "Квестовая цепь не рвётся — ты в теме!",
+    "Бафф «Упорство» активирован!",
+    "Счётчик смелости растёт!",
+  ];
+
 const QUICK_PHRASES = ["Объясни проще", "Дай пример", "Дай задание"];
+
+const LESSON_MOTIVATIONS = [
+  "Ты не сдаёшься — это главный суперскилл героя.",
+  "Каждый вопрос — ключ от следующей двери квеста.",
+  "Так держать: мозг как мышца, ты её прокачал!",
+  "Урок закончен, а приключение продолжается.",
+];
 
 /*
   Состояние приложения.
@@ -134,13 +199,6 @@ const lessonModes = [
   { id: "homework", name: "Помощь с домашкой", emoji: "📘", subtitle: "Подсказки через вопросы" },
 ];
 
-const dailyTasks = [
-  "Задай наставнику 3 вопроса и получи бонус опыта.",
-  "Объясни одну тему своими словами в 2-3 предложениях.",
-  "Попроси наставника проверить мини-упражнение.",
-  "Спроси о сложном слове или термине и приведи пример.",
-];
-
 // Получаем ссылки на DOM-элементы, с которыми будем работать.
 const screens = {
   start: document.getElementById("screen-start"),
@@ -149,6 +207,7 @@ const screens = {
   hero: document.getElementById("screen-hero"),
   mode: document.getElementById("screen-mode"),
   chat: document.getElementById("screen-chat"),
+  lessonSummary: document.getElementById("screen-lesson-summary"),
 };
 
 const startBtn = document.getElementById("start-btn");
@@ -200,6 +259,12 @@ const parentCurrentMode = document.getElementById("parent-current-mode");
 const parentSessionProgress = document.getElementById("parent-session-progress");
 const parentWeakTopics = document.getElementById("parent-weak-topics");
 const parentPlanList = document.getElementById("parent-plan-list");
+const endLessonBtn = document.getElementById("end-lesson-btn");
+const lessonContinueBtn = document.getElementById("lesson-continue-btn");
+const lessonXpEarned = document.getElementById("lesson-xp-earned");
+const lessonMedalText = document.getElementById("lesson-medal-text");
+const lessonMessagesCount = document.getElementById("lesson-messages-count");
+const lessonSummaryMotivation = document.getElementById("lesson-summary-motivation");
 
 function showScreen(screenKey) {
   const next = screens[screenKey];
@@ -222,6 +287,42 @@ function getTodayString() {
   const month = String(today.getMonth() + 1).padStart(2, "0");
   const day = String(today.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
+}
+
+function dailyMissionSeed() {
+  const t = getTodayString().replace(/-/g, "");
+  return parseInt(t, 10) || 1;
+}
+
+function getDailyMissionLine() {
+  const sid = state.selectedSubject ? state.selectedSubject.id : "math";
+  const pool = DAILY_MISSIONS[sid] || DAILY_MISSIONS.math;
+  const i = dailyMissionSeed() % pool.length;
+  return pool[i];
+}
+
+function pickRandom(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function pulseXpBar() {
+  if (!xpBarFill) {
+    return;
+  }
+  xpBarFill.classList.remove("xp-bar__fill--bump");
+  void xpBarFill.offsetWidth;
+  xpBarFill.classList.add("xp-bar__fill--bump");
+  window.setTimeout(() => {
+    xpBarFill.classList.remove("xp-bar__fill--bump");
+  }, 700);
+}
+
+function showStepReward(subjectId) {
+  const sid = subjectId || "math";
+  const voice = heroVoices[sid] || heroVoices.math;
+  const buff = pickRandom(voice.buffs);
+  const flare = pickRandom(QUEST_FLARES);
+  addMessage("system", `⭐ ${flare} ${buff}`);
 }
 
 /*
@@ -645,9 +746,10 @@ function updateQuestUI() {
   streakValue.textContent = String(state.streakDays);
   dailyGoalValue.textContent = `${state.dailyGoalCount}/3`;
 
-  const taskIndex = new Date().getDate() % dailyTasks.length;
   if (dailyTaskText) {
-    dailyTaskText.textContent = `Задание дня: ${dailyTasks[taskIndex]}`;
+    dailyTaskText.textContent = state.selectedSubject
+      ? `Ежедневная миссия: ${getDailyMissionLine()}`
+      : `Ежедневная миссия: зайди в квест и выбери предмет — откроется персональная цель дня.`;
   }
 
   if (achievementText) {
@@ -766,9 +868,9 @@ function addXp(amount) {
   Выбираем случайный шаблон, чтобы реплики не были одинаковыми.
 */
 function generateBotReply(subjectId) {
-  const templates = responseTemplates[subjectId];
-  const randomIndex = Math.floor(Math.random() * templates.length);
-  return templates[randomIndex];
+  const voice = heroVoices[subjectId] || heroVoices.math;
+  const templates = voice.templates;
+  return templates[Math.floor(Math.random() * templates.length)];
 }
 
 /*
@@ -776,23 +878,23 @@ function generateBotReply(subjectId) {
 */
 function withCoachTone(body, name, modeId) {
   const n = name || "герой";
-  const hearts = [
-    `Я с тобой, ${n} — это как чекпоинт в игре, не экзамен.`,
-    `${n}, ты уже молодец: вопрос задан — половина уровня пройдена.`,
-    `${n}, дышим ровно: учимся маленькими прыжками, как в платформере.`,
+  const cheers = [
+    `${n}, ты в игре — не на экзамене. Вперёд!`,
+    `Класс, ${n}! Маленький шаг = большой квест.`,
+    `${n}, держись — наставник на связи.`,
   ];
-  const heart = hearts[body.length % hearts.length];
+  const cheer = cheers[body.length % cheers.length];
 
   if (modeId === "homework") {
-    return `${heart}\n\n${body}`;
+    return `${cheer}\n${body}`;
   }
 
   const closing =
     modeId === "test"
-      ? "Напиши букву A/B/C или одну фразу «я думаю так, потому что…» — сомнения тоже засчитыются."
-      : "Твой ход: ответь одним коротким сообщением на любой вопрос из текста выше — так мы откроем следующий «сундук» с подсказкой.";
+      ? "A / B / C или одна фраза «думаю так, потому что…»"
+      : "Один короткий ответ — следующий квест-шаг!";
 
-  return `${heart}\n\n${body}\n\n${closing}`;
+  return `${cheer}\n${body}\n→ ${closing}`;
 }
 
 /*
@@ -816,46 +918,44 @@ function generateQuickReply(phrase) {
     if (modeId === "homework") {
       return text;
     }
-    return `${text}\n\n${name}, твой ход: одно короткое сообщение — что стало понятнее или что всё ещё «крутит в голове»?`;
+    return `${text}\n→ ${name}, одним сообщением: что прояснилось / что ещё туманит?`;
   };
 
   if (phrase === "Объясни проще") {
     if (modeId === "homework") {
-      return `${name}, держусь рядом 💬 Готовую строчку из тетради не скажу — это не честный квест.\nШаг 1: перескажи условие своими словами (2 предложения).\nШаг 2: что в задании «самое колючее» — одним словом?\nОтветь на шаги — и я дам объяснение ещё проще, под тебя.`;
+      return `${name}, без списывания 💬 ① Перескажи номер двумя фразами. ② «Колючка» — одним словом. Жду — и дам простой перевод.`;
     }
     const hints = {
-      math: "Представь задачу как рецепт торта: что за ингредиенты уже на столе? Что должно получиться в конце? Мы уберём «сложные слова» и оставим только два шага.",
-      russian: "Представь правило как дорожный знак: сначала «стоп» — что нельзя, потом «можно» — как сказать правильно. Скажи вслух одно слово, которое путает — и разберём его по кирпичикам.",
-      english: "English can be like a sticker album: first picture (meaning), then letters (spelling), then a tiny phrase. Pick one word you like — we’ll make it super easy.",
-      history: "История как комикс: один кадр = одно событие. Кто в кадре? что делает? что изменилось после? Ответь в трёх словах — и станет проще.",
-      biology: "Живое = конструктор: из каких деталей собрано и зачем каждая деталь? Назови одну часть, которая кажется странной — «размагичим» её простыми словами.",
-      geography: "Карта как платье на кукле: слои — климат, реки, города. Что наденем первым на твой регион? Один слой — и картинка прояснится.",
+      math: "Заклинание «ПРОЩЕ»: что дано / что ищем — двумя словами. Тайный код любит ясность!",
+      russian: "Свиток: одно слово-загадка — разберём корень, ты спасёшь букву от ошибки.",
+      english: "Маршрут: смысл → одно слово English. Мини-фраза welcome!",
+      history: "Хроникёр: КТО-ГДЕ-КОГДА в трёх словах — и эпоха станет ближе.",
+      biology: "Лаборатория: один странный термин — объясним как про запчасть в игре.",
+      geography: "Компас: один слой карты (климат или соседи) — и регион оживёт.",
     };
     return wrapQuick(hints[id] || hints.math);
   }
 
   if (phrase === "Дай пример") {
     if (modeId === "homework") {
-      return `${name}, супер-запрос! Готовый ответ из твоего номера не подкину — зато соберём «тренажёр-аналог».\nШаг 1: это ближе к числам, к словам или к фактам?\nШаг 2: назови тему одним словом (дроби, падеж, даты…).\nПосле ответа придумаю пример из другой вселенной — тот же принцип, но не списать.`;
+      return `${name}, готовый номер не скажу. ① Числа / слова / факты? ② Тема одним словом — придумаю «тренажёр-аналог».`;
     }
     const examples = {
-      math: "Пример-мишка: если 12 конфет поделить на 3 друга — у каждого по 4. Тот же дух, что и в дробях: «делим поровну, считаем по одному кусочку».",
-      russian: "Пример: «бежать» — глагол, «бег» — существительное. Как музыка и песня: одно звучит, другое — название трека.",
-      english: "Mini-example: «I like cats» → «She likes cats». Маленькое правило, как переключатель света: щёлк — и форма слова меняется.",
-      history: "Пример-лестница: причина → событие → следствие. Как «забыли полить цветок» → «цветок устал» → «листья поникли».",
-      biology: "Пример: сердце — как насос в аквариуме: качает «воду-кровь», чтобы рыбки-клетки дышали и плавали веселее.",
-      geography: "Пример: у побережья климат «как с мокрым полотенцем», в центре материка — «как под сухим одеялом». Влажность разная — природа разная.",
+      math: "Руна-пример: 12 конфет ÷ 3 друга = по 4. Дух дробей: делим поровну!",
+      russian: "Свиток: «бежать» — глагол, «бег» — существительное. Услышь разницу вслух.",
+      english: "Штамп: I like → she likes. Щёлк — форма сменилась!",
+      history: "Портал: причина → событие → следствие. Как цепочка квеста.",
+      biology: "Опыт: сердце = насос в аквариуме для рыбок-клеток.",
+      geography: "Два климата — как два вкуса мороженого: где влажнее?",
     };
     return wrapQuick(examples[id] || examples.math);
   }
 
   if (phrase === "Дай задание") {
     if (modeId === "homework") {
-      return `${name}, квест «без списывания»:\n① Подчеркни в номере, что именно нужно найти.\n② Напиши одну догадку — пусть даже неверную.\n③ Скажи, чего не хватает: формула / слово / факт?\nЯ подсвечу следующий крошечный шаг — финальный ответ остаётся твоим трофеем.`;
+      return `${name}, квест без списывания: ① что найти? ② одна догадка. ③ чего не хватает: формула / слово / факт?`;
     }
-    return wrapQuick(
-      `Мини-квест 3 минуты по «${topic}» 🎮\n① Одно предложение: «что я уже знаю».\n② Один вопрос: «что туманит».\n③ Полу-угадка ответа — как скетч, не шедевр.\nНапиши всё в одном сообщении — я отреагирую и дам следующий этап!`
-    );
+    return wrapQuick(`Мини-квест «${topic}» 3 мин: ① знаю… ② непонятно… ③ полу-ответ. Одним сообщением!`);
   }
 
   return withCoachTone(generateBotReply(id), name, modeId);
@@ -875,31 +975,27 @@ function generateModeAwareReply(userText) {
   const name = state.studentName || "исследователь";
 
   if (modeId === "quest") {
-    const core = `Квест «${state.selectedSubject.name}» 🗺️ Точка сохранения! Миссия — один короткий шаг, как прыжок на платформе.\n\n${baseReply}`;
+    const core = `Квест «${state.selectedSubject.name}» 🗺️ Чекпоинт! ${baseReply}`;
     return withCoachTone(core, name, modeId);
   }
 
   if (modeId === "test") {
     const core =
-      `Арена «${state.selectedSubject.name}»! Викторина без стресса — сначала думаем, потом буква.\n` +
-      `A) Первый вариант\nB) Второй вариант\nC) Третий вариант\n\n` +
-      `Подсказка: не обязано быть идеально — важно, чтобы голова пошевелилась.`;
+      `Арена «${state.selectedSubject.name}»! A / B / C — выбери и скажи «почему так» в одной фразе.\n` +
+      `${baseReply}`;
     return withCoachTone(core, name, modeId);
   }
 
   if (modeId === "simple") {
-    const core = `Режим «простыми словами» 🧩 Три коротких шага:\n① Смотрим на суть.\n② Убираем сложные слова.\n③ Пробуем на пальцах.\n\n${baseReply}`;
+    const core = `Простыми словами 🧩 ① суть ② без сложных слов ③ на пальцах.\n${baseReply}`;
     return withCoachTone(core, name, modeId);
   }
 
-  const snippet = userText.slice(0, 55).trim() || "эта тема";
+  const snippet = userText.slice(0, 48).trim() || "тема";
   const hw =
-    `${name}, домашка — это босс-уровень, но мы с чит-кодом «без списывания».\n` +
-    `Я как фонарик: подсвечу тропинку, но финальный «лут» — твой.\n\n` +
-    `Шаг 1: что в задании для тебя «туман» — одним словом?\n` +
-    `Шаг 2: какая крошечная деталь уже ясна хотя бы на капельку?\n` +
-    `Шаг 3: какой микро-шаг сделаешь за 2 минуты — перечитать, набросать, посчитать в уме?\n\n` +
-    `(Про твой вопрос: «${snippet}…») Ответь на три шага — и подстрою следующую подсказку вопросами, без готового решения.`;
+    `${name}, домашка — босс без «списывания». Готового ответа не дам.\n` +
+    `① «Туман» в номере — одним словом?\n② Что уже ясно на капельку?\n③ Микро-шаг на 2 минуты?\n` +
+    `(Про: «${snippet}…») Ответь по пунктам — подсвечу дальше вопросами.`;
   return withCoachTone(hw, name, modeId);
 }
 
@@ -926,6 +1022,8 @@ function runBotTurn(userText) {
     addMessage("bot", reply);
 
     addXp(10);
+    pulseXpBar();
+    showStepReward(state.selectedSubject.id);
     trackWeakTopic();
     state.dailyGoalCount += 1;
     state.totalMessages += 1;
@@ -944,6 +1042,37 @@ function runBotTurn(userText) {
   - показываем выбранные предмет и героя
   - сбрасываем прогресс для новой сессии
 */
+function openLessonSummary() {
+  if (!state.selectedSubject || state.sessionMessages < 1) {
+    window.alert("Напиши наставнику хотя бы одно сообщение — потом можно закрыть квест урока.");
+    return;
+  }
+
+  const xpEarned = state.sessionXpGained;
+  const msgs = state.sessionMessages;
+
+  finalizePreviousSession();
+  state.sessionMessages = 0;
+  state.sessionXpGained = 0;
+
+  if (lessonXpEarned) {
+    lessonXpEarned.textContent = String(xpEarned);
+  }
+  if (lessonMessagesCount) {
+    lessonMessagesCount.textContent = String(msgs);
+  }
+  if (lessonMedalText) {
+    lessonMedalText.textContent = state.medalAwarded ? "Смекалка" : "Пока без медали — гони XP в следующем квесте!";
+  }
+  if (lessonSummaryMotivation) {
+    lessonSummaryMotivation.textContent = pickRandom(LESSON_MOTIVATIONS);
+  }
+
+  updateQuestUI();
+  saveProgress();
+  showScreen("lessonSummary");
+}
+
 function startChat(subject) {
   finalizePreviousSession();
   showScreen("chat");
@@ -1067,6 +1196,18 @@ if (resetProgressBtn) {
     }
 
     resetProgress();
+  });
+}
+
+if (endLessonBtn) {
+  endLessonBtn.addEventListener("click", () => {
+    openLessonSummary();
+  });
+}
+
+if (lessonContinueBtn) {
+  lessonContinueBtn.addEventListener("click", () => {
+    showScreen("mode");
   });
 }
 
