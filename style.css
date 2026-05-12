@@ -237,6 +237,105 @@ h2 {
   margin-bottom: 8px;
 }
 
+/* Кому подойдёт продукт */
+.audience {
+  margin-top: 20px;
+  padding: 18px 18px 16px;
+  background: linear-gradient(145deg, #f0f4ff 0%, #fff8fb 48%, #f2fbff 100%);
+  border: 1px solid rgba(129, 141, 246, 0.2);
+  border-radius: var(--radius-lg);
+  text-align: left;
+  box-shadow: 0 4px 18px rgba(53, 64, 172, 0.06);
+}
+
+.audience__title {
+  margin: 0 0 14px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #3a2db8;
+}
+
+.audience__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.audience-card {
+  --audience-accent: #7f53ff;
+  position: relative;
+  padding: 16px 16px 14px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(129, 141, 246, 0.14);
+  box-shadow:
+    0 2px 8px rgba(41, 41, 106, 0.04),
+    0 8px 22px rgba(53, 64, 172, 0.07);
+  transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.2s ease;
+  overflow: hidden;
+}
+
+.audience-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--audience-accent), rgba(255, 255, 255, 0.45));
+}
+
+.audience-card:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 4px 12px rgba(41, 41, 106, 0.06),
+    0 14px 32px rgba(53, 64, 172, 0.1);
+  border-color: rgba(127, 83, 255, 0.22);
+}
+
+.audience-card--parents {
+  --audience-accent: #fd5e9a;
+}
+
+.audience-card--students {
+  --audience-accent: #5b7cfa;
+}
+
+.audience-card--schools {
+  --audience-accent: #2ad1a3;
+}
+
+.audience-card--tutors {
+  --audience-accent: #f8a545;
+}
+
+.audience-card__emoji {
+  display: block;
+  font-size: 1.65rem;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
+.audience-card__heading {
+  margin: 0 0 8px;
+  font-size: 1.02rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.audience-card__text {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text-soft);
+}
+
+@media (max-width: 560px) {
+  .audience__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Формы (онбординг) */
 .onboarding-form {
   margin-top: 18px;
@@ -953,7 +1052,13 @@ h2 {
   margin-top: 12px;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
+  align-items: center;
+}
+
+.cta__btn-secondary {
+  margin-top: 0;
+  box-shadow: 0 2px 8px rgba(53, 64, 172, 0.08);
 }
 
 .offer-card {
@@ -964,6 +1069,14 @@ h2 {
   padding: 12px 14px;
   color: #7f4a2b;
   line-height: 1.45;
+}
+
+.offer-card__invite {
+  margin: 0 0 12px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #5a3d28;
+  font-weight: 600;
 }
 
 .offer-card__lead {

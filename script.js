@@ -269,7 +269,8 @@ const reportRepeat = document.getElementById("report-repeat");
 const reportNextHint = document.getElementById("report-next-hint");
 const reportStrengthsList = document.getElementById("report-strengths-list");
 const reportPlanList = document.getElementById("report-plan-list");
-const contactNataliaBtn = document.getElementById("contact-natalia-btn");
+const ctaAiMentorBtn = document.getElementById("cta-ai-mentor-btn");
+const ctaDemoBtn = document.getElementById("cta-demo-btn");
 const offerCard = document.getElementById("offer-card");
 const parentModal = document.getElementById("parent-modal");
 const closeParentModalBtn = document.getElementById("close-parent-modal-btn");
@@ -1427,11 +1428,20 @@ if (lessonContinueBtn) {
   });
 }
 
-if (contactNataliaBtn && offerCard) {
-  contactNataliaBtn.addEventListener("click", () => {
-    offerCard.classList.remove("offer-card--hidden");
-    offerCard.scrollIntoView({ behavior: "smooth", block: "nearest" });
-  });
+function revealOfferCard() {
+  if (!offerCard) {
+    return;
+  }
+  offerCard.classList.remove("offer-card--hidden");
+  offerCard.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+if (ctaAiMentorBtn) {
+  ctaAiMentorBtn.addEventListener("click", revealOfferCard);
+}
+
+if (ctaDemoBtn) {
+  ctaDemoBtn.addEventListener("click", revealOfferCard);
 }
 
 if (parentModeBtn) {
