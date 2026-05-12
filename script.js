@@ -760,6 +760,93 @@ function renderHeroGallery() {
   });
 }
 
+const DEMO_MESSENGER_REPLIES = {
+  "Объясни проще":
+    "Хорошо 🙂 Представь задачу как карту: сначала отметь «X» — где ты сейчас (что уже дано в условии), потом «сокровище» — чего хочешь добиться. Что написано в задаче в самом начале?",
+  "Дай пример":
+    "Маленький пример не из твоего номера: если 12 наклеек делят на 4 альбома поровну, в каждом по 3. Тот же дух — делим целиком, а не наугад.",
+  "Дай задание":
+    "Мини-квест на 2 минуты: одной фразой напиши «что непонятно» и одну свою догадку. Я отвечу следующим маленьким шагом — без готового ответа.",
+};
+
+/*
+  Вставка сообщения в стиле мессенджера (пузыри, для бота — аватар).
+*/
+function appendChatBubble(container, type, text, options = {}) {
+  if (!container) {
+    return;
+  }
+
+  const botEmoji = options.botEmoji || (state.selectedSubject ? state.selectedSubject.heroEmoji : "✨");
+
+  if (type === "system") {
+    const row = document.createElement("div");
+    row.className = "msg-row msg-row--system";
+    const bubble = document.createElement("div");
+    bubble.className = "msg-bubble msg-bubble--system";
+    bubble.textContent = text;
+    row.append(bubble);
+    container.append(row);
+    container.scrollTop = container.scrollHeight;
+    return;
+  }
+
+  const isUser = type === "user";
+  const row = document.createElement("div");
+  row.className = `msg-row msg-row--${isUser ? "user" : "bot"}`;
+
+  if (isUser) {
+    const bubble = document.createElement("div");
+    bubble.className = "msg-bubble msg-bubble--user";
+    bubble.textContent = text;
+    row.append(bubble);
+  } else {
+    const inner = document.createElement("div");
+    inner.className = "msg-row__inner";
+    const av = document.createElement("span");
+    av.className = "msg-row__avatar";
+    av.setAttribute("aria-hidden", "true");
+    av.textContent = botEmoji;
+    const bubble = document.createElement("div");
+    bubble.className = "msg-bubble msg-bubble--bot";
+    bubble.textContent = text;
+    inner.append(av, bubble);
+    row.append(inner);
+  }
+
+  container.append(row);
+  container.scrollTop = container.scrollHeight;
+}
+
+function initDemoMessenger() {
+  const feed = document.getElementById("demo-messenger-feed");
+  if (!feed) {
+    return;
+  }
+
+  feed.innerHTML = "";
+  appendChatBubble(feed, "user", "Я не понимаю задачу по математике.");
+  appendChatBubble(
+    feed,
+    "bot",
+    "Давай разберём вместе. Я не дам готовый ответ сразу, но помогу тебе дойти до него шаг за шагом",
+    { botEmoji: "🧙‍♂️" }
+  );
+
+  document.querySelectorAll("[data-demo-quick]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const label = btn.getAttribute("data-demo-quick");
+      if (!label || !Object.prototype.hasOwnProperty.call(DEMO_MESSENGER_REPLIES, label)) {
+        return;
+      }
+      appendChatBubble(feed, "user", label);
+      window.setTimeout(() => {
+        appendChatBubble(feed, "bot", DEMO_MESSENGER_REPLIES[label], { botEmoji: "🧙‍♂️" });
+      }, 450);
+    });
+  });
+}
+
 /*
   Добавляем сообщение в чат.
   type:
@@ -767,15 +854,8 @@ function renderHeroGallery() {
   - "bot"    => сообщение наставника
   - "system" => техническое/наградное сообщение
 */
-function addMessage(type, text) {
-  if (!messages) {
-    return;
-  }
-  const message = document.createElement("div");
-  message.className = `message message--${type}`;
-  message.textContent = text;
-  messages.append(message);
-  messages.scrollTop = messages.scrollHeight;
+function addMessage(type, text, options = {}) {
+  appendChatBubble(messages, type, text, options);
 }
 
 /*
@@ -1427,6 +1507,7 @@ function initApp() {
   }
 
   showScreen("start");
+  initDemoMessenger();
 }
 
 if (document.readyState === "loading") {

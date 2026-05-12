@@ -43,6 +43,24 @@
             <li><strong>Мотивирует XP и медалями</strong> — ребёнок видит рост и хочет продолжать.</li>
           </ul>
         </section>
+
+        <section class="demo-messenger" aria-label="Демонстрация чата с AI-наставником">
+          <div class="demo-messenger__head">
+            <span class="demo-messenger__avatar" aria-hidden="true">🧙‍♂️</span>
+            <div class="demo-messenger__head-text">
+              <p class="demo-messenger__peer">Математик-маг</p>
+              <p class="demo-messenger__meta">Математика · демо-чат</p>
+            </div>
+            <span class="demo-messenger__online">в сети</span>
+          </div>
+          <div id="demo-messenger-feed" class="demo-messenger__feed messages messages--messenger" aria-live="polite"></div>
+          <div class="demo-messenger__chips" role="group" aria-label="Быстрые фразы в демо">
+            <button type="button" class="demo-messenger__chip" data-demo-quick="Объясни проще">Объясни проще</button>
+            <button type="button" class="demo-messenger__chip" data-demo-quick="Дай пример">Дай пример</button>
+            <button type="button" class="demo-messenger__chip" data-demo-quick="Дай задание">Дай задание</button>
+          </div>
+          <p class="demo-messenger__note">Демонстрация: в настоящем уроке наставник учитывает предмет, режим и твои ответы.</p>
+        </section>
       </div>
     </section>
 
@@ -153,12 +171,12 @@
           <p id="achievement-text" class="quest-panel__achievement">Достижение: пока нет</p>
         </section>
 
-        <div id="messages" class="messages" aria-live="polite"></div>
+        <div id="messages" class="messages messages--messenger" aria-live="polite"></div>
 
-        <div class="quick-replies" role="group" aria-label="Быстрые действия">
-          <button type="button" class="btn btn--ghost btn--small quick-replies__btn" data-quick="Объясни проще">Объясни проще</button>
-          <button type="button" class="btn btn--ghost btn--small quick-replies__btn" data-quick="Дай пример">Дай пример</button>
-          <button type="button" class="btn btn--ghost btn--small quick-replies__btn" data-quick="Дай задание">Дай задание</button>
+        <div class="quick-replies messenger-chips" role="group" aria-label="Быстрые действия">
+          <button type="button" class="messenger-chips__btn quick-replies__btn" data-quick="Объясни проще">Объясни проще</button>
+          <button type="button" class="messenger-chips__btn quick-replies__btn" data-quick="Дай пример">Дай пример</button>
+          <button type="button" class="messenger-chips__btn quick-replies__btn" data-quick="Дай задание">Дай задание</button>
         </div>
 
         <section
@@ -234,7 +252,7 @@
           </article>
         </section>
 
-        <form id="chat-form" class="chat-form">
+        <form id="chat-form" class="chat-form chat-form--messenger">
           <input id="chat-input" type="text" placeholder="Напиши вопрос по теме..." autocomplete="off" maxlength="200" required>
           <button type="submit" class="btn btn--primary">Отправить</button>
         </form>
