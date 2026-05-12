@@ -2,8 +2,9 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI School Quest</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="AI School Quest — игровой AI-наставник для 5 класса: домашка без списывания, квесты, XP и понятные объяснения.">
+  <title>AI School Quest — учёба как квест</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -14,38 +15,38 @@
     <section id="screen-start" class="screen screen--active card">
       <div class="screen__content">
         <p class="badge">AI School Quest</p>
-        <h1 class="hero-title">Ребёнок не хочет делать уроки? Превратите учёбу в игру с AI-наставником</h1>
+        <h1 class="hero-title">Ребёнок не хочет делать уроки? Сделайте учёбу похожей на игру — с AI-наставником</h1>
         <p class="subtitle hero-subtitle">
-          AI School Quest помогает ученику 5 класса разбирать домашние задания без списывания: через подсказки, вопросы, XP, медали и понятные объяснения
+          AI School Quest помогает ученику 5 класса разобрать домашку <strong>без списывания</strong>: подсказки, вопросы, XP, медали и объяснения простым языком.
         </p>
 
         <div class="hero-actions" role="group" aria-label="Действия на главной">
-          <button type="button" id="demo-lesson-btn" class="btn btn--primary">Попробовать демо-урок</button>
-          <button type="button" id="parent-preview-btn" class="btn btn--ghost btn--hero-secondary">Посмотреть режим родителя</button>
+          <button type="button" id="demo-lesson-btn" class="btn btn--primary btn--touch">Попробовать демо-урок</button>
+          <button type="button" id="parent-preview-btn" class="btn btn--ghost btn--hero-secondary btn--touch">Режим родителя</button>
         </div>
 
         <section class="why-kids" aria-label="Почему ребёнку понравится">
-          <h2 class="why-kids__title">Почему ребёнку понравится</h2>
+          <h2 class="why-kids__title">Почему ребёнку зайдёт</h2>
           <ul class="why-kids__list">
-            <li><strong>Обучение как игра</strong> — задания ощущаются как квест, а не скучная тетрадь.</li>
-            <li><strong>Герои-наставники</strong> — каждый предмет со своим персонажем и стилем общения.</li>
-            <li><strong>XP и медали</strong> — видно прогресс, хочется возвращаться и «прокачиваться».</li>
-            <li><strong>Помощь с домашкой без готовых ответов</strong> — наставник ведёт вопросами, а не списывает за тебя.</li>
+            <li><strong>Учёба как игра</strong> — задания ощущаются как квест, а не бесконечная тетрадь.</li>
+            <li><strong>Герои-наставники</strong> — у каждого предмета свой персонаж и свой «голос».</li>
+            <li><strong>XP и медали</strong> — видно прогресс, хочется возвращаться и прокачиваться дальше.</li>
+            <li><strong>Домашка без готовых ответов</strong> — наставник направляет вопросами, а не делает за ученика.</li>
           </ul>
         </section>
 
         <section class="what-tutor" aria-label="Что умеет AI-репетитор">
-          <h2 class="what-tutor__title">Что умеет AI-репетитор</h2>
+          <h2 class="what-tutor__title">Что умеет наставник</h2>
           <ul class="what-tutor__list">
-            <li><strong>Объясняет простыми словами</strong> — без «взрослой» воды, шаг за шагом.</li>
-            <li><strong>Превращает задания в квесты</strong> — цель, подсказки, чувство приключения.</li>
-            <li><strong>Помогает с домашкой без готового списывания</strong> — наводящие вопросы вместо готового решения.</li>
-            <li><strong>Мотивирует XP и медалями</strong> — ребёнок видит рост и хочет продолжать.</li>
+            <li><strong>Объясняет простыми словами</strong> — шаг за шагом, без лишней «взрослой» воды.</li>
+            <li><strong>Превращает задачи в квесты</strong> — цель, подсказки и чуть-чуть приключения.</li>
+            <li><strong>Помогает с домашкой честно</strong> — наводящие вопросы вместо готового решения в лоб.</li>
+            <li><strong>Поддерживает мотивацию</strong> — XP и медали, чтобы было видно: «я реально продвигаюсь».</li>
           </ul>
         </section>
 
         <section class="audience" aria-label="Кому подойдёт AI School Quest">
-          <h2 class="audience__title">Кому подойдёт AI School Quest</h2>
+          <h2 class="audience__title">Кому подойдёт AI School Quest?</h2>
           <div class="audience__grid">
             <article class="audience-card audience-card--parents">
               <span class="audience-card__emoji" aria-hidden="true">👨‍👩‍👧</span>
@@ -85,15 +86,15 @@
             <button type="button" class="demo-messenger__chip" data-demo-quick="Дай пример">Дай пример</button>
             <button type="button" class="demo-messenger__chip" data-demo-quick="Дай задание">Дай задание</button>
           </div>
-          <p class="demo-messenger__note">Демонстрация: в настоящем уроке наставник учитывает предмет, режим и твои ответы.</p>
+          <p class="demo-messenger__note">Это демо: в настоящем уроке наставник смотрит на предмет, режим и твои ответы — как настоящий спутник по учёбе.</p>
         </section>
       </div>
     </section>
 
     <section id="screen-onboarding" class="screen card">
       <div class="screen__content">
-        <h2>Расскажи о себе</h2>
-        <p class="description">Это поможет сделать урок более персональным и полезным.</p>
+        <h2>Начнём с маленькой анкеты</h2>
+        <p class="description">Имя, класс и цель — чтобы наставник говорил с ребёнком по делу, а не «как всем».</p>
         <form id="onboarding-form" class="onboarding-form">
           <label class="field">
             <span>Имя ребёнка</span>
@@ -113,7 +114,7 @@
               <option value="Учиться в игре">Учиться в игре</option>
             </select>
           </label>
-          <button type="submit" class="btn btn--primary">Продолжить</button>
+          <button type="submit" class="btn btn--primary btn--touch">В путь, квест!</button>
         </form>
       </div>
     </section>
@@ -121,7 +122,7 @@
     <section id="screen-subject" class="screen card">
       <div class="screen__content">
         <h2>Выбери предмет</h2>
-        <p class="description">Каждый предмет — это отдельная игровая миссия.</p>
+        <p class="description">Каждый предмет — своя миссия и свой настрой. Ткни карточку, с чего хочешь начать.</p>
         <div id="subject-grid" class="grid"></div>
       </div>
     </section>
@@ -129,18 +130,18 @@
     <section id="screen-hero" class="screen card">
       <div class="screen__content">
         <h2>Выбери героя-наставника</h2>
-        <p class="description">Каждый предмет — свой герой. Нажми «Выбрать героя», чтобы продолжить с этим наставником.</p>
+        <p class="description">У каждого предмета свой герой. Можно остаться на том, кого подсказали на прошлом шаге, или переключиться — жми «Выбрать героя».</p>
         <div id="hero-grid" class="mentor-grid" aria-label="Карточки героев по предметам"></div>
-        <button type="button" id="back-to-subject-btn" class="btn btn--ghost">Назад к предметам</button>
+        <button type="button" id="back-to-subject-btn" class="btn btn--ghost btn--touch-wide">← К предметам</button>
       </div>
     </section>
 
     <section id="screen-mode" class="screen card">
       <div class="screen__content">
         <h2>Выбери режим урока</h2>
-        <p class="description">Режим влияет на стиль объяснений и формат занятий.</p>
+        <p class="description">Режим задаёт тон: квест, тест, «простыми словами» или помощь с домашкой — как тебе сегодня комфортнее.</p>
         <div id="mode-grid" class="grid"></div>
-        <button type="button" id="back-to-hero-btn" class="btn btn--ghost">Назад к герою</button>
+        <button type="button" id="back-to-hero-btn" class="btn btn--ghost btn--touch-wide">← К героям</button>
       </div>
     </section>
 
@@ -262,13 +263,13 @@
         </section>
 
         <section class="cta">
-          <h3 class="cta__title">Хочу такого помощника</h3>
+          <h3 class="cta__title">Готовы к такому наставнику?</h3>
           <p class="cta__value">
-            Персональный наставник в чате: ребёнок учится без стресса, родители видят прогресс, а ответы не «списываются» — формируется мышление и привычка доводить дело до конца.
+            Персональный AI в чате: ребёнок тренирует мышление, родители видят динамику, а готовые ответы «с потолка» не подставляются — только путь через вопросы и маленькие победы.
           </p>
           <div class="cta__actions">
-            <button type="button" id="cta-ai-mentor-btn" class="btn btn--primary btn--small">Хочу такого AI-наставника</button>
-            <button type="button" id="cta-demo-btn" class="btn btn--ghost btn--small cta__btn-secondary">Получить демо</button>
+            <button type="button" id="cta-ai-mentor-btn" class="btn btn--primary btn--small btn--touch">Хочу такого AI-наставника</button>
+            <button type="button" id="cta-demo-btn" class="btn btn--ghost btn--small cta__btn-secondary btn--touch">Получить демо</button>
           </div>
           <article id="offer-card" class="offer-card offer-card--hidden">
             <p class="offer-card__invite">
@@ -283,8 +284,8 @@
         </section>
 
         <form id="chat-form" class="chat-form chat-form--messenger">
-          <input id="chat-input" type="text" placeholder="Напиши вопрос по теме..." autocomplete="off" maxlength="200" required>
-          <button type="submit" class="btn btn--primary">Отправить</button>
+          <input id="chat-input" type="text" placeholder="Напиши вопрос или фразу из урока…" autocomplete="off" maxlength="200" required>
+          <button type="submit" class="btn btn--primary btn--touch">Отправить</button>
         </form>
       </div>
     </section>
@@ -299,7 +300,7 @@
           <li>Медаль: <strong id="lesson-medal-text">—</strong></li>
           <li>Сообщений наставнику: <strong id="lesson-messages-count">0</strong></li>
         </ul>
-        <button type="button" id="lesson-continue-btn" class="btn btn--primary">Продолжить обучение</button>
+        <button type="button" id="lesson-continue-btn" class="btn btn--primary btn--touch">Продолжить квест</button>
       </div>
     </section>
   </main>
@@ -324,7 +325,7 @@
   </section>
 
   <footer class="site-footer">
-    Проект создан Натальей Царицинской | AI School Quest
+    AI School Quest · демо-продукт · Наталья Царицинская
   </footer>
 
   <script src="script.js"></script>
