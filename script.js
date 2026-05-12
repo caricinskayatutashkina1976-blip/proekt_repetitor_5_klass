@@ -13,6 +13,8 @@ const subjects = [
     emoji: "➗",
     hero: "Математик-маг",
     heroEmoji: "🧙‍♂️",
+    heroDescription:
+      "Шаг за шагом раскрывает задачи: от «что дано» до ответа — без сухой зубрёжки формул.",
   },
   {
     id: "russian",
@@ -20,20 +22,26 @@ const subjects = [
     emoji: "📚",
     hero: "Хранитель Слова",
     heroEmoji: "🛡️",
+    heroDescription:
+      "Правила и орфография как квест: корни, окончания и ясные фразы без страха перед ошибкой.",
   },
   {
     id: "english",
     name: "Английский язык",
     emoji: "🇬🇧",
-    hero: "Путешественник по Миру Языков",
+    hero: "Путешественник по языкам",
     heroEmoji: "🧭",
+    heroDescription:
+      "Слова и короткие диалоги через мини-миссии: говорить увереннее, а не зубрить списки.",
   },
   {
     id: "history",
     name: "История",
     emoji: "🏺",
-    hero: "Проводник во Времени",
+    hero: "Проводник во времени",
     heroEmoji: "⏳",
+    heroDescription:
+      "События складываются в цепочку кто — где — когда и зачем, чтобы даты не «плавали».",
   },
   {
     id: "biology",
@@ -41,6 +49,8 @@ const subjects = [
     emoji: "🧬",
     hero: "Исследователь Жизни",
     heroEmoji: "🔬",
+    heroDescription:
+      "Клетки, органы и природа — с образами из жизни, чтобы тема стала понятной, а не абстрактной.",
   },
   {
     id: "geography",
@@ -48,14 +58,16 @@ const subjects = [
     emoji: "🗺️",
     hero: "Картограф Приключений",
     heroEmoji: "🧭",
+    heroDescription:
+      "Карты, климат и страны слоями: сравниваем, находим закономерности, без бесконечных списков.",
   },
 ];
 
 const heroGreetings = {
   math: "Математик-маг 🧙‍♂️ Тайные коды и +10 к логике — поехали!",
   russian: "Хранитель Слова 🛡️ Свитки и шпионы-ошибки — спасём буквы!",
-  english: "Путешественник 🧭 Мини-диалоги и +1 к словарю!",
-  history: "Проводник во Времени ⏳ Миссии и медаль хроникёра!",
+  english: "Путешественник по языкам 🧭 Мини-диалоги и +1 к словарю!",
+  history: "Проводник во времени ⏳ Миссии и медаль хроникёра!",
   biology: "Исследователь Жизни 🔬 Лаборатория на максимум!",
   geography: "Картограф 🗺️ Карта-сокровище ждёт!",
 };
@@ -210,7 +222,8 @@ const screens = {
   lessonSummary: document.getElementById("screen-lesson-summary"),
 };
 
-const startBtn = document.getElementById("start-btn");
+const demoLessonBtn = document.getElementById("demo-lesson-btn");
+const parentPreviewBtn = document.getElementById("parent-preview-btn");
 const onboardingForm = document.getElementById("onboarding-form");
 const studentNameInput = document.getElementById("student-name-input");
 const studentGradeInput = document.getElementById("student-grade-input");
@@ -244,11 +257,18 @@ const dailyGoalValue = document.getElementById("daily-goal-value");
 const dailyTaskText = document.getElementById("daily-task-text");
 const achievementText = document.getElementById("achievement-text");
 const parentReport = document.getElementById("parent-report");
-const reportWhatDone = document.getElementById("report-what-done");
+const reportSessionLead = document.getElementById("report-session-lead");
 const reportXpTotal = document.getElementById("report-xp-total");
 const reportXpSession = document.getElementById("report-xp-session");
+const reportLevel = document.getElementById("report-level");
+const reportXpBarFill = document.getElementById("report-xp-bar-fill");
+const reportXpBarWrap = document.getElementById("report-xp-bar-wrap");
+const reportMessagesSession = document.getElementById("report-messages-session");
+const reportMessagesTotal = document.getElementById("report-messages-total");
 const reportRepeat = document.getElementById("report-repeat");
-const reportNextLesson = document.getElementById("report-next-lesson");
+const reportNextHint = document.getElementById("report-next-hint");
+const reportStrengthsList = document.getElementById("report-strengths-list");
+const reportPlanList = document.getElementById("report-plan-list");
 const contactNataliaBtn = document.getElementById("contact-natalia-btn");
 const offerCard = document.getElementById("offer-card");
 const parentModal = document.getElementById("parent-modal");
@@ -490,6 +510,15 @@ function updateParentModal() {
   });
 }
 
+function openParentModal() {
+  if (!parentModal) {
+    return;
+  }
+  updateParentModal();
+  parentModal.classList.remove("parent-modal--hidden");
+  parentModal.setAttribute("aria-hidden", "false");
+}
+
 /*
   Проверяем новую игровую сессию дня:
   - если новый календарный день, сбрасываем цель дня (0/3)
@@ -680,7 +709,7 @@ function renderSubjectCards() {
 
     button.addEventListener("click", () => {
       state.selectedSubject = subject;
-      renderHeroCard(subject);
+      renderHeroGallery();
       showScreen("hero");
     });
 
@@ -689,30 +718,46 @@ function renderSubjectCards() {
 }
 
 /*
-  На экране героя мы показываем только наставника,
-  который соответствует выбранному предмету.
+  Экран героя: сетка карточек наставников по всем предметам.
+  Карта, выбранная на шаге «предмет», подсвечивается как текущая.
 */
-function renderHeroCard(subject) {
+function renderHeroGallery() {
   if (!heroGrid) {
     return;
   }
   heroGrid.innerHTML = "";
+  heroGrid.className = "mentor-grid";
 
-  const heroButton = document.createElement("button");
-  heroButton.type = "button";
-  heroButton.className = "choice-card";
-  heroButton.innerHTML = `
-    <div class="choice-card__emoji">${subject.heroEmoji}</div>
-    <div class="choice-card__title">${subject.hero}</div>
-    <div class="choice-card__subtitle">${subject.emoji} ${subject.name}</div>
-  `;
+  subjects.forEach((subject) => {
+    const isCurrent = state.selectedSubject && state.selectedSubject.id === subject.id;
+    const article = document.createElement("article");
+    article.className = `mentor-card${isCurrent ? " mentor-card--current" : ""}`;
+    article.dataset.mentor = subject.id;
 
-  heroButton.addEventListener("click", () => {
-    state.selectedSubject = subject;
-    showScreen("mode");
+    article.innerHTML = `
+      <div class="mentor-card__accent" aria-hidden="true"></div>
+      ${isCurrent ? '<p class="mentor-card__hint">Твой выбор на прошлом шаге</p>' : ""}
+      <div class="mentor-card__top">
+        <span class="mentor-card__avatar" aria-hidden="true">${subject.heroEmoji}</span>
+        <div class="mentor-card__headlines">
+          <p class="mentor-card__subject-line"><span class="mentor-card__subject-emoji">${subject.emoji}</span> ${subject.name}</p>
+          <h3 class="mentor-card__hero-name">${subject.hero}</h3>
+        </div>
+      </div>
+      <p class="mentor-card__desc">${subject.heroDescription}</p>
+      <button type="button" class="btn btn--primary btn--small mentor-card__cta">Выбрать героя</button>
+    `;
+
+    const cta = article.querySelector(".mentor-card__cta");
+    if (cta) {
+      cta.addEventListener("click", () => {
+        state.selectedSubject = subject;
+        showScreen("mode");
+      });
+    }
+
+    heroGrid.append(article);
   });
-
-  heroGrid.append(heroButton);
 }
 
 /*
@@ -763,11 +808,60 @@ function updateQuestUI() {
 }
 
 /*
+  Короткий список сильных сторон для родительской панели.
+*/
+function buildParentStrengthBullets() {
+  const out = [];
+
+  if (state.medalAwarded) {
+    out.push("Настойчивость: есть медаль «Смекалка» за активную работу в чате.");
+  }
+  if (state.streakDays >= 2) {
+    out.push(`Регулярность: серия занятий ${state.streakDays} дн. — хорошая привычка возвращаться к уроку.`);
+  }
+  if (state.dailyGoalCount >= 3) {
+    out.push("Сегодня выполнена ежедневная цель по сообщениям в чате.");
+  } else if (state.dailyGoalCount >= 1) {
+    out.push("Есть движение к ежедневной цели — ребёнок не останавливается на одном ответе.");
+  }
+  if (state.totalMessages >= 10) {
+    out.push("Любознательность: много вопросов наставнику — учится через диалог, а не зубрёжку.");
+  } else if (state.totalMessages >= 5) {
+    out.push("Задаёт уточнения и продолжает тему — это как раз формат «без списывания».");
+  }
+
+  state.achievements.slice(-3).forEach((title) => {
+    if (!out.includes(title)) {
+      out.push(title);
+    }
+  });
+
+  const uniq = [...new Set(out)].slice(0, 6);
+  if (uniq.length === 0) {
+    return ["Ребёнок ведёт диалог с наставником своими словами — так и задумано: без готовых ответов."];
+  }
+  return uniq;
+}
+
+/*
   Родительский отчёт:
   показываем после 3 сообщений ученика и обновляем динамически.
 */
 function updateParentReport() {
-  if (!parentReport || !reportWhatDone || !reportXpTotal || !reportXpSession || !reportRepeat || !reportNextLesson) {
+  if (
+    !parentReport ||
+    !reportSessionLead ||
+    !reportXpTotal ||
+    !reportXpSession ||
+    !reportLevel ||
+    !reportXpBarFill ||
+    !reportMessagesSession ||
+    !reportMessagesTotal ||
+    !reportRepeat ||
+    !reportNextHint ||
+    !reportStrengthsList ||
+    !reportPlanList
+  ) {
     return;
   }
 
@@ -779,21 +873,56 @@ function updateParentReport() {
   const subj = state.selectedSubject ? state.selectedSubject.name : "предмет не выбран";
   const mode = state.selectedMode ? state.selectedMode.name : "режим не выбран";
   const child = state.studentName || "Ребёнок";
-  reportWhatDone.textContent = `${child}: в этой сессии ${state.sessionMessages} сообщ. наставнику по «${subj}» (режим «${mode}»). За всё время в чате — ${state.totalMessages} сообщ.`;
+  reportSessionLead.textContent = `${child} · ${subj} · режим «${mode}»`;
 
   reportXpTotal.textContent = String(state.xp);
   reportXpSession.textContent = String(state.sessionXpGained);
+  reportMessagesSession.textContent = String(state.sessionMessages);
+  reportMessagesTotal.textContent = String(state.totalMessages);
+
+  const level = Math.floor(state.xp / 50) + 1;
+  reportLevel.textContent = String(level);
+  const progressToNextLevel = state.xp % 50;
+  const widthPercent = (progressToNextLevel / 50) * 100;
+  reportXpBarFill.style.width = `${widthPercent}%`;
+  if (reportXpBarWrap) {
+    reportXpBarWrap.setAttribute("aria-valuenow", String(Math.round(progressToNextLevel)));
+  }
+
+  reportStrengthsList.innerHTML = "";
+  buildParentStrengthBullets().forEach((line) => {
+    const li = document.createElement("li");
+    li.textContent = line;
+    reportStrengthsList.append(li);
+  });
 
   const sortedTopics = Object.entries(state.weakTopics)
     .sort((a, b) => b[1] - a[1])
     .slice(0, 2)
     .map((entry) => entry[0]);
   reportRepeat.textContent = sortedTopics.length
-    ? `Повторить спокойно темы: ${sortedTopics.join(", ")} — там больше всего «запросов на подсказку».`
+    ? `Повторить спокойно темы: ${sortedTopics.join(", ")} — там больше всего запросов на подсказку.`
     : `Закрепить базу по «${subj}»: коротко проговорить правило и решить 2 типовых примера без спешки.`;
 
   const goal = state.learningGoal || "подтянуть знания";
-  reportNextLesson.textContent = `На следующий урок: 10–15 минут «${subj}», упор на «${goal}» — начать с мини-вопроса к ребёнку «что уже понятно?», затем один квест-шаг или пересказ условия своими словами.`;
+  reportNextHint.textContent = `Ближайший шаг: 10–15 минут «${subj}», упор на «${goal}» — сначала спросить «что уже понятно?», затем один квест-шаг или пересказ условия своими словами.`;
+
+  const planItems = buildWeeklyPlan();
+  reportPlanList.innerHTML = "";
+  planItems.forEach((item) => {
+    const li = document.createElement("li");
+    const m = item.match(/^День \d+:/);
+    if (m) {
+      const head = m[0];
+      const rest = item.slice(head.length).trim();
+      const strong = document.createElement("strong");
+      strong.textContent = head;
+      li.append(strong, ` ${rest}`);
+    } else {
+      li.textContent = item;
+    }
+    reportPlanList.append(li);
+  });
 
   parentReport.classList.remove("parent-report--hidden");
 }
@@ -1114,9 +1243,15 @@ function startChat(subject) {
   saveProgress();
 }
 
-if (startBtn) {
-  startBtn.addEventListener("click", () => {
+if (demoLessonBtn) {
+  demoLessonBtn.addEventListener("click", () => {
     showScreen("onboarding");
+  });
+}
+
+if (parentPreviewBtn) {
+  parentPreviewBtn.addEventListener("click", () => {
+    openParentModal();
   });
 }
 
@@ -1152,7 +1287,7 @@ if (changeHeroBtn) {
       return;
     }
 
-    renderHeroCard(state.selectedSubject);
+    renderHeroGallery();
     showScreen("hero");
   });
 }
@@ -1173,6 +1308,7 @@ if (changeModeBtn) {
 
 if (backToHeroBtn) {
   backToHeroBtn.addEventListener("click", () => {
+    renderHeroGallery();
     showScreen("hero");
   });
 }
@@ -1218,11 +1354,9 @@ if (contactNataliaBtn && offerCard) {
   });
 }
 
-if (parentModeBtn && parentModal) {
+if (parentModeBtn) {
   parentModeBtn.addEventListener("click", () => {
-    updateParentModal();
-    parentModal.classList.remove("parent-modal--hidden");
-    parentModal.setAttribute("aria-hidden", "false");
+    openParentModal();
   });
 }
 

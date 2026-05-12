@@ -14,11 +14,15 @@
     <section id="screen-start" class="screen screen--active card">
       <div class="screen__content">
         <p class="badge">AI School Quest</p>
-        <h1>AI School Quest</h1>
-        <p class="subtitle">Учёба как игра с AI-наставником</p>
-        <p class="description">
-          Выбери школьный предмет, познакомься с героем-наставником и проходи учебный квест в формате дружелюбного чата.
+        <h1 class="hero-title">Ребёнок не хочет делать уроки? Превратите учёбу в игру с AI-наставником</h1>
+        <p class="subtitle hero-subtitle">
+          AI School Quest помогает ученику 5 класса разбирать домашние задания без списывания: через подсказки, вопросы, XP, медали и понятные объяснения
         </p>
+
+        <div class="hero-actions" role="group" aria-label="Действия на главной">
+          <button type="button" id="demo-lesson-btn" class="btn btn--primary">Попробовать демо-урок</button>
+          <button type="button" id="parent-preview-btn" class="btn btn--ghost btn--hero-secondary">Посмотреть режим родителя</button>
+        </div>
 
         <section class="why-kids" aria-label="Почему ребёнку понравится">
           <h2 class="why-kids__title">Почему ребёнку понравится</h2>
@@ -39,8 +43,6 @@
             <li><strong>Мотивирует XP и медалями</strong> — ребёнок видит рост и хочет продолжать.</li>
           </ul>
         </section>
-
-        <button type="button" id="start-btn" class="btn btn--primary">Начать приключение</button>
       </div>
     </section>
 
@@ -83,8 +85,8 @@
     <section id="screen-hero" class="screen card">
       <div class="screen__content">
         <h2>Выбери героя-наставника</h2>
-        <p class="description">Твой герой будет помогать и подсказывать в чате.</p>
-        <div id="hero-grid" class="grid"></div>
+        <p class="description">Каждый предмет — свой герой. Нажми «Выбрать героя», чтобы продолжить с этим наставником.</p>
+        <div id="hero-grid" class="mentor-grid" aria-label="Карточки героев по предметам"></div>
         <button type="button" id="back-to-subject-btn" class="btn btn--ghost">Назад к предметам</button>
       </div>
     </section>
@@ -159,12 +161,60 @@
           <button type="button" class="btn btn--ghost btn--small quick-replies__btn" data-quick="Дай задание">Дай задание</button>
         </div>
 
-        <section id="parent-report" class="parent-report parent-report--hidden">
-          <h3>Родительский отчёт</h3>
-          <p>Что сделал ребёнок: <span id="report-what-done">—</span></p>
-          <p>XP всего: <span id="report-xp-total">0</span> · за эту сессию: <span id="report-xp-session">0</span></p>
-          <p>Что стоит повторить: <span id="report-repeat">—</span></p>
-          <p>Следующий урок: <span id="report-next-lesson">—</span></p>
+        <section
+          id="parent-report"
+          class="parent-dashboard parent-report--hidden"
+          aria-labelledby="parent-dashboard-title"
+        >
+          <header class="parent-dashboard__header">
+            <div class="parent-dashboard__head-text">
+              <h3 id="parent-dashboard-title" class="parent-dashboard__title">Родительский отчёт</h3>
+              <p id="report-session-lead" class="parent-dashboard__lead">—</p>
+            </div>
+            <span class="parent-dashboard__status" role="status">Учится без списывания</span>
+          </header>
+
+          <div class="parent-dashboard__metrics">
+            <div class="parent-dashboard__metric">
+              <span class="parent-dashboard__label">Прогресс XP</span>
+              <div class="parent-dashboard__xp-line">
+                <span class="parent-dashboard__value"><span id="report-xp-total">0</span> XP</span>
+                <span class="parent-dashboard__muted">+ <span id="report-xp-session">0</span> за сессию</span>
+              </div>
+              <div class="parent-dashboard__xp-bar" role="progressbar" aria-valuemin="0" aria-valuemax="50" aria-valuenow="0" aria-label="Прогресс до следующего уровня" id="report-xp-bar-wrap">
+                <div id="report-xp-bar-fill" class="parent-dashboard__xp-fill"></div>
+              </div>
+              <p class="parent-dashboard__level">
+                Уровень <strong id="report-level">1</strong>
+                <span class="parent-dashboard__muted"> · до следующего уровня</span>
+              </p>
+            </div>
+            <div class="parent-dashboard__metric">
+              <span class="parent-dashboard__label">Сообщений наставнику</span>
+              <p class="parent-dashboard__stat-big">
+                <span id="report-messages-session">0</span>
+                <span class="parent-dashboard__muted parent-dashboard__stat-note">в этой сессии</span>
+              </p>
+              <p class="parent-dashboard__muted">Всего за всё время: <strong id="report-messages-total">0</strong></p>
+            </div>
+          </div>
+
+          <div class="parent-dashboard__split">
+            <div class="parent-dashboard__panel">
+              <h4 class="parent-dashboard__panel-title">Сильные стороны</h4>
+              <ul id="report-strengths-list" class="parent-dashboard__list parent-dashboard__list--strengths"></ul>
+            </div>
+            <div class="parent-dashboard__panel">
+              <h4 class="parent-dashboard__panel-title">Что повторить</h4>
+              <p id="report-repeat" class="parent-dashboard__panel-text">—</p>
+              <p id="report-next-hint" class="parent-dashboard__hint"></p>
+            </div>
+          </div>
+
+          <div class="parent-dashboard__panel parent-dashboard__panel--plan">
+            <h4 class="parent-dashboard__panel-title">План на 7 дней</h4>
+            <ol id="report-plan-list" class="parent-dashboard__plan"></ol>
+          </div>
         </section>
 
         <section class="cta">
