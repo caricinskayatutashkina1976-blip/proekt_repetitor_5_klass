@@ -347,9 +347,10 @@ const screens = {
   lessonSummary: document.getElementById("screen-lesson-summary"),
 };
 
-const demoLessonBtn = document.getElementById("demo-lesson-btn");
+const startEntryForm = document.getElementById("start-entry-form");
+const startEntryInput = document.getElementById("start-entry-input");
+const aiCompanion = document.getElementById("ai-companion");
 const parentPreviewBtn = document.getElementById("parent-preview-btn");
-const aiQuoteText = document.getElementById("ai-quote-text");
 const onboardingForm = document.getElementById("onboarding-form");
 const studentNameInput = document.getElementById("student-name-input");
 const studentGradeInput = document.getElementById("student-grade-input");
@@ -1219,49 +1220,150 @@ function appendChatBubble(container, type, text, options = {}) {
   container.scrollTop = container.scrollHeight;
 }
 
-function showAiQuoteToday() {
-  if (!aiQuoteText || !AI_QUOTES_TODAY.length) {
+function initCompanionPresence() {
+  if (!aiCompanion || !screens.start) {
     return;
   }
-  const index = Math.floor(Math.random() * AI_QUOTES_TODAY.length);
-  aiQuoteText.textContent = AI_QUOTES_TODAY[index];
+
+  const tiltEl = aiCompanion.querySelector(".companion__tilt");
+  const haloEl = aiCompanion.querySelector(".companion__halo");
+  const coreGlowEl = aiCompanion.querySelector(".companion__core-glow");
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (prefersReducedMotion || !tiltEl) {
+    return;
+  }
+
+  let targetRotateX = 0;
+  let targetRotateY = 0;
+  let targetGaze = 0;
+  let currentRotateX = 0;
+  let currentRotateY = 0;
+  let currentGaze = 0;
+  let animationId = 0;
+
+  function lerpValue(from, to, amount) {
+    return from + (to - from) * amount;
+  }
+
+  function isEntryActive() {
+    return screens.start.classList.contains("screen--active");
+  }
+
+  function animateCompanion() {
+    if (!isEntryActive()) {
+      targetRotateX = 0;
+      targetRotateY = 0;
+      targetGaze = 0;
+    }
+
+    currentRotateX = lerpValue(currentRotateX, targetRotateX, 0.07);
+    currentRotateY = lerpValue(currentRotateY, targetRotateY, 0.07);
+    currentGaze = lerpValue(currentGaze, targetGaze, 0.05);
+
+    tiltEl.style.transform = `rotateX(${currentRotateX.toFixed(2)}deg) rotateY(${currentRotateY.toFixed(2)}deg)`;
+    aiCompanion.style.setProperty("--gaze", currentGaze.toFixed(3));
+
+    if (haloEl) {
+      haloEl.style.transform = `scale(${1 + currentGaze * 0.08}) translate(${currentRotateY * 0.65}px, ${-currentRotateX * 0.45}px)`;
+    }
+
+    if (coreGlowEl) {
+      coreGlowEl.style.transform = `scale(${1 + currentGaze * 0.12})`;
+    }
+
+    const delta =
+      Math.abs(currentRotateX - targetRotateX) +
+      Math.abs(currentRotateY - targetRotateY) +
+      Math.abs(currentGaze - targetGaze);
+
+    if (delta > 0.004) {
+      animationId = window.requestAnimationFrame(animateCompanion);
+      return;
+    }
+
+    animationId = 0;
+  }
+
+  function queueAnimation() {
+    if (!animationId) {
+      animationId = window.requestAnimationFrame(animateCompanion);
+    }
+  }
+
+  function updateFromPointer(clientX, clientY) {
+    if (!isEntryActive()) {
+      return;
+    }
+
+    const rect = aiCompanion.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const normX = (clientX - centerX) / (rect.width / 2);
+    const normY = (clientY - centerY) / (rect.height / 2);
+    const clampedX = Math.max(-1, Math.min(1, normX));
+    const clampedY = Math.max(-1, Math.min(1, normY));
+
+    targetRotateY = clampedX * 16;
+    targetRotateX = -clampedY * 13;
+    targetGaze = Math.min(1, Math.hypot(clampedX, clampedY) * 0.62);
+    queueAnimation();
+  }
+
+  function resetCompanionPose() {
+    targetRotateX = 0;
+    targetRotateY = 0;
+    targetGaze = 0;
+    queueAnimation();
+  }
+
+  window.addEventListener("mousemove", (event) => {
+    updateFromPointer(event.clientX, event.clientY);
+  });
+
+  window.addEventListener("touchmove", (event) => {
+    const touch = event.touches[0];
+    if (!touch) {
+      return;
+    }
+    updateFromPointer(touch.clientX, touch.clientY);
+  }, { passive: true });
+
+  document.addEventListener("mouseleave", resetCompanionPose);
+  window.addEventListener("blur", resetCompanionPose);
 }
 
-function initDemoMessenger() {
-  const feed = document.getElementById("demo-messenger-feed");
-  if (!feed) {
-    return;
+function beginFromStartScreen() {
+  const question = startEntryInput ? startEntryInput.value.trim() : "";
+
+  if (!state.studentName) {
+    state.studentName = "Ученик";
+  }
+  if (!state.studentGrade) {
+    state.studentGrade = "5 класс";
+  }
+  if (!state.learningGoal) {
+    state.learningGoal = "Домашка";
   }
 
-  feed.innerHTML = "";
-  setMentorEmotion("happy", { syncDemo: true });
+  state.selectedMode = lessonModes.find((mode) => mode.id === "homework") || lessonModes[0];
+  const subject = subjects.find((item) => item.id === "math") || subjects[0];
 
-  appendChatBubble(feed, "user", "Я не понимаю задачу по математике.");
-  setMentorEmotion("thinking", { syncDemo: true });
-  appendChatBubble(
-    feed,
-    "bot",
-    "Давайте разберём вместе. Готовый ответ сразу не подставлю — проведу шаг за шагом, чтобы вы сами дошли до сути.",
-    { botIcon: getMentorEmotionIcon("hint") }
-  );
-  setMentorEmotion("hint", { syncDemo: true });
+  startChat(subject);
+  saveProgress();
 
-  document.querySelectorAll("[data-demo-quick]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const label = btn.getAttribute("data-demo-quick");
-      if (!label || !Object.prototype.hasOwnProperty.call(DEMO_MESSENGER_REPLIES, label)) {
-        return;
-      }
-      setMentorEmotion("thinking", { syncDemo: true });
-      appendChatBubble(feed, "user", label);
-      window.setTimeout(() => {
-        setMentorEmotion("hint", { syncDemo: true });
-        appendChatBubble(feed, "bot", DEMO_MESSENGER_REPLIES[label], {
-          botIcon: getMentorEmotionIcon("hint"),
-        });
-      }, 450);
-    });
-  });
+  window.setTimeout(() => {
+    if (question) {
+      setMentorEmotion("thinking");
+      addMessage("user", question);
+      runBotTurn(question);
+      return;
+    }
+
+    setMentorEmotion("happy");
+    addMessage("bot", heroGreetings[subject.id], { botIcon: getMentorEmotionIcon("happy") });
+    state.hasGreetedInChat = true;
+  }, 120);
 }
 
 /*
@@ -1687,9 +1789,10 @@ function startChat(subject) {
   saveProgress();
 }
 
-if (demoLessonBtn) {
-  demoLessonBtn.addEventListener("click", () => {
-    showScreen("onboarding");
+if (startEntryForm) {
+  startEntryForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    beginFromStartScreen();
   });
 }
 
@@ -1884,8 +1987,7 @@ function initApp() {
   }
 
   showScreen("start");
-  showAiQuoteToday();
-  initDemoMessenger();
+  initCompanionPresence();
 }
 
 if (document.readyState === "loading") {
