@@ -25,98 +25,31 @@
     <section id="screen-start" class="screen screen--active card screen-start">
       <div class="screen__content screen__content--start">
         <header class="start-hero" aria-label="Домашние задания без ежедневных споров — AI School Quest">
-          <div class="start-hero__copy">
-            <p class="badge badge--hero hero-fade hero-fade--1">AI School Quest</p>
+          <div class="start-hero__copy hero-fade">
             <h1 class="hero-title hero-title--emotional">
-              <span class="hero-line hero-fade hero-fade--2">Домашние задания</span>
-              <span class="hero-line hero-line--accent hero-fade hero-fade--3">без ежедневных споров</span>
+              <span class="hero-line">Домашние задания</span>
+              <span class="hero-line hero-line--accent">без ежедневных споров</span>
             </h1>
-            <p class="hero-tagline hero-fade hero-fade--4">Не списывать. Понимать.</p>
-            <p class="hero-subtitle hero-fade hero-fade--5">
+            <p class="hero-tagline">Не списывать. Понимать.</p>
+            <p class="hero-subtitle">
               AI School Quest помогает ученику 5 класса разбираться в заданиях самостоятельно: через подсказки, понятные объяснения и мягкую поддержку.
             </p>
 
-            <div class="hero-actions hero-fade hero-fade--6" role="group" aria-label="Действия на главной">
+            <div class="hero-actions" role="group" aria-label="Действия на главной">
               <button type="button" id="demo-lesson-btn" class="btn btn--primary btn--hero-cta btn--touch">
-                <span class="btn__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polygon points="5 3 19 12 5 21 5 3"/></svg></span>
                 Попробовать демо
               </button>
-              <a href="#how-it-works" class="btn btn--ghost btn--hero-secondary btn--hero-cta btn--touch">
-                <span class="btn__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+              <a href="#how-it-works" class="btn btn--hero-secondary btn--hero-cta btn--touch">
                 Как это работает
               </a>
             </div>
           </div>
-
-          <figure class="start-hero__visual hero-fade hero-fade--7" aria-hidden="true">
-            <svg class="hero-visual" viewBox="0 0 320 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Абстрактная визуализация AI-интерфейса">
-              <rect x="24" y="32" width="272" height="216" rx="20" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
-              <rect x="44" y="56" width="120" height="8" rx="4" fill="rgba(255,255,255,0.18)"/>
-              <rect x="44" y="76" width="88" height="6" rx="3" fill="rgba(255,255,255,0.08)"/>
-              <rect x="44" y="108" width="232" height="112" rx="14" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)"/>
-              <circle cx="72" cy="148" r="16" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.14)"/>
-              <rect x="98" y="136" width="140" height="10" rx="5" fill="rgba(255,255,255,0.1)"/>
-              <rect x="98" y="154" width="96" height="8" rx="4" fill="rgba(255,255,255,0.06)"/>
-              <rect x="44" y="236" width="64" height="6" rx="3" fill="rgba(255,255,255,0.12)"/>
-              <path class="hero-visual__pulse" d="M228 148h24" stroke="rgba(255,255,255,0.35)" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
-          </figure>
         </header>
 
-        <blockquote id="ai-quote-today" class="ai-quote-card hero-fade hero-fade--8" aria-label="Сегодня AI говорит">
-          <div class="ai-quote-card__head">
-            <span class="ai-quote-card__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 3l1.5 5.5L19 10l-5.5 1.5L12 17l-1.5-5.5L5 10l5.5-1.5L12 3z"/></svg></span>
-            <p class="ai-quote-card__label">Сегодня AI говорит</p>
-          </div>
-          <p id="ai-quote-text" class="ai-quote-card__text"></p>
-        </blockquote>
-
         <div id="how-it-works" class="start-below-hero">
-          <section class="why-kids" aria-label="Почему ребёнку понравится">
-            <h2 class="why-kids__title">Почему ребёнку понравится</h2>
-            <ul class="why-kids__list">
-              <li><strong>Структурированные сессии</strong> — понятные шаги вместо хаотичной домашки.</li>
-              <li><strong>AI-наставник по предмету</strong> — стиль объяснений подстраивается под тему и режим.</li>
-              <li><strong>Прогресс и метрики</strong> — уровень, серия дней и динамика в одном интерфейсе.</li>
-              <li><strong>Без готовых ответов</strong> — наставник ведёт вопросами, а не списывает за ученика.</li>
-            </ul>
-          </section>
-
-          <section class="what-tutor" aria-label="Что умеет AI-репетитор">
-            <h2 class="what-tutor__title">Что умеет AI-репетитор</h2>
-            <ul class="what-tutor__list">
-              <li><strong>Объясняет простыми словами</strong> — без лишней воды, шаг за шагом.</li>
-              <li><strong>Декомпозирует задачи</strong> — цель, подсказки и следующий шаг всегда видны.</li>
-              <li><strong>Помогает с домашкой без списывания</strong> — наводящие вопросы вместо готового решения.</li>
-              <li><strong>Отслеживает прогресс</strong> — XP, медали и отчёт для родителей в реальном времени.</li>
-            </ul>
-          </section>
-
-          <section class="audience" aria-label="Кому подойдёт AI School Quest">
-            <h2 class="audience__title">Кому подойдёт</h2>
-            <div class="audience__grid">
-              <article class="audience-card audience-card--parents">
-                <span class="audience-card__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
-                <h3 class="audience-card__heading">Родителям</h3>
-                <p class="audience-card__text">Dashboard с уровнем, серией дней, медалями и зонами для повторения — без микроменеджмента.</p>
-              </article>
-              <article class="audience-card audience-card--students">
-                <span class="audience-card__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 3 3 6 3s6-1 6-3v-5"/></svg></span>
-                <h3 class="audience-card__heading">Ученикам</h3>
-                <p class="audience-card__text">Структурированные сессии, прогресс и чат с наставником в спокойном ритме.</p>
-              </article>
-              <article class="audience-card audience-card--schools">
-                <span class="audience-card__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-3"/></svg></span>
-                <h3 class="audience-card__heading">Школам</h3>
-                <p class="audience-card__text">Демо-платформа для мотивации и самостоятельной работы с домашними заданиями.</p>
-              </article>
-              <article class="audience-card audience-card--tutors">
-                <span class="audience-card__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></span>
-                <h3 class="audience-card__heading">Репетиторам</h3>
-                <p class="audience-card__text">Готовый формат AI-наставника между живыми занятиями — с отчётом для родителей.</p>
-              </article>
-            </div>
-          </section>
+          <blockquote id="ai-quote-today" class="ai-quote-card" aria-label="Сегодня AI говорит">
+            <p id="ai-quote-text" class="ai-quote-card__text"></p>
+          </blockquote>
 
           <section id="for-parents" class="for-parents" aria-label="Для родителей">
             <h2 class="for-parents__title">Для родителей</h2>
