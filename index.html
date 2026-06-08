@@ -2,11 +2,22 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0a84ff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <title>AI School Quest</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="app-shell" aria-hidden="true">
+    <div class="app-shell__orb app-shell__orb--1"></div>
+    <div class="app-shell__orb app-shell__orb--2"></div>
+    <div class="app-shell__orb app-shell__orb--3"></div>
+  </div>
   <main class="app">
     <div class="bg-decoration bg-decoration--top" aria-hidden="true"></div>
     <div class="bg-decoration bg-decoration--bottom" aria-hidden="true"></div>
@@ -164,7 +175,7 @@
               Видите прогресс ребёнка в одном Dashboard: уровень, серия дней, медали, рост знаний, любимый предмет — и что стоит повторить.
             </p>
             <div id="start-parent-dashboard"></div>
-            <button type="button" id="parent-preview-btn" class="btn btn--ghost btn--small" style="margin-top: 12px;">
+            <button type="button" id="parent-preview-btn" class="btn btn--ghost btn--small for-parents__action">
               Открыть полный отчёт
             </button>
           </section>
