@@ -95,108 +95,73 @@ const subjects = [
   },
 ];
 
-const heroGreetings = {
-  math:
-    "Привет. Я наставник по математике — помогу разложить задачу по шагам. Готовый ответ сразу не дам: разберём условие вместе.",
-  russian:
-    "Я наставник по русскому — помогу поймать правило без зубрёжки. Ошибку можно разобрать спокойно и по делу.",
-  english:
-    "Наставник по английскому на связи. Объясню коротко и по-человечески — и потренируем фразу без давления.",
-  history:
-    "Наставник по истории здесь. Даты запоминаются, когда есть логика: развернём событие в цепочку «кто — что — почему».",
-  biology:
-    "Наставник по биологии на месте. Сложные термины разберём на понятных примерах из жизни.",
-  geography:
-    "Наставник по географии с вами. Карта станет яснее, если смотреть слой за слоем — подскажу, с чего начать.",
-};
-
 /*
-  Короткие ответы в стиле героя (магия, свитки, путешествия, время, лаборатория, карта).
+  Система обучения: 6 шагов, без готового ответа до конца.
+  1 problem → 2 clarify → 3 hint1 → 4 askAgain → 5 hint2 → 6 explain
 */
-const heroVoices = {
+const LEARN_STEP_KEYS = ["problem", "clarify", "hint1", "askAgain", "hint2", "explain"];
+
+const MENTOR_LEARN_FLOW = {
   math: {
-    templates: [
-      "Давай без спешки: что в условии уже дано, а что нужно найти? Назови двумя короткими фразами — дальше подскажу следующий шаг.",
-      "Представь, что в выражении есть «сильные» места: скобки, степени, дроби. С чего логичнее начать разбор — с края или из середины?",
-      "Если задача кажется громоздкой, что можно упростить или переписать по-другому, не меняя смысл? Один маленький ход — и станет легче.",
-      "Какой вопрос ты бы сам задал себе, если бы объяснял другу? Сформулируй — я помогу отполировать формулировку.",
-      "Где именно затык: в цифрах, в словах условия или в том, какой ход сделать первым? Отметь одно словом — развернём дальше.",
-    ],
-    buffs: [
-      "Супер, мысль цепляется за логику — так и держим.",
-      "Вижу прогресс: ты сам задаёшь направление.",
-      "Почти головоломка сложилась — остался один аккуратный шаг.",
-    ],
+    problem: "О чём задание?",
+    clarify: "Что из условия уже ясно?",
+    hint1: "Подсказка: отдели «дано» и «найти».",
+    askAgain: "Какой шаг попробуешь?",
+    hint2: "Подсказка: начни с одного действия, без готового ответа.",
+    explain:
+      "Тут обычно сначала приводят к общему знаменателю, потом складывают верхние числа. Проверь по этой логике.",
+    example: "12 ÷ 3 = 4 — та же идея деления. Где у тебя похожее?",
+    nudge: "Возьми одно число из условия. Какое?",
   },
   russian: {
-    templates: [
-      "Прочитай фразу вслух, медленно: где ухо «спотыкается»? Это подсказка, где искать корень или окончание.",
-      "Выбери одно «колючее» слово из текста — разберём его по частям: корень, приставка, суффикс, что меняется?",
-      "Если сомневаешься между двумя вариантами, что общего у правил и чем они отличаются? Одной фразой — без идеального ответа.",
-      "Какое правило ты уже знаешь похожее? Сравним: чем эта ситуация похожа и чем другая?",
-      "Сформулируй вопрос к самому себе: «Что я хочу проверить в этом предложении?» — и ответь одним словом.",
-    ],
-    buffs: [
-      "Ты цепляешься за смысл слова — это главное.",
-      "Звучит аккуратнее уже сейчас, чем в начале.",
-      "Ошибка почти поймана — осталось чуть-чуть дожать.",
-    ],
+    problem: "О чём это задание?",
+    clarify: "Какое правило тут, как тебе кажется?",
+    hint1: "Подсказка: найди часть слова с основным смыслом.",
+    askAgain: "Какой вариант проверишь?",
+    hint2: "Подсказка: прочитай вслух — где звучит странно.",
+    explain: "Сначала корень, потом окончание. Пройдись по своему слову в этом порядке.",
+    example: "«Бежать» — действие, «бег» — предмет. Есть похожая пара?",
+    nudge: "Возьми одно слово из задания. Какое?",
   },
   english: {
-    templates: [
-      "Сначала смысл по-русски одной строкой, потом одна английская фраза — даже короткая. Не гонись за идеалом.",
-      "Какую мысль хочешь сказать? Выбери 3–5 слов-опор на английском — я помогу связать их в живую мини-реплику.",
-      "Если правило путается, какой пример из жизни его иллюстрирует? Один — и станет спокойнее.",
-      "Что ты уже можешь сказать уверенно по теме? Начнём с этого и добавим один новый кирпичик.",
-      "Прочитай свою фразу вслух: где «ломается» произношение или порядок слов? Отметь — подправим вместе.",
-    ],
-    buffs: [
-      "Фраза звучит живее — это плюс к уверенности.",
-      "Слово село на место — запоминание через смысл работает.",
-      "Ты не боишься пробовать форму — так и учатся.",
-    ],
+    problem: "О чём фраза или упражнение?",
+    clarify: "Какие слова уже знакомы?",
+    hint1: "Подсказка: сначала смысл по-русски, одной строкой.",
+    askAgain: "Как переведёшь первые два слова?",
+    hint2: "Подсказка: не всё сразу — только кусок фразы.",
+    explain: "В английском порядок слов и окончания решают многое. Разбери фразу по частям.",
+    example: "She likes — «ей нравится». Есть похожее?",
+    nudge: "Одно слово из задания. Какое?",
   },
   history: {
-    templates: [
-      "Сожми событие в три слова: кто, что сделал, какой эффект. Потом развернём подробнее, если захочешь.",
-      "Если путаются даты, что случилось раньше и что позже в одной цепочке? Нарисуй словами «до — после».",
-      "Представь, что ты рассказываешь другу за перекусом: в чём суть эпохи или битвы одним предложением?",
-      "Какая причина привела к событию, и что из него выросло? Два коротких звена — и картинка прояснится.",
-      "Какой вопрос тебе самому хочется задать истории? Запиши — ответ поищем шагами, без заучивания дат стеной.",
-    ],
-    buffs: [
-      "Связь «причина — следствие» у тебя уже читается.",
-      "Ты держишь нить времени — это крутая навыка.",
-      "Факт превращается в историю, а не в сухую строчку.",
-    ],
+    problem: "О каком событии речь?",
+    clarify: "Что про это уже слышал?",
+    hint1: "Подсказка: кто, что сделал и что из этого вышло.",
+    askAgain: "Кто тут главный?",
+    hint2: "Подсказка: что было раньше, что позже.",
+    explain: "События складываются в цепочку: причина, действие, результат. Найди эти три звена.",
+    example: "Сначала причина, потом событие. Какая причина?",
+    nudge: "Одна дата или имя из темы. Какое?",
   },
   biology: {
-    templates: [
-      "Кто в этой теме главный герой: клетка, орган, процесс или среда? Одно слово — и пойдём от него.",
-      "Приведи пример из жизни, кухни, спорта или питомца, который похож на то, что в учебнике. Аналогии — суперсила.",
-      "Что здесь «входит», а что «выходит» или «превращается»? Схема словами — и станет понятнее.",
-      "Если термин страшный, как бы ты объяснил его младшему брату или сестре? Одно простое предложение.",
-      "Какой один вопрос ты задашь природе про эту тему? Ответ искать будем маленькими шагами.",
-    ],
-    buffs: [
-      "Наблюдательность растёт — это настоящий научный навык.",
-      "Ты соединяешь абстракцию с жизнью — так и запоминается.",
-      "Гипотеза звучит здраво, давай проверим следующим шагом.",
-    ],
+    problem: "О чём параграф?",
+    clarify: "Какие термины уже встречались?",
+    hint1: "Подсказка: что здесь главное — клетка, орган или процесс.",
+    askAgain: "Своими словами — что происходит?",
+    hint2: "Подсказка: сравни с чем-то из жизни.",
+    explain: "Сложные слова проще, когда видишь процесс, а не определение. Опиши процесс своими словами.",
+    example: "Сердце качает кровь, как насос. Что у тебя похоже?",
+    nudge: "Один термин из темы. Какой?",
   },
   geography: {
-    templates: [
-      "С чего удобнее смотреть на регион: климат, реки, соседи или рельеф? Выбери один слой — развернём его.",
-      "Сравни два места одним предложением: чем похожи и чем отличаются? Без оценок «лучше — хуже».",
-      "Если бы ты ставил «пин» на карте, что бы подписал одним ярким фактом?",
-      "Какой вопрос про карту крутится в голове чаще всего? Сформулируй — разберём по шагам.",
-      "Что здесь главное для людей: где живут, чем дышит экономика или чем отличается природа? Выбери нить.",
-    ],
-    buffs: [
-      "Картина в голове складывается — так держать.",
-      "Сравнение получилось точным — это сильный приём.",
-      "Ты смотришь на карту как на историю, а не на зебру.",
-    ],
+    problem: "О каком месте или явлении речь?",
+    clarify: "Что про это уже знаешь?",
+    hint1: "Подсказка: климат, реки или соседи — с чего начнёшь?",
+    askAgain: "Что на карте посмотришь?",
+    hint2: "Подсказка: сравни с тем, что знаешь про свой город.",
+    explain: "Места отличаются слоями: рельеф, климат, люди. Разбери свой вопрос по одному слою.",
+    example: "У моря влажнее, чем в глубине страны. Где у тебя так?",
+    nudge: "Одна страна или город из темы. Какая?",
   },
 };
 
@@ -233,28 +198,52 @@ const DAILY_MISSIONS = {
   ],
 };
 
-const QUEST_FLARES = [
-  "Прогресс сохранён.",
-  "Опыт начислен.",
-  "Уверенность растёт.",
-  "Вы держите фокус на теме.",
-  "Упорство отмечено.",
-  "Следующий шаг станет проще.",
-  "Небольшой, но устойчивый прогресс.",
-  "Почти получилось — это уже движение вперёд.",
-  "Паттерн начинает складываться.",
-  "Продолжайте в своём темпе.",
-  "Я рядом: спрашивайте, пока не станет ясно.",
-];
-
 const QUICK_PHRASES = ["Объясни проще", "Дай пример", "Дай задание"];
 
 const MENTOR_EMOTIONS = {
-  happy: { icon: "happy", label: "Хороший темп" },
-  thinking: { icon: "thinking", label: "Анализирую ответ…" },
-  cheer: { icon: "cheer", label: "Верное направление" },
-  hint: { icon: "hint", label: "Подсказка готова" },
-  medal: { icon: "medal", label: "Медаль получена" },
+  happy: { icon: "happy", label: "На связи" },
+  thinking: { icon: "thinking", label: "Думаю" },
+  cheer: { icon: "cheer", label: "Сходится" },
+  hint: { icon: "hint", label: "Уточняю" },
+  medal: { icon: "medal", label: "Медаль" },
+};
+
+/*
+  Характер наставника: старший умный товарищ.
+  Не учитель, не родитель, не психолог, не аниматор.
+  Уважает ребёнка, говорит на равных, не стыдит и не хвалит без причины.
+*/
+const MENTOR_CHARACTER = {
+  mistakeLeads: [
+    "Давай посмотрим еще раз.",
+    "Есть одна интересная мысль.",
+    "Попробуем зайти с другой стороны.",
+  ],
+  listens: ["Понял.", "Ок.", "Слушаю.", "Ясно."],
+  wait: "Жду ответ. Что скажешь?",
+  nameGreeting(name) {
+    return `Привет, ${name}.`;
+  },
+  topicAsk: "Что сегодня оказалось непонятным?",
+  refuseDirectAnswer:
+    "Могу. Но тогда ты не поймешь, почему именно так. Давай лучше решим вместе.",
+  forbidden: [
+    /это очень просто/i,
+    /как же ты этого не знаешь/i,
+    /как ты этого не знаешь/i,
+    /ты молодец/i,
+    /молодчин/i,
+    /ты умничка/i,
+    /горжусь тобой/i,
+    /отлично сработал/i,
+    /ты почти победил/i,
+    /паттерн начинает/i,
+    /мысль цепляется/i,
+    /давай не торопиться/i,
+    /микро-шаг/i,
+    /супер[!]?/i,
+    /класс[,!]/i,
+  ],
 };
 
 const AI_QUOTES_TODAY = [
@@ -328,10 +317,12 @@ const state = {
   entryChatActive: false,
   entryPhase: null,
   pendingEntryQuestion: "",
+  mentorLearnStep: 0,
+  mentorMistakeCount: 0,
 };
 
 const ENTRY_OPENING_MESSAGE =
-  "Добрый вечер.\n\nЯ помогу тебе разобраться.\n\nНо у меня есть одно правило —\nя не делаю домашние задания вместо детей.\n\nЯ помогаю им научиться думать.\n\nКак тебя зовут?";
+  "Добрый вечер. Я рядом — разберём вместе, без готовых ответов. Как тебя зовут?";
 
 const STORAGE_KEY = "ai-school-quest-progress-v1";
 
@@ -463,12 +454,8 @@ function pulseXpBar() {
   }, 700);
 }
 
-function showStepReward(subjectId) {
-  const sid = subjectId || "math";
-  const voice = heroVoices[sid] || heroVoices.math;
-  const buff = pickRandom(voice.buffs);
-  const flare = pickRandom(QUEST_FLARES);
-  addMessage("system", `${flare} ${buff}`);
+function showStepReward() {
+  // Намеренно без системных вставок — диалог не прерывается.
 }
 
 /*
@@ -949,6 +936,8 @@ function resetProgress() {
   state.sessionXpGained = 0;
   state.sessionHistory = [];
   state.weakTopics = {};
+  state.mentorLearnStep = 0;
+  state.mentorMistakeCount = 0;
   resetEntryConversationUI();
 
   if (chatStudent) {
@@ -1012,6 +1001,8 @@ function softResetSession() {
   state.dailyGoalCount = 0;
   state.sessionMessages = 0;
   state.sessionXpGained = 0;
+  state.mentorLearnStep = 0;
+  state.mentorMistakeCount = 0;
 
   if (medalValue) {
     medalValue.textContent = "Пока нет";
@@ -1030,8 +1021,6 @@ function softResetSession() {
   updateQuestUI();
   saveProgress();
   setMentorEmotion("happy");
-
-  addMessage("system", "Сессию обнулили, но серия дней и значки остались — можно начать чистый лист без стресса.");
 }
 
 /*
@@ -1108,12 +1097,9 @@ function renderHeroGallery() {
 }
 
 const DEMO_MESSENGER_REPLIES = {
-  "Объясни проще":
-    "Упростим. Представьте задачу как маршрут: точка А — что уже написано в условии, точка Б — чего нужно добиться. Напишите А и Б по одной короткой фразе — дальше подскажу следующий шаг.",
-  "Дай пример":
-    "Вот пример «рядом», не из твоего номера: 12 наклеек делят на 4 альбома поровну — по 3 в каждый. Идея та же: делим целиком и смотрим, что остаётся. Какой у тебя похожий кусок в задаче?",
-  "Дай задание":
-    "Мини-квест на пару минут: одной строкой — что именно непонятно, и одна твоя догадка, даже если неуверенная. Я отвечу маленьким следующим шагом, без готового ответа в лоб.",
+  "Объясни проще": MENTOR_LEARN_FLOW.math.hint1,
+  "Дай пример": MENTOR_LEARN_FLOW.math.example,
+  "Дай задание": MENTOR_LEARN_FLOW.math.askAgain,
 };
 
 function getMentorEmotionIcon(key) {
@@ -1148,23 +1134,15 @@ function setMentorEmotion(key, options = {}) {
 function resolveMentorEmotion(userText) {
   const t = userText.trim().toLowerCase();
 
-  if (/^(a|b|c|а|б|в)$/.test(t) || /(вариант|ответ|думаю|потому что|получилось|верно|правильно|согласен)/.test(t)) {
-    return "cheer";
+  if (isLikelyMistake(userText)) {
+    return "thinking";
   }
 
-  if (/\d/.test(t) && t.length > 6 && /(равно|получ|ответ|делю|умнож|слож|вычит)/.test(t)) {
+  if (isExplicitlyCorrect(userText)) {
     return "cheer";
-  }
-
-  if (/(понял|понятно|ясно|спасибо|круто|разобрался|теперь знаю|получается|молодец)/.test(t)) {
-    return "happy";
   }
 
   if (isQuickPhrase(userText)) {
-    return "hint";
-  }
-
-  if (state.selectedMode && (state.selectedMode.id === "homework" || state.selectedMode.id === "simple")) {
     return "hint";
   }
 
@@ -1172,8 +1150,8 @@ function resolveMentorEmotion(userText) {
     return "hint";
   }
 
-  if (t.length >= 12) {
-    return "happy";
+  if (t.length >= 8) {
+    return "thinking";
   }
 
   return "hint";
@@ -1369,6 +1347,8 @@ function resetEntryConversationUI() {
   state.entryChatActive = false;
   state.entryPhase = null;
   state.pendingEntryQuestion = "";
+  state.mentorLearnStep = 0;
+  state.mentorMistakeCount = 0;
 
   if (screens.start) {
     screens.start.classList.remove("entry--conversation");
@@ -1400,7 +1380,7 @@ function handleEntryNameReply(name) {
   saveProgress();
 
   setMentorEmotion("happy");
-  addMessage("bot", `Приятно познакомиться, ${trimmedName}!`, {
+  addMessage("bot", MENTOR_CHARACTER.nameGreeting(trimmedName), {
     botIcon: getMentorEmotionIcon("happy"),
   });
 
@@ -1418,7 +1398,7 @@ function handleEntryNameReply(name) {
 
   window.setTimeout(() => {
     setMentorEmotion("hint");
-    addMessage("bot", "Что сегодня оказалось непонятным?", {
+    addMessage("bot", MENTOR_CHARACTER.topicAsk, {
       botIcon: getMentorEmotionIcon("hint"),
     });
   }, 480);
@@ -1458,6 +1438,8 @@ function beginFromStartScreen() {
   state.entryChatActive = true;
   state.entryPhase = "asking_name";
   state.hasGreetedInChat = true;
+  state.mentorLearnStep = 0;
+  state.mentorMistakeCount = 0;
   state.sessionMessages = 0;
   state.sessionXpGained = 0;
 
@@ -1509,7 +1491,7 @@ function updateQuestUI() {
       const latest = state.achievements[state.achievements.length - 1];
       achievementText.textContent = `Последний значок: ${latest}`;
     } else {
-      achievementText.textContent = "Значки дня: пока тишина — первый шаг уже за углом.";
+      achievementText.textContent = "Значков пока нет.";
     }
   }
 }
@@ -1598,7 +1580,7 @@ function grantAchievement(title) {
   }
 
   state.achievements.push(title);
-  addMessage("system", `Ура! Новый значок в дневнике: ${title}`);
+  addMessage("system", `Значок: ${title}`);
 }
 
 function checkAchievements() {
@@ -1629,153 +1611,184 @@ function addXp(amount) {
       medalValue.textContent = "Смекалка";
     }
     setMentorEmotion("medal");
-    addMessage("system", "Есть медаль «Смекалка» — за то, что не сдался и докрутил разговор до ясности. Красота!");
+    addMessage("system", "Медаль «Смекалка».");
   }
 
   saveProgress();
 }
 
-/*
-  Генерация "бот-ответа" (имитация AI).
-  Выбираем случайный шаблон, чтобы реплики не были одинаковыми.
-*/
-function generateBotReply(subjectId) {
-  const voice = heroVoices[subjectId] || heroVoices.math;
-  const templates = voice.templates;
-  return templates[Math.floor(Math.random() * templates.length)];
-}
-
-/*
-  Оборачиваем ответ: короткая поддержка + вопрос в конце (кроме домашки — там свой сценарий).
-*/
-function withCoachTone(body, name, modeId) {
-  const n = name || "герой";
-  const cheers = [
-    `${n}, ты не на экзамене — мы просто крутим тему, как квест. Вперёд.`,
-    `Класс, ${n}, держишь фокус. Маленький шаг сейчас — большой плюс потом.`,
-    `${n}, я на связи: спрашивай, пока не станет спокойно в голове.`,
-    `Заметил, как ты формулируешь мысль, ${n}? Это уже прогресс.`,
-    `${n}, не гонись за идеалом — сначала ясность, потом скорость.`,
-    `Так, ${n}: дышим ровно и делаем следующий шаг без паники.`,
-  ];
-  const cheer = cheers[body.length % cheers.length];
-
-  if (modeId === "homework") {
-    return `${cheer}\n${body}`;
-  }
-
-  const closing =
-    modeId === "test"
-      ? "Напиши вариант A / B / C или одну фразу «я думаю так, потому что…»"
-      : "Коротко ответь одним сообщением — и пойдём дальше по цепочке.";
-
-  return `${cheer}\n${body}\n→ ${closing}`;
-}
-
-/*
-  Улучшенная генерация ответа в зависимости от выбранного режима урока.
-*/
 function isQuickPhrase(text) {
   return QUICK_PHRASES.includes(text.trim());
 }
 
-/*
-  Ответы на быстрые кнопки: коротко, по-игровому; в режиме домашки — без готовых решений.
-*/
-function generateQuickReply(phrase) {
-  const subj = state.selectedSubject;
-  const modeId = state.selectedMode ? state.selectedMode.id : "";
-  const name = state.studentName || "герой";
-  const topic = subj ? subj.name : "урок";
-  const id = subj ? subj.id : "math";
-
-  const wrapQuick = (text) => {
-    if (modeId === "homework") {
-      return text;
-    }
-    return `${text}\n→ ${name}, одним сообщением: что уже прояснилось и что ещё в лёгком тумане?`;
-  };
-
-  if (phrase === "Объясни проще") {
-    if (modeId === "homework") {
-      return `${name}, без готовых ответов. ① Перескажи условие двумя простыми фразами. ② Назови «колючее» место одним словом. Напиши — разверну это спокойнее.`;
-    }
-    const hints = {
-      math: "Давай упростим: что в задаче уже дано и чего хотят добиться — по одной короткой фразе. От этого почти всегда проще плясать.",
-      russian: "Выбери одно слово, которое цепляет: разберём корень и окончание — без давления на «идеально с первого раза».",
-      english: "Сначала смысл по-русски в одной строке, потом та же мысль тремя–пятью английскими словами. Не гонись за красотой — важно, чтобы было честно.",
-      history: "Сожми событие в три слова: кто, что сделал, что из этого вышло. Если застрянешь — скажи где, подхвачу.",
-      biology: "Назови один термин, который бесит, и сравни его с чем-то из жизни (кухня, спорт, питомец). Так термин обычно перестаёт быть «абракадаброй».",
-      geography: "Выбери один слой: климат, соседи, реки или рельеф. Опиши его одной фразой — карта станет спокойнее.",
-    };
-    return wrapQuick(hints[id] || hints.math);
-  }
-
-  if (phrase === "Дай пример") {
-    if (modeId === "homework") {
-      return `${name}, номер целиком не решу — так честнее для понимания. ① Что в задании: числа, слова или факты? ② Тема одним словом — подберу похожий тренажёр, не копию.`;
-    }
-    const examples = {
-      math: "Маленький пример рядом: 12 конфет делим на 3 друзей — по 4. Идея «делим поровну» часто прячется и в твоих задачах.",
-      russian: "Пара «бежать» / «бег»: первое — действие, второе — предмет. Прочитай вслух — ухо часто подсказывает, где что.",
-      english: "Микро-штука: I like → she likes — меняется хвостик, смысл тот же. Попробуй проговорить вслух.",
-      history: "Цепочка: причина → событие → следствие. Как три звена браслета: если одно выпало, вся история «ломается».",
-      biology: "Сердце можно представить как насос по трубкам: кровь гонит кислород — как вода по шлангу в саду.",
-      geography: "Два города на карте — как два мороженых: где слаще влажность, где суше ветер? Одно сравнение — и климат оживает.",
-    };
-    return wrapQuick(examples[id] || examples.math);
-  }
-
-  if (phrase === "Дай задание") {
-    if (modeId === "homework") {
-      return `${name}, мини-квест без списывания: ① что нужно найти? ② одна смелая догадка. ③ чего не хватает: формула, слово или факт? Ответь по пунктам — продолжим вопросами.`;
-    }
-    return wrapQuick(`Мини-квест «${topic}» на 3 минуты: ① что уже знаю… ② где туман… ③ какой полу-ответ чувствую. Одним сообщением — и поехали дальше.`);
-  }
-
-  return withCoachTone(generateBotReply(id), name, modeId);
+function getMentorLearnFlow() {
+  const subjectId = state.selectedSubject ? state.selectedSubject.id : "math";
+  return MENTOR_LEARN_FLOW[subjectId] || MENTOR_LEARN_FLOW.math;
 }
 
-function generateModeAwareReply(userText) {
-  if (!state.selectedSubject || !state.selectedMode) {
-    return "Я на связи. С какого предмета начнём сегодняшнюю сессию? Выберите предмет и режим — я подстроюсь под ваш стиль.";
+function getCurrentLearnStepKey() {
+  const index = Math.min(state.mentorLearnStep, LEARN_STEP_KEYS.length - 1);
+  return LEARN_STEP_KEYS[index];
+}
+
+function advanceLearnStep() {
+  state.mentorLearnStep = Math.min(state.mentorLearnStep + 1, LEARN_STEP_KEYS.length - 1);
+}
+
+function isAskForDirectAnswer(text) {
+  const normalized = text.trim().toLowerCase();
+  return /(сделай за меня|реши за меня|реши за мен|напиши за меня|дай ответ|напиши ответ|просто ответ|готовый ответ|скажи ответ|подставь ответ|реши это|сделай сам|ответь за меня|напиши решение|дай решение)/.test(
+    normalized
+  );
+}
+
+function isUncertainReply(text) {
+  const normalized = text.trim().toLowerCase();
+  return (
+    /^(не знаю|не понимаю|не понял|хз|непонятно|ничего|незнаю)$/.test(normalized) ||
+    normalized.length < 3
+  );
+}
+
+function isShortAck(text) {
+  const normalized = text.trim().toLowerCase();
+  return /^(да|ок|окей|ясно|понял|понятно|ага|угу|ладно|хорошо)$/.test(normalized);
+}
+
+function isLikelyMistake(text) {
+  const normalized = text.trim().toLowerCase();
+  return (
+    /(ошиб|неправиль|не верно|неверно|не то|не выходит|не сход|не получил|не уверен|сомнева|наверное нет|наверно нет|запутал|путаюсь|опять не то|что-то не так)/.test(
+      normalized
+    ) ||
+    (state.mentorLearnStep >= 3 && /^(нет|неа|не)$/.test(normalized))
+  );
+}
+
+function isExplicitlyCorrect(text) {
+  const normalized = text.trim().toLowerCase();
+  return (
+    /(правильно|верно|сошлось|вышло|получилось|точно так|это ответ)/.test(normalized) &&
+    !isLikelyMistake(text)
+  );
+}
+
+function sanitizeMentorText(text) {
+  let safe = text.trim();
+  MENTOR_CHARACTER.forbidden.forEach((pattern) => {
+    safe = safe.replace(pattern, "");
+  });
+  safe = safe.replace(/\s{2,}/g, " ").trim();
+  return safe || MENTOR_CHARACTER.topicAsk;
+}
+
+function mentorListen(userText) {
+  const listens = MENTOR_CHARACTER.listens;
+  return listens[userText.trim().length % listens.length];
+}
+
+function mentorMistakeLead(userText) {
+  const leads = MENTOR_CHARACTER.mistakeLeads;
+  const index = (state.mentorMistakeCount + userText.trim().length) % leads.length;
+  return leads[index];
+}
+
+function formatMentorReply(lead, question) {
+  const combined = question ? `${lead} ${question}` : lead;
+  return sanitizeMentorText(combined);
+}
+
+function withMentorListen(question, userText) {
+  return formatMentorReply(mentorListen(userText), question);
+}
+
+function withMentorMistake(question, userText) {
+  state.mentorMistakeCount += 1;
+  return formatMentorReply(mentorMistakeLead(userText), question);
+}
+
+function buildQuickMentorReply(phrase) {
+  const flow = getMentorLearnFlow();
+  if (phrase === "Объясни проще") {
+    return flow.hint1;
+  }
+  if (phrase === "Дай пример") {
+    return flow.example;
+  }
+  if (phrase === "Дай задание") {
+    return flow.askAgain;
+  }
+  return flow.nudge;
+}
+
+function buildLearnStepReply(stepKey, userText, flow) {
+  const text = flow[stepKey];
+
+  if (stepKey === "hint1" || stepKey === "hint2") {
+    return sanitizeMentorText(text);
   }
 
-  if (isQuickPhrase(userText)) {
-    return generateQuickReply(userText.trim());
+  if (stepKey === "explain") {
+    return sanitizeMentorText(text);
   }
 
-  const baseReply = generateBotReply(state.selectedSubject.id);
-  const modeId = state.selectedMode.id;
-  const name = state.studentName || "исследователь";
-
-  if (modeId === "quest") {
-    const core = `Квест «${state.selectedSubject.name}». Хороший этап. ${baseReply}`;
-    return withCoachTone(core, name, modeId);
+  if (stepKey === "problem") {
+    return sanitizeMentorText(text);
   }
 
-  if (modeId === "test") {
-    const core =
-      `Тест «${state.selectedSubject.name}». Выберите A / B / C или напишите «я за этот вариант, потому что…» одной фразой.\n` +
-      `${baseReply}`;
-    return withCoachTone(core, name, modeId);
+  return withMentorListen(text, userText);
+}
+
+function buildMentorReply(userText) {
+  const trimmed = userText.trim();
+  if (!trimmed) {
+    return sanitizeMentorText(MENTOR_CHARACTER.wait);
   }
 
-  if (modeId === "simple") {
-    const core = `Простыми словами: ① суть одной строкой ② без сложных терминов ③ на примере из жизни.\n${baseReply}`;
-    return withCoachTone(core, name, modeId);
+  const flow = getMentorLearnFlow();
+
+  if (isAskForDirectAnswer(trimmed)) {
+    state.mentorLearnStep = 1;
+    return sanitizeMentorText(`${MENTOR_CHARACTER.refuseDirectAnswer} ${flow.problem}`);
   }
 
-  const snippet = userText.slice(0, 48).trim() || "тема";
-  const hw =
-    `${name}, с домашкой я рядом, но готовый ответ с потолка не подставлю — так честнее для твоего мозга.\n` +
-    `① Где «туман» в номере — одним словом?\n② Что уже прояснилось хоть на каплю?\n③ Какой микро-шаг на 2 минуты попробуешь сам?\n` +
-    `(Про фразу «${snippet}…») Ответь по пунктам — дальше продолжим короткими вопросами, без списывания.`;
-  return withCoachTone(hw, name, modeId);
+  if (isQuickPhrase(trimmed)) {
+    return sanitizeMentorText(buildQuickMentorReply(trimmed));
+  }
+
+  if (isLikelyMistake(trimmed)) {
+    return withMentorMistake(flow.askAgain, trimmed);
+  }
+
+  if (isUncertainReply(trimmed)) {
+    return sanitizeMentorText(flow.nudge);
+  }
+
+  if (isShortAck(trimmed)) {
+    return sanitizeMentorText(flow.clarify);
+  }
+
+  if (state.mentorLearnStep === 0 && trimmed.length > 20) {
+    state.mentorLearnStep = 1;
+    const reply = buildLearnStepReply("clarify", trimmed, flow);
+    advanceLearnStep();
+    return reply;
+  }
+
+  const stepKey = getCurrentLearnStepKey();
+  const reply = buildLearnStepReply(stepKey, trimmed, flow);
+  advanceLearnStep();
+  return reply;
 }
 
 function buildBotReply(userText) {
-  return generateModeAwareReply(userText);
+  if (!state.selectedSubject) {
+    state.selectedSubject = subjects.find((item) => item.id === "math") || subjects[0];
+  }
+  if (!state.selectedMode) {
+    state.selectedMode = lessonModes.find((mode) => mode.id === "homework") || lessonModes[0];
+  }
+  return buildMentorReply(userText);
 }
 
 function runBotTurn(userText) {
@@ -1784,26 +1797,16 @@ function runBotTurn(userText) {
       return;
     }
 
-    if (!state.hasGreetedInChat) {
-      const introName = state.studentName || "друг";
-      const goal = state.learningGoal || "спокойно разобраться и чуть поиграть с темой";
-      setMentorEmotion("happy");
-      addMessage(
-        "bot",
-        `${heroGreetings[state.selectedSubject.id]}\n\n${introName}, держим в фокусе цель: «${goal}». Пойдём маленькими шагами — сначала твоя мысль, потом моя подсказка.`,
-        { botIcon: getMentorEmotionIcon("happy") }
-      );
-      state.hasGreetedInChat = true;
-    }
+    state.hasGreetedInChat = true;
 
     const reply = buildBotReply(userText);
     const emotion = resolveMentorEmotion(userText);
     setMentorEmotion(emotion);
-    addMessage("bot", reply, { botIcon: getMentorEmotionIcon(emotion) });
+    addMessage("bot", sanitizeMentorText(reply), { botIcon: getMentorEmotionIcon(emotion) });
 
     addXp(10);
     pulseXpBar();
-    showStepReward(state.selectedSubject.id);
+    showStepReward();
     trackWeakTopic();
     state.dailyGoalCount += 1;
     state.totalMessages += 1;
@@ -1882,6 +1885,8 @@ function startChat(subject) {
     chatInput.value = "";
   }
   state.hasGreetedInChat = false;
+  state.mentorLearnStep = 0;
+  state.mentorMistakeCount = 0;
   state.sessionMessages = 0;
   state.sessionXpGained = 0;
   if (parentReport) {
