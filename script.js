@@ -1,63 +1,95 @@
 "use strict";
 
+const ICONS = {
+  math: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 16l8-8M8 8h.01M16 16h.01"/></svg>',
+  russian: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+  english: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>',
+  history: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>',
+  biology: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c-4-3-7-7-7-11a7 7 0 0 1 14 0c0 4-3 8-7 11z"/><path d="M12 11v5"/></svg>',
+  geography: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>',
+  quest: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>',
+  test: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>',
+  simple: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
+  homework: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>',
+  level: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>',
+  streak: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>',
+  medals: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>',
+  growth: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg>',
+  subject: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>',
+  improve: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>',
+  repeat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>',
+  spark: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.5 5.5L19 10l-5.5 1.5L12 17l-1.5-5.5L5 10l5.5-1.5L12 3z"/></svg>',
+  bot: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M12 8V5M9 5h6"/><circle cx="9" cy="14" r="1"/><circle cx="15" cy="14" r="1"/></svg>',
+  happy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg>',
+  thinking: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01"/></svg>',
+  cheer: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>',
+  hint: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg>',
+  medal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M8.21 13.89L7 22l5-3 5 3-1.21-8.11"/></svg>',
+  parents: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+  students: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 3 3 6 3s6-1 6-3v-5"/></svg>',
+  schools: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-3"/><path d="M9 9v.01M9 12v.01M9 15v.01M9 18v.01"/></svg>',
+  tutors: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>',
+  play: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>',
+  arrow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>',
+};
+
+function iconHtml(name, className = "icon") {
+  const svg = ICONS[name] || ICONS.spark;
+  return `<span class="${className}" aria-hidden="true">${svg}</span>`;
+}
+
 /*
   Данные приложения:
   - Список предметов
-  - Герой и эмодзи для каждого предмета
-  - Наборы фраз для стилизованных ответов "AI-наставника"
+  - Иконки и наставники для каждого предмета
+  - Наборы фраз для стилизованных ответов AI-наставника
 */
 const subjects = [
   {
     id: "math",
     name: "Математика",
-    emoji: "➗",
-    hero: "Математик-маг",
-    heroEmoji: "🧙‍♂️",
+    icon: "math",
+    hero: "Наставник по математике",
     heroDescription:
       "Шаг за шагом раскрывает задачи: от «что дано» до ответа — без сухой зубрёжки формул.",
   },
   {
     id: "russian",
     name: "Русский язык",
-    emoji: "📚",
-    hero: "Хранитель Слова",
-    heroEmoji: "🛡️",
+    icon: "russian",
+    hero: "Наставник по русскому",
     heroDescription:
       "Правила и орфография как квест: корни, окончания и ясные фразы без страха перед ошибкой.",
   },
   {
     id: "english",
     name: "Английский язык",
-    emoji: "🇬🇧",
-    hero: "Путешественник по языкам",
-    heroEmoji: "🧭",
+    icon: "english",
+    hero: "Наставник по английскому",
     heroDescription:
       "Слова и короткие диалоги через мини-миссии: говорить увереннее, а не зубрить списки.",
   },
   {
     id: "history",
     name: "История",
-    emoji: "🏺",
-    hero: "Проводник во времени",
-    heroEmoji: "⏳",
+    icon: "history",
+    hero: "Наставник по истории",
     heroDescription:
       "События складываются в цепочку кто — где — когда и зачем, чтобы даты не «плавали».",
   },
   {
     id: "biology",
     name: "Биология",
-    emoji: "🧬",
-    hero: "Исследователь Жизни",
-    heroEmoji: "🔬",
+    icon: "biology",
+    hero: "Наставник по биологии",
     heroDescription:
       "Клетки, органы и природа — с образами из жизни, чтобы тема стала понятной, а не абстрактной.",
   },
   {
     id: "geography",
     name: "География",
-    emoji: "🗺️",
-    hero: "Картограф Приключений",
-    heroEmoji: "🧭",
+    icon: "geography",
+    hero: "Наставник по географии",
     heroDescription:
       "Карты, климат и страны слоями: сравниваем, находим закономерности, без бесконечных списков.",
   },
@@ -65,17 +97,17 @@ const subjects = [
 
 const heroGreetings = {
   math:
-    "Привет, я Математик-маг 🧙‍♂️ — рядом, чтобы не спешить и не терять нить. Готовый ответ сразу не выдам: разложим задачу вместе.",
+    "Привет. Я наставник по математике — помогу разложить задачу по шагам. Готовый ответ сразу не дам: разберём условие вместе.",
   russian:
-    "Я Хранитель Слова 🛡️ — помогу поймать правило без зубрёжки наизусть. Ошибка не приговор: её можно разобрать спокойно.",
+    "Я наставник по русскому — помогу поймать правило без зубрёжки. Ошибку можно разобрать спокойно и по делу.",
   english:
-    "Путешественник по языкам 🧭 на связи. Скажу коротко и по-человечески — и чуть потренируем фразу, без стыда за «не так».",
+    "Наставник по английскому на связи. Объясню коротко и по-человечески — и потренируем фразу без давления.",
   history:
-    "Проводник во времени ⏳ здесь. Даты запоминаются, когда есть история: развернём событие в цепочку «кто — что — почему».",
+    "Наставник по истории здесь. Даты запоминаются, когда есть логика: развернём событие в цепочку «кто — что — почему».",
   biology:
-    "Исследователь Жизни 🔬 на месте. Сложные слова разберём на знакомых картинках — как в настоящей лаборатории.",
+    "Наставник по биологии на месте. Сложные термины разберём на понятных примерах из жизни.",
   geography:
-    "Картограф 🗺️ с тобой. Карта перестанет «плавать», если смотреть слой за слоем — я подскажу, с какого начать.",
+    "Наставник по географии с вами. Карта станет яснее, если смотреть слой за слоем — подскажу, с чего начать.",
 };
 
 /*
@@ -202,27 +234,27 @@ const DAILY_MISSIONS = {
 };
 
 const QUEST_FLARES = [
-  "Щёлк — чекпоинт сохранён!",
-  "Опыт капает… кап… кап!",
-  "Лут сундука: уверенность +1!",
-  "Квестовая цепь не рвётся — ты в теме!",
-  "Бафф «Упорство» активирован!",
-  "Счётчик смелости растёт!",
-  "Ты только что заработал +1 к уровню знаний 🚀",
-  "Почти получилось — и это уже движение вперёд 👍",
-  "Маленькая победа: мозг запомнил паттерн.",
-  "Так держать — следующий шаг будет легче.",
-  "Я рядом: спрашивай, пока не станет ясно.",
+  "Прогресс сохранён.",
+  "Опыт начислен.",
+  "Уверенность растёт.",
+  "Вы держите фокус на теме.",
+  "Упорство отмечено.",
+  "Следующий шаг станет проще.",
+  "Небольшой, но устойчивый прогресс.",
+  "Почти получилось — это уже движение вперёд.",
+  "Паттерн начинает складываться.",
+  "Продолжайте в своём темпе.",
+  "Я рядом: спрашивайте, пока не станет ясно.",
 ];
 
 const QUICK_PHRASES = ["Объясни проще", "Дай пример", "Дай задание"];
 
 const MENTOR_EMOTIONS = {
-  happy: { emoji: "😊", label: "Молодец, так держать!" },
-  thinking: { emoji: "🤔", label: "Думаю вместе с тобой…" },
-  cheer: { emoji: "👏", label: "Отличный ход!" },
-  hint: { emoji: "💡", label: "Лови подсказку!" },
-  medal: { emoji: "😄", label: "Медаль — супер!" },
+  happy: { icon: "happy", label: "Хороший темп" },
+  thinking: { icon: "thinking", label: "Анализирую ответ…" },
+  cheer: { icon: "cheer", label: "Верное направление" },
+  hint: { icon: "hint", label: "Подсказка готова" },
+  medal: { icon: "medal", label: "Медаль получена" },
 };
 
 const AI_QUOTES_TODAY = [
@@ -298,10 +330,10 @@ const state = {
 const STORAGE_KEY = "ai-school-quest-progress-v1";
 
 const lessonModes = [
-  { id: "quest", name: "Квест", emoji: "🗺️", subtitle: "Миссии и шаги, как в игре" },
-  { id: "test", name: "Тест", emoji: "✅", subtitle: "Варианты ответа и «почему я так думаю»" },
-  { id: "simple", name: "Объясни простыми словами", emoji: "🧩", subtitle: "Коротко, на пальцах, с примером" },
-  { id: "homework", name: "Помощь с домашкой", emoji: "📘", subtitle: "Подсказки вопросами, без списывания" },
+  { id: "quest", name: "Квест", icon: "quest", subtitle: "Пошаговые миссии с чёткой целью" },
+  { id: "test", name: "Тест", icon: "test", subtitle: "Варианты ответа и обоснование" },
+  { id: "simple", name: "Объясни простыми словами", icon: "simple", subtitle: "Коротко, структурно, с примером" },
+  { id: "homework", name: "Помощь с домашкой", icon: "homework", subtitle: "Подсказки вопросами, без списывания" },
 ];
 
 // Получаем ссылки на DOM-элементы, с которыми будем работать.
@@ -425,7 +457,7 @@ function showStepReward(subjectId) {
   const voice = heroVoices[sid] || heroVoices.math;
   const buff = pickRandom(voice.buffs);
   const flare = pickRandom(QUEST_FLARES);
-  addMessage("system", `⭐ ${flare} ${buff}`);
+  addMessage("system", `${flare} ${buff}`);
 }
 
 /*
@@ -572,7 +604,7 @@ function getParentDashboardHTML() {
     <div class="parent-dash__grid">
       <article class="parent-dash__card">
         <div class="parent-dash__card-top">
-          <span class="parent-dash__icon" aria-hidden="true">⭐</span>
+          ${iconHtml("level", "parent-dash__icon")}
           <h4 class="parent-dash__card-title">Уровень ребёнка</h4>
         </div>
         <p class="parent-dash__value" data-dash="level">1</p>
@@ -583,7 +615,7 @@ function getParentDashboardHTML() {
       </article>
       <article class="parent-dash__card">
         <div class="parent-dash__card-top">
-          <span class="parent-dash__icon" aria-hidden="true">🔥</span>
+          ${iconHtml("streak", "parent-dash__icon")}
           <h4 class="parent-dash__card-title">Серия дней</h4>
         </div>
         <p class="parent-dash__value" data-dash="streak">0</p>
@@ -594,7 +626,7 @@ function getParentDashboardHTML() {
       </article>
       <article class="parent-dash__card">
         <div class="parent-dash__card-top">
-          <span class="parent-dash__icon" aria-hidden="true">🏆</span>
+          ${iconHtml("medals", "parent-dash__icon")}
           <h4 class="parent-dash__card-title">Получено медалей</h4>
         </div>
         <p class="parent-dash__value" data-dash="medals">0</p>
@@ -605,7 +637,7 @@ function getParentDashboardHTML() {
       </article>
       <article class="parent-dash__card">
         <div class="parent-dash__card-top">
-          <span class="parent-dash__icon" aria-hidden="true">📈</span>
+          ${iconHtml("growth", "parent-dash__icon")}
           <h4 class="parent-dash__card-title">Рост знаний</h4>
         </div>
         <p class="parent-dash__value" data-dash="growth">0%</p>
@@ -616,7 +648,7 @@ function getParentDashboardHTML() {
       </article>
       <article class="parent-dash__card parent-dash__card--wide">
         <div class="parent-dash__card-top">
-          <span class="parent-dash__icon" aria-hidden="true">📚</span>
+          ${iconHtml("subject", "parent-dash__icon")}
           <h4 class="parent-dash__card-title">Любимый предмет</h4>
         </div>
         <p class="parent-dash__value parent-dash__value--subject" data-dash="subject">—</p>
@@ -628,11 +660,11 @@ function getParentDashboardHTML() {
     </div>
     <div class="parent-dash__split">
       <div class="parent-dash__insight parent-dash__insight--good">
-        <h4 class="parent-dash__insight-title"><span aria-hidden="true">💪</span> Что улучшилось</h4>
+        <h4 class="parent-dash__insight-title">${iconHtml("improve", "parent-dash__insight-icon")} Что улучшилось</h4>
         <ul class="parent-dash__list" data-dash="improved-list"></ul>
       </div>
       <div class="parent-dash__insight parent-dash__insight--repeat">
-        <h4 class="parent-dash__insight-title"><span aria-hidden="true">📌</span> Что повторить</h4>
+        <h4 class="parent-dash__insight-title">${iconHtml("repeat", "parent-dash__insight-icon")} Что повторить</h4>
         <p class="parent-dash__repeat-text" data-dash="repeat">—</p>
         <div class="parent-dash__bar parent-dash__bar--repeat" data-dash-bar="repeat" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Зона для повторения">
           <div class="parent-dash__fill parent-dash__fill--repeat"></div>
@@ -863,7 +895,7 @@ function renderModeCards() {
     button.type = "button";
     button.className = "choice-card";
     button.innerHTML = `
-      <div class="choice-card__emoji">${mode.emoji}</div>
+      ${iconHtml(mode.icon, "choice-card__icon")}
       <div class="choice-card__title">${mode.name}</div>
       <div class="choice-card__subtitle">${mode.subtitle}</div>
     `;
@@ -1005,7 +1037,7 @@ function renderSubjectCards() {
     button.type = "button";
     button.className = "choice-card";
     button.innerHTML = `
-      <div class="choice-card__emoji">${subject.emoji}</div>
+      ${iconHtml(subject.icon, "choice-card__icon")}
       <div class="choice-card__title">${subject.name}</div>
       <div class="choice-card__subtitle">Нажми, чтобы выбрать</div>
     `;
@@ -1041,9 +1073,9 @@ function renderHeroGallery() {
       <div class="mentor-card__accent" aria-hidden="true"></div>
       ${isCurrent ? '<p class="mentor-card__hint">Твой выбор на прошлом шаге</p>' : ""}
       <div class="mentor-card__top">
-        <span class="mentor-card__avatar" aria-hidden="true">${subject.heroEmoji}</span>
+        <span class="mentor-card__avatar">${iconHtml(subject.icon, "mentor-card__avatar-icon")}</span>
         <div class="mentor-card__headlines">
-          <p class="mentor-card__subject-line"><span class="mentor-card__subject-emoji">${subject.emoji}</span> ${subject.name}</p>
+          <p class="mentor-card__subject-line">${iconHtml(subject.icon, "mentor-card__subject-icon")}<span>${subject.name}</span></p>
           <h3 class="mentor-card__hero-name">${subject.hero}</h3>
         </div>
       </div>
@@ -1065,16 +1097,16 @@ function renderHeroGallery() {
 
 const DEMO_MESSENGER_REPLIES = {
   "Объясни проще":
-    "Окей, упростим 🙂 Представь задачу как маршрут: точка А — что уже написано в условии, точка Б — чего хочешь добиться. Напиши А и Б по одной короткой фразе — дальше подскажу следующий шаг.",
+    "Упростим. Представьте задачу как маршрут: точка А — что уже написано в условии, точка Б — чего нужно добиться. Напишите А и Б по одной короткой фразе — дальше подскажу следующий шаг.",
   "Дай пример":
     "Вот пример «рядом», не из твоего номера: 12 наклеек делят на 4 альбома поровну — по 3 в каждый. Идея та же: делим целиком и смотрим, что остаётся. Какой у тебя похожий кусок в задаче?",
   "Дай задание":
     "Мини-квест на пару минут: одной строкой — что именно непонятно, и одна твоя догадка, даже если неуверенная. Я отвечу маленьким следующим шагом, без готового ответа в лоб.",
 };
 
-function getMentorEmotionEmoji(key) {
+function getMentorEmotionIcon(key) {
   const emotion = MENTOR_EMOTIONS[key] || MENTOR_EMOTIONS.happy;
-  return emotion.emoji;
+  return emotion.icon;
 }
 
 function setMentorEmotion(key, options = {}) {
@@ -1090,10 +1122,10 @@ function setMentorEmotion(key, options = {}) {
   }
 
   targets.forEach((el) => {
-    el.classList.remove("mentor-mood__emoji--pop");
+    el.classList.remove("mentor-mood__icon--pop");
     void el.offsetWidth;
-    el.textContent = emotion.emoji;
-    el.classList.add("mentor-mood__emoji--pop");
+    el.innerHTML = iconHtml(emotion.icon, "mentor-mood__icon-svg");
+    el.classList.add("mentor-mood__icon--pop");
   });
 
   if (mentorMoodLabel) {
@@ -1143,10 +1175,10 @@ function appendChatBubble(container, type, text, options = {}) {
     return;
   }
 
-  const botEmoji =
-    options.botEmoji ||
-    getMentorEmotionEmoji(state.mentorEmotion) ||
-    (state.selectedSubject ? state.selectedSubject.heroEmoji : "✨");
+  const botIcon =
+    options.botIcon ||
+    getMentorEmotionIcon(state.mentorEmotion) ||
+    (state.selectedSubject ? state.selectedSubject.icon : "bot");
 
   if (type === "system") {
     const row = document.createElement("div");
@@ -1175,7 +1207,7 @@ function appendChatBubble(container, type, text, options = {}) {
     const av = document.createElement("span");
     av.className = "msg-row__avatar msg-row__avatar--emotion";
     av.setAttribute("aria-hidden", "true");
-    av.textContent = botEmoji;
+    av.innerHTML = iconHtml(botIcon, "msg-row__avatar-icon");
     const bubble = document.createElement("div");
     bubble.className = "msg-bubble msg-bubble--bot";
     bubble.textContent = text;
@@ -1209,8 +1241,8 @@ function initDemoMessenger() {
   appendChatBubble(
     feed,
     "bot",
-    "Привет! Давай разберём вместе. Готовый ответ сразу не подставлю — зато проведу шаг за шагом, чтобы ты сам дошёл до сути.",
-    { botEmoji: getMentorEmotionEmoji("hint") }
+    "Давайте разберём вместе. Готовый ответ сразу не подставлю — проведу шаг за шагом, чтобы вы сами дошли до сути.",
+    { botIcon: getMentorEmotionIcon("hint") }
   );
   setMentorEmotion("hint", { syncDemo: true });
 
@@ -1225,7 +1257,7 @@ function initDemoMessenger() {
       window.setTimeout(() => {
         setMentorEmotion("hint", { syncDemo: true });
         appendChatBubble(feed, "bot", DEMO_MESSENGER_REPLIES[label], {
-          botEmoji: getMentorEmotionEmoji("hint"),
+          botIcon: getMentorEmotionIcon("hint"),
         });
       }, 450);
     });
@@ -1361,13 +1393,13 @@ function grantAchievement(title) {
 
 function checkAchievements() {
   if (state.dailyGoalCount >= 3) {
-    grantAchievement("Три сообщения за день — цель закрыта 🎯");
+    grantAchievement("Три сообщения за день — цель закрыта");
   }
   if (state.streakDays >= 3) {
-    grantAchievement("Три дня подряд заходишь — ритм героя 🔥");
+    grantAchievement("Три дня подряд — стабильный ритм");
   }
   if (state.totalMessages >= 10) {
-    grantAchievement("Десять осмысленных вопросов — любопытство на максимуме 💡");
+    grantAchievement("Десять осмысленных вопросов");
   }
 
   updateQuestUI();
@@ -1384,7 +1416,7 @@ function addXp(amount) {
   if (state.xp >= 30 && !state.medalAwarded) {
     state.medalAwarded = true;
     if (medalValue) {
-      medalValue.textContent = "Смекалка 🏅";
+      medalValue.textContent = "Смекалка";
     }
     setMentorEmotion("medal");
     addMessage("system", "Есть медаль «Смекалка» — за то, что не сдался и докрутил разговор до ясности. Красота!");
@@ -1456,7 +1488,7 @@ function generateQuickReply(phrase) {
 
   if (phrase === "Объясни проще") {
     if (modeId === "homework") {
-      return `${name}, без готовых ответов 💬 ① Перескажи условие двумя простыми фразами. ② Назови «колючее» место одним словом. Напиши — разверну это спокойнее.`;
+      return `${name}, без готовых ответов. ① Перескажи условие двумя простыми фразами. ② Назови «колючее» место одним словом. Напиши — разверну это спокойнее.`;
     }
     const hints = {
       math: "Давай упростим: что в задаче уже дано и чего хотят добиться — по одной короткой фразе. От этого почти всегда проще плясать.",
@@ -1471,7 +1503,7 @@ function generateQuickReply(phrase) {
 
   if (phrase === "Дай пример") {
     if (modeId === "homework") {
-      return `${name}, номер целиком не решу — это честь перед твоим мозгом 🙂 ① Что в задании: числа, слова или факты? ② Тема одним словом — подберу похожий тренажёр, не копию.`;
+      return `${name}, номер целиком не решу — так честнее для понимания. ① Что в задании: числа, слова или факты? ② Тема одним словом — подберу похожий тренажёр, не копию.`;
     }
     const examples = {
       math: "Маленький пример рядом: 12 конфет делим на 3 друзей — по 4. Идея «делим поровну» часто прячется и в твоих задачах.",
@@ -1496,7 +1528,7 @@ function generateQuickReply(phrase) {
 
 function generateModeAwareReply(userText) {
   if (!state.selectedSubject || !state.selectedMode) {
-    return "Я на связи 🙂 С какого предмета начнём сегодняшнюю миссию? Сверху выбери предмет и режим — и я подстроюсь под твой стиль.";
+    return "Я на связи. С какого предмета начнём сегодняшнюю сессию? Выберите предмет и режим — я подстроюсь под ваш стиль.";
   }
 
   if (isQuickPhrase(userText)) {
@@ -1508,19 +1540,19 @@ function generateModeAwareReply(userText) {
   const name = state.studentName || "исследователь";
 
   if (modeId === "quest") {
-    const core = `Квест «${state.selectedSubject.name}» 🗺️ Отличный чекпоинт. ${baseReply}`;
+    const core = `Квест «${state.selectedSubject.name}». Хороший этап. ${baseReply}`;
     return withCoachTone(core, name, modeId);
   }
 
   if (modeId === "test") {
     const core =
-      `Мини-арена «${state.selectedSubject.name}» 🙂 Выбери A / B / C или напиши «я за этот вариант, потому что…» одной фразой.\n` +
+      `Тест «${state.selectedSubject.name}». Выберите A / B / C или напишите «я за этот вариант, потому что…» одной фразой.\n` +
       `${baseReply}`;
     return withCoachTone(core, name, modeId);
   }
 
   if (modeId === "simple") {
-    const core = `Простыми словами 🧩 ① суть одной строкой ② без сложных терминов ③ на пальцах или на примере из жизни.\n${baseReply}`;
+    const core = `Простыми словами: ① суть одной строкой ② без сложных терминов ③ на примере из жизни.\n${baseReply}`;
     return withCoachTone(core, name, modeId);
   }
 
@@ -1549,7 +1581,7 @@ function runBotTurn(userText) {
       addMessage(
         "bot",
         `${heroGreetings[state.selectedSubject.id]}\n\n${introName}, держим в фокусе цель: «${goal}». Пойдём маленькими шагами — сначала твоя мысль, потом моя подсказка.`,
-        { botEmoji: getMentorEmotionEmoji("happy") }
+        { botIcon: getMentorEmotionIcon("happy") }
       );
       state.hasGreetedInChat = true;
     }
@@ -1557,7 +1589,7 @@ function runBotTurn(userText) {
     const reply = buildBotReply(userText);
     const emotion = resolveMentorEmotion(userText);
     setMentorEmotion(emotion);
-    addMessage("bot", reply, { botEmoji: getMentorEmotionEmoji(emotion) });
+    addMessage("bot", reply, { botIcon: getMentorEmotionIcon(emotion) });
 
     addXp(10);
     pulseXpBar();
@@ -1623,14 +1655,14 @@ function startChat(subject) {
     chatStudent.textContent = `${state.studentName || "Ученик"}, ${state.studentGrade || "5 класс"}`;
   }
   if (chatSubject) {
-    chatSubject.textContent = `${subject.emoji} ${subject.name}`;
+    chatSubject.textContent = subject.name;
   }
   if (chatHero) {
     chatHero.textContent = `${subject.hero}`;
   }
   setMentorEmotion("happy");
   if (chatMode) {
-    chatMode.textContent = state.selectedMode ? `${state.selectedMode.emoji} ${state.selectedMode.name}` : "—";
+    chatMode.textContent = state.selectedMode ? state.selectedMode.name : "—";
   }
 
   if (messages) {
@@ -1647,7 +1679,7 @@ function startChat(subject) {
   }
 
   if (medalValue) {
-    medalValue.textContent = state.medalAwarded ? "Смекалка 🏅" : "Пока нет";
+    medalValue.textContent = state.medalAwarded ? "Смекалка" : "Пока нет";
   }
   updateProgressUI();
   updateQuestUI();
