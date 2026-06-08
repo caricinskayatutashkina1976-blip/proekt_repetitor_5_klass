@@ -2,9 +2,8 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="description" content="AI School Quest — игровой AI-наставник для 5 класса: домашка без списывания, квесты, XP и понятные объяснения.">
-  <title>AI School Quest — учёба как квест</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI School Quest</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,89 +11,192 @@
     <div class="bg-decoration bg-decoration--top" aria-hidden="true"></div>
     <div class="bg-decoration bg-decoration--bottom" aria-hidden="true"></div>
 
-    <section id="screen-start" class="screen screen--active card">
-      <div class="screen__content">
-        <p class="badge">AI School Quest</p>
-        <h1 class="hero-title">Ребёнок не хочет делать уроки? Сделайте учёбу похожей на игру — с AI-наставником</h1>
-        <p class="subtitle hero-subtitle">
-          AI School Quest помогает ученику 5 класса разобрать домашку <strong>без списывания</strong>: подсказки, вопросы, XP, медали и объяснения простым языком.
-        </p>
-
-        <div class="hero-actions" role="group" aria-label="Действия на главной">
-          <button type="button" id="demo-lesson-btn" class="btn btn--primary btn--touch">Попробовать демо-урок</button>
-          <button type="button" id="parent-preview-btn" class="btn btn--ghost btn--hero-secondary btn--touch">Режим родителя</button>
+    <section id="screen-start" class="screen screen--active card screen-start">
+      <div class="hero-ambient" aria-hidden="true">
+        <div class="hero-ambient__gradient"></div>
+        <div class="hero-particles">
+          <span class="hero-particle hero-particle--1"></span>
+          <span class="hero-particle hero-particle--2"></span>
+          <span class="hero-particle hero-particle--3"></span>
+          <span class="hero-particle hero-particle--4"></span>
+          <span class="hero-particle hero-particle--5"></span>
+          <span class="hero-particle hero-particle--6"></span>
+          <span class="hero-particle hero-particle--7"></span>
+          <span class="hero-particle hero-particle--8"></span>
         </div>
+      </div>
 
-        <section class="why-kids" aria-label="Почему ребёнку понравится">
-          <h2 class="why-kids__title">Почему ребёнку зайдёт</h2>
-          <ul class="why-kids__list">
-            <li><strong>Учёба как игра</strong> — задания ощущаются как квест, а не бесконечная тетрадь.</li>
-            <li><strong>Герои-наставники</strong> — у каждого предмета свой персонаж и свой «голос».</li>
-            <li><strong>XP и медали</strong> — видно прогресс, хочется возвращаться и прокачиваться дальше.</li>
-            <li><strong>Домашка без готовых ответов</strong> — наставник направляет вопросами, а не делает за ученика.</li>
-          </ul>
-        </section>
+      <div class="screen__content screen__content--start">
+        <header class="start-hero" aria-label="AI School Quest — главный экран">
+          <div class="start-hero__copy">
+            <p class="badge badge--hero hero-fade hero-fade--1">AI School Quest</p>
+            <h1 class="hero-title hero-title--emotional">
+              <span class="hero-line hero-fade hero-fade--2">Ребёнок не хочет делать уроки?</span>
+              <span class="hero-line hero-line--accent hero-fade hero-fade--3">Пусть он проходит их как игру.</span>
+            </h1>
+            <p class="hero-subtitle hero-fade hero-fade--4">
+              AI School Quest — персональный AI-наставник, который помогает ученику 5 класса понимать материал, а не списывать ответы.
+            </p>
 
-        <section class="what-tutor" aria-label="Что умеет AI-репетитор">
-          <h2 class="what-tutor__title">Что умеет наставник</h2>
-          <ul class="what-tutor__list">
-            <li><strong>Объясняет простыми словами</strong> — шаг за шагом, без лишней «взрослой» воды.</li>
-            <li><strong>Превращает задачи в квесты</strong> — цель, подсказки и чуть-чуть приключения.</li>
-            <li><strong>Помогает с домашкой честно</strong> — наводящие вопросы вместо готового решения в лоб.</li>
-            <li><strong>Поддерживает мотивацию</strong> — XP и медали, чтобы было видно: «я реально продвигаюсь».</li>
-          </ul>
-        </section>
-
-        <section class="audience" aria-label="Кому подойдёт AI School Quest">
-          <h2 class="audience__title">Кому подойдёт AI School Quest?</h2>
-          <div class="audience__grid">
-            <article class="audience-card audience-card--parents">
-              <span class="audience-card__emoji" aria-hidden="true">👨‍👩‍👧</span>
-              <h3 class="audience-card__heading">Родителям</h3>
-              <p class="audience-card__text">Если ребёнок не хочет делать уроки — вернуть интерес через игру, квесты и наставника, который не «списывает» за него.</p>
-            </article>
-            <article class="audience-card audience-card--students">
-              <span class="audience-card__emoji" aria-hidden="true">🎒</span>
-              <h3 class="audience-card__heading">Ученикам 5 класса</h3>
-              <p class="audience-card__text">Чтобы учиться понятнее и интереснее: подсказки, вопросы и объяснения без занудной лекции.</p>
-            </article>
-            <article class="audience-card audience-card--schools">
-              <span class="audience-card__emoji" aria-hidden="true">🏫</span>
-              <h3 class="audience-card__heading">Онлайн-школам</h3>
-              <p class="audience-card__text">Как AI-наставник внутри обучения: поддержка между уроками, закрепление и мотивация в одном интерфейсе.</p>
-            </article>
-            <article class="audience-card audience-card--tutors">
-              <span class="audience-card__emoji" aria-hidden="true">📚</span>
-              <h3 class="audience-card__heading">Репетиторам</h3>
-              <p class="audience-card__text">Как помощник для объяснений и практики: формулировки, задания и шаги — вы остаётесь главным в уроке.</p>
-            </article>
-          </div>
-        </section>
-
-        <section class="demo-messenger" aria-label="Демонстрация чата с AI-наставником">
-          <div class="demo-messenger__head">
-            <span class="demo-messenger__avatar" aria-hidden="true">🧙‍♂️</span>
-            <div class="demo-messenger__head-text">
-              <p class="demo-messenger__peer">Математик-маг</p>
-              <p class="demo-messenger__meta">Математика · демо-чат</p>
+            <div class="hero-actions hero-fade hero-fade--5" role="group" aria-label="Действия на главной">
+              <button type="button" id="demo-lesson-btn" class="btn btn--primary btn--hero-cta btn--touch">
+                <span class="btn__icon" aria-hidden="true">✅</span>
+                Попробовать демо
+              </button>
+              <a href="#how-it-works" class="btn btn--ghost btn--hero-secondary btn--hero-cta btn--touch">
+                <span class="btn__icon" aria-hidden="true">✅</span>
+                Как это работает
+              </a>
             </div>
-            <span class="demo-messenger__online">в сети</span>
           </div>
-          <div id="demo-messenger-feed" class="demo-messenger__feed messages messages--messenger" aria-live="polite"></div>
-          <div class="demo-messenger__chips" role="group" aria-label="Быстрые фразы в демо">
-            <button type="button" class="demo-messenger__chip" data-demo-quick="Объясни проще">Объясни проще</button>
-            <button type="button" class="demo-messenger__chip" data-demo-quick="Дай пример">Дай пример</button>
-            <button type="button" class="demo-messenger__chip" data-demo-quick="Дай задание">Дай задание</button>
+
+          <figure class="start-hero__visual hero-fade hero-fade--6" aria-hidden="true">
+            <svg class="hero-illustration" viewBox="0 0 420 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ученик за ноутбуком и светящийся AI-наставник">
+              <defs>
+                <linearGradient id="heroGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#7f53ff" stop-opacity="0.35"/>
+                  <stop offset="100%" stop-color="#2ad1a3" stop-opacity="0.2"/>
+                </linearGradient>
+                <linearGradient id="mentorAura" x1="50%" y1="0%" x2="50%" y2="100%">
+                  <stop offset="0%" stop-color="#a78bfa"/>
+                  <stop offset="100%" stop-color="#5b7cfa"/>
+                </linearGradient>
+                <filter id="heroSoftGlow" x="-40%" y="-40%" width="180%" height="180%">
+                  <feGaussianBlur stdDeviation="12" result="blur"/>
+                  <feMerge>
+                    <feMergeNode in="blur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+              </defs>
+              <ellipse cx="210" cy="320" rx="150" ry="18" fill="#1f2453" opacity="0.06"/>
+              <rect x="48" y="248" width="200" height="12" rx="6" fill="#e8ecff"/>
+              <rect x="72" y="218" width="152" height="34" rx="8" fill="#f5f7ff" stroke="#d3d9ff" stroke-width="1.5"/>
+              <rect x="88" y="168" width="120" height="72" rx="10" fill="#fff" stroke="#c5cff8" stroke-width="2"/>
+              <rect x="96" y="176" width="104" height="56" rx="6" fill="#eef2ff"/>
+              <rect x="102" y="182" width="48" height="6" rx="3" fill="#5b7cfa" opacity="0.5"/>
+              <rect x="102" y="194" width="72" height="4" rx="2" fill="#7f53ff" opacity="0.35"/>
+              <rect x="102" y="204" width="60" height="4" rx="2" fill="#2ad1a3" opacity="0.45"/>
+              <circle cx="148" cy="148" r="28" fill="#ffe8d6"/>
+              <path d="M120 148c0-16 12-28 28-28s28 12 28 28" fill="#3d2a1f"/>
+              <ellipse cx="148" cy="182" rx="34" ry="28" fill="#5b7cfa"/>
+              <circle cx="138" cy="144" r="3" fill="#3d2a1f"/>
+              <circle cx="158" cy="144" r="3" fill="#3d2a1f"/>
+              <path d="M142 154q6 4 12 0" stroke="#3d2a1f" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <g class="hero-illustration__mentor" filter="url(#heroSoftGlow)">
+                <circle cx="300" cy="118" r="52" fill="url(#heroGlow)"/>
+                <circle cx="300" cy="108" r="38" fill="url(#mentorAura)" opacity="0.92"/>
+                <circle cx="300" cy="108" r="48" fill="none" stroke="#a78bfa" stroke-width="2" opacity="0.5"/>
+                <circle cx="288" cy="100" r="5" fill="#fff"/>
+                <circle cx="312" cy="100" r="5" fill="#fff"/>
+                <circle cx="288" cy="100" r="2" fill="#3a2db8"/>
+                <circle cx="312" cy="100" r="2" fill="#3a2db8"/>
+                <path d="M292 118q8 6 16 0" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <path d="M268 148c8-20 24-32 32-32s24 12 32 32" fill="url(#mentorAura)" opacity="0.85"/>
+                <rect x="276" y="168" width="48" height="8" rx="4" fill="#2ad1a3" opacity="0.7"/>
+                <text x="300" y="172" text-anchor="middle" font-size="7" font-family="Segoe UI, sans-serif" fill="#fff" font-weight="700">AI</text>
+              </g>
+              <path d="M248 130 Q274 108 288 100" stroke="#c4b5fd" stroke-width="2" fill="none" stroke-dasharray="4 6" opacity="0.7"/>
+              <circle cx="248" cy="130" r="4" fill="#2ad1a3"/>
+              <circle cx="288" cy="100" r="4" fill="#fd5e9a"/>
+            </svg>
+          </figure>
+        </header>
+
+        <blockquote id="ai-quote-today" class="ai-quote-card hero-fade hero-fade--7" aria-label="Сегодня AI говорит">
+          <div class="ai-quote-card__head">
+            <span class="ai-quote-card__icon" aria-hidden="true">✨</span>
+            <p class="ai-quote-card__label">Сегодня AI говорит</p>
           </div>
-          <p class="demo-messenger__note">Это демо: в настоящем уроке наставник смотрит на предмет, режим и твои ответы — как настоящий спутник по учёбе.</p>
-        </section>
+          <p id="ai-quote-text" class="ai-quote-card__text"></p>
+        </blockquote>
+
+        <div id="how-it-works" class="start-below-hero">
+          <section class="why-kids" aria-label="Почему ребёнку понравится">
+            <h2 class="why-kids__title">Почему ребёнку понравится</h2>
+            <ul class="why-kids__list">
+              <li><strong>Обучение как игра</strong> — задания ощущаются как квест, а не скучная тетрадь.</li>
+              <li><strong>Герои-наставники</strong> — каждый предмет со своим персонажем и стилем общения.</li>
+              <li><strong>XP и медали</strong> — видно прогресс, хочется возвращаться и «прокачиваться».</li>
+              <li><strong>Помощь с домашкой без готовых ответов</strong> — наставник ведёт вопросами, а не списывает за тебя.</li>
+            </ul>
+          </section>
+
+          <section class="what-tutor" aria-label="Что умеет AI-репетитор">
+            <h2 class="what-tutor__title">Что умеет AI-репетитор</h2>
+            <ul class="what-tutor__list">
+              <li><strong>Объясняет простыми словами</strong> — без «взрослой» воды, шаг за шагом.</li>
+              <li><strong>Превращает задания в квесты</strong> — цель, подсказки, чувство приключения.</li>
+              <li><strong>Помогает с домашкой без готового списывания</strong> — наводящие вопросы вместо готового решения.</li>
+              <li><strong>Мотивирует XP и медалями</strong> — ребёнок видит рост и хочет продолжать.</li>
+            </ul>
+          </section>
+
+          <section class="audience" aria-label="Кому подойдёт AI School Quest">
+            <h2 class="audience__title">Кому подойдёт</h2>
+            <div class="audience__grid">
+              <article class="audience-card audience-card--parents">
+                <span class="audience-card__emoji" aria-hidden="true">👨‍👩‍👧</span>
+                <h3 class="audience-card__heading">Родителям</h3>
+                <p class="audience-card__text">Dashboard с уровнем, серией дней, медалями и зонами для повторения — без микроменеджмента.</p>
+              </article>
+              <article class="audience-card audience-card--students">
+                <span class="audience-card__emoji" aria-hidden="true">🎒</span>
+                <h3 class="audience-card__heading">Ученикам</h3>
+                <p class="audience-card__text">Учёба как квест: герои, XP, медали и чат с наставником вместо скуки.</p>
+              </article>
+              <article class="audience-card audience-card--schools">
+                <span class="audience-card__emoji" aria-hidden="true">🏫</span>
+                <h3 class="audience-card__heading">Школам</h3>
+                <p class="audience-card__text">Демо-платформа для мотивации и самостоятельной работы с домашними заданиями.</p>
+              </article>
+              <article class="audience-card audience-card--tutors">
+                <span class="audience-card__emoji" aria-hidden="true">📋</span>
+                <h3 class="audience-card__heading">Репетиторам</h3>
+                <p class="audience-card__text">Готовый формат AI-наставника между живыми занятиями — с отчётом для родителей.</p>
+              </article>
+            </div>
+          </section>
+
+          <section id="for-parents" class="for-parents" aria-label="Для родителей">
+            <h2 class="for-parents__title">Для родителей</h2>
+            <p class="for-parents__text">
+              Видите прогресс ребёнка в одном Dashboard: уровень, серия дней, медали, рост знаний, любимый предмет — и что стоит повторить.
+            </p>
+            <div id="start-parent-dashboard"></div>
+            <button type="button" id="parent-preview-btn" class="btn btn--ghost btn--small" style="margin-top: 12px;">
+              Открыть полный отчёт
+            </button>
+          </section>
+
+          <section class="demo-messenger" aria-label="Демо-чат с наставником">
+            <div class="demo-messenger__head">
+              <div class="demo-messenger__avatar-wrap">
+                <span class="demo-messenger__avatar" aria-hidden="true">🧙‍♂️</span>
+                <span id="demo-mentor-mood" class="mentor-mood__emoji mentor-mood__emoji--badge" aria-hidden="true">😊</span>
+              </div>
+              <div>
+                <p class="demo-messenger__peer">Математик-маг</p>
+                <p class="demo-messenger__meta">AI-наставник · демо-режим</p>
+              </div>
+              <span class="demo-messenger__online">онлайн</span>
+            </div>
+            <div id="demo-messenger-feed" class="messages messages--messenger demo-messenger__feed"></div>
+            <div class="demo-messenger__chips">
+              <button type="button" class="demo-messenger__chip" data-demo-quick="Объясни проще">Объясни проще</button>
+              <button type="button" class="demo-messenger__chip" data-demo-quick="Дай пример">Дай пример</button>
+              <button type="button" class="demo-messenger__chip" data-demo-quick="Дай задание">Дай задание</button>
+            </div>
+            <p class="demo-messenger__note">Это демо: в настоящем уроке наставник смотрит на предмет, режим и твои ответы — как настоящий спутник по учёбе.</p>
+          </section>
+        </div>
       </div>
     </section>
 
     <section id="screen-onboarding" class="screen card">
       <div class="screen__content">
-        <h2>Начнём с маленькой анкеты</h2>
-        <p class="description">Имя, класс и цель — чтобы наставник говорил с ребёнком по делу, а не «как всем».</p>
+        <h2>Расскажи о себе</h2>
+        <p class="description">Это поможет сделать урок более персональным и полезным.</p>
         <form id="onboarding-form" class="onboarding-form">
           <label class="field">
             <span>Имя ребёнка</span>
@@ -114,7 +216,7 @@
               <option value="Учиться в игре">Учиться в игре</option>
             </select>
           </label>
-          <button type="submit" class="btn btn--primary btn--touch">В путь, квест!</button>
+          <button type="submit" class="btn btn--primary">Продолжить</button>
         </form>
       </div>
     </section>
@@ -122,7 +224,7 @@
     <section id="screen-subject" class="screen card">
       <div class="screen__content">
         <h2>Выбери предмет</h2>
-        <p class="description">Каждый предмет — своя миссия и свой настрой. Ткни карточку, с чего хочешь начать.</p>
+        <p class="description">Каждый предмет — это отдельная игровая миссия.</p>
         <div id="subject-grid" class="grid"></div>
       </div>
     </section>
@@ -130,18 +232,18 @@
     <section id="screen-hero" class="screen card">
       <div class="screen__content">
         <h2>Выбери героя-наставника</h2>
-        <p class="description">У каждого предмета свой герой. Можно остаться на том, кого подсказали на прошлом шаге, или переключиться — жми «Выбрать героя».</p>
-        <div id="hero-grid" class="mentor-grid" aria-label="Карточки героев по предметам"></div>
-        <button type="button" id="back-to-subject-btn" class="btn btn--ghost btn--touch-wide">← К предметам</button>
+        <p class="description">Твой герой будет помогать и подсказывать в чате.</p>
+        <div id="hero-grid" class="grid"></div>
+        <button type="button" id="back-to-subject-btn" class="btn btn--ghost">Назад к предметам</button>
       </div>
     </section>
 
     <section id="screen-mode" class="screen card">
       <div class="screen__content">
         <h2>Выбери режим урока</h2>
-        <p class="description">Режим задаёт тон: квест, тест, «простыми словами» или помощь с домашкой — как тебе сегодня комфортнее.</p>
+        <p class="description">Режим влияет на стиль объяснений и формат занятий.</p>
         <div id="mode-grid" class="grid"></div>
-        <button type="button" id="back-to-hero-btn" class="btn btn--ghost btn--touch-wide">← К героям</button>
+        <button type="button" id="back-to-hero-btn" class="btn btn--ghost">Назад к герою</button>
       </div>
     </section>
 
@@ -156,9 +258,15 @@
             <p class="chat-label">Предмет</p>
             <p id="chat-subject" class="chat-value">—</p>
           </div>
-          <div>
+          <div class="chat-header__mentor">
             <p class="chat-label">Наставник</p>
-            <p id="chat-hero" class="chat-value">—</p>
+            <div class="mentor-mood" id="mentor-mood" aria-live="polite">
+              <span id="mentor-mood-emoji" class="mentor-mood__emoji" aria-hidden="true">😊</span>
+              <div class="mentor-mood__info">
+                <p id="chat-hero" class="chat-value">—</p>
+                <p id="mentor-mood-label" class="mentor-mood__label">Рад помочь!</p>
+              </div>
+            </div>
           </div>
           <div>
             <p class="chat-label">Режим</p>
@@ -198,83 +306,26 @@
           <p id="achievement-text" class="quest-panel__achievement">Достижение: пока нет</p>
         </section>
 
-        <div id="messages" class="messages messages--messenger" aria-live="polite"></div>
+        <div id="messages" class="messages" aria-live="polite"></div>
 
-        <div class="quick-replies messenger-chips" role="group" aria-label="Быстрые действия">
-          <button type="button" class="messenger-chips__btn quick-replies__btn" data-quick="Объясни проще">Объясни проще</button>
-          <button type="button" class="messenger-chips__btn quick-replies__btn" data-quick="Дай пример">Дай пример</button>
-          <button type="button" class="messenger-chips__btn quick-replies__btn" data-quick="Дай задание">Дай задание</button>
+        <div class="quick-replies" role="group" aria-label="Быстрые действия">
+          <button type="button" class="btn btn--ghost btn--small quick-replies__btn" data-quick="Объясни проще">Объясни проще</button>
+          <button type="button" class="btn btn--ghost btn--small quick-replies__btn" data-quick="Дай пример">Дай пример</button>
+          <button type="button" class="btn btn--ghost btn--small quick-replies__btn" data-quick="Дай задание">Дай задание</button>
         </div>
 
-        <section
-          id="parent-report"
-          class="parent-dashboard parent-report--hidden"
-          aria-labelledby="parent-dashboard-title"
-        >
-          <header class="parent-dashboard__header">
-            <div class="parent-dashboard__head-text">
-              <h3 id="parent-dashboard-title" class="parent-dashboard__title">Родительский отчёт</h3>
-              <p id="report-session-lead" class="parent-dashboard__lead">—</p>
-            </div>
-            <span class="parent-dashboard__status" role="status">Учится без списывания</span>
-          </header>
-
-          <div class="parent-dashboard__metrics">
-            <div class="parent-dashboard__metric">
-              <span class="parent-dashboard__label">Прогресс XP</span>
-              <div class="parent-dashboard__xp-line">
-                <span class="parent-dashboard__value"><span id="report-xp-total">0</span> XP</span>
-                <span class="parent-dashboard__muted">+ <span id="report-xp-session">0</span> за сессию</span>
-              </div>
-              <div class="parent-dashboard__xp-bar" role="progressbar" aria-valuemin="0" aria-valuemax="50" aria-valuenow="0" aria-label="Прогресс до следующего уровня" id="report-xp-bar-wrap">
-                <div id="report-xp-bar-fill" class="parent-dashboard__xp-fill"></div>
-              </div>
-              <p class="parent-dashboard__level">
-                Уровень <strong id="report-level">1</strong>
-                <span class="parent-dashboard__muted"> · до следующего уровня</span>
-              </p>
-            </div>
-            <div class="parent-dashboard__metric">
-              <span class="parent-dashboard__label">Сообщений наставнику</span>
-              <p class="parent-dashboard__stat-big">
-                <span id="report-messages-session">0</span>
-                <span class="parent-dashboard__muted parent-dashboard__stat-note">в этой сессии</span>
-              </p>
-              <p class="parent-dashboard__muted">Всего за всё время: <strong id="report-messages-total">0</strong></p>
-            </div>
-          </div>
-
-          <div class="parent-dashboard__split">
-            <div class="parent-dashboard__panel">
-              <h4 class="parent-dashboard__panel-title">Сильные стороны</h4>
-              <ul id="report-strengths-list" class="parent-dashboard__list parent-dashboard__list--strengths"></ul>
-            </div>
-            <div class="parent-dashboard__panel">
-              <h4 class="parent-dashboard__panel-title">Что повторить</h4>
-              <p id="report-repeat" class="parent-dashboard__panel-text">—</p>
-              <p id="report-next-hint" class="parent-dashboard__hint"></p>
-            </div>
-          </div>
-
-          <div class="parent-dashboard__panel parent-dashboard__panel--plan">
-            <h4 class="parent-dashboard__panel-title">План на 7 дней</h4>
-            <ol id="report-plan-list" class="parent-dashboard__plan"></ol>
-          </div>
-        </section>
+        <section id="parent-report" class="parent-report parent-report--hidden"></section>
 
         <section class="cta">
-          <h3 class="cta__title">Готовы к такому наставнику?</h3>
+          <h3 class="cta__title">Хочу такого помощника</h3>
           <p class="cta__value">
-            Персональный AI в чате: ребёнок тренирует мышление, родители видят динамику, а готовые ответы «с потолка» не подставляются — только путь через вопросы и маленькие победы.
+            Персональный наставник в чате: ребёнок учится без стресса, родители видят прогресс, а ответы не «списываются» — формируется мышление и привычка доводить дело до конца.
           </p>
           <div class="cta__actions">
-            <button type="button" id="cta-ai-mentor-btn" class="btn btn--primary btn--small btn--touch">Хочу такого AI-наставника</button>
-            <button type="button" id="cta-demo-btn" class="btn btn--ghost btn--small cta__btn-secondary btn--touch">Получить демо</button>
+            <button type="button" id="cta-ai-mentor-btn" class="btn btn--primary btn--small">Хочу AI-наставника</button>
+            <button type="button" id="cta-demo-btn" class="btn btn--ghost btn--small cta__btn-secondary">Узнать подробнее</button>
           </div>
           <article id="offer-card" class="offer-card offer-card--hidden">
-            <p class="offer-card__invite">
-              Напишите мне, и я покажу, как такой AI-помощник может работать для вашего ребёнка, школы или онлайн-проекта.
-            </p>
             <p class="offer-card__lead">
               Наталья Царицинская — создаю AI-ассистентов, обучающих ботов и мини-сервисы для семьи, экспертов и бизнеса.
             </p>
@@ -283,9 +334,9 @@
           </article>
         </section>
 
-        <form id="chat-form" class="chat-form chat-form--messenger">
-          <input id="chat-input" type="text" placeholder="Напиши вопрос или фразу из урока…" autocomplete="off" maxlength="200" required>
-          <button type="submit" class="btn btn--primary btn--touch">Отправить</button>
+        <form id="chat-form" class="chat-form">
+          <input id="chat-input" type="text" placeholder="Напиши вопрос по теме..." autocomplete="off" maxlength="200" required>
+          <button type="submit" class="btn btn--primary">Отправить</button>
         </form>
       </div>
     </section>
@@ -300,7 +351,7 @@
           <li>Медаль: <strong id="lesson-medal-text">—</strong></li>
           <li>Сообщений наставнику: <strong id="lesson-messages-count">0</strong></li>
         </ul>
-        <button type="button" id="lesson-continue-btn" class="btn btn--primary btn--touch">Продолжить квест</button>
+        <button type="button" id="lesson-continue-btn" class="btn btn--primary">Продолжить обучение</button>
       </div>
     </section>
   </main>
@@ -312,20 +363,13 @@
         <h3>Режим родителя</h3>
         <button type="button" id="close-parent-modal-btn" class="btn btn--ghost btn--small">Закрыть</button>
       </div>
-      <p class="parent-modal__line">Ученик: <span id="parent-student-name">—</span></p>
-      <p class="parent-modal__line">Текущий предмет: <span id="parent-current-subject">—</span></p>
-      <p class="parent-modal__line">Текущий режим: <span id="parent-current-mode">—</span></p>
-      <p class="parent-modal__line">Прогресс по сессиям: <span id="parent-session-progress">—</span></p>
-      <p class="parent-modal__line">Зоны для повторения: <span id="parent-weak-topics">—</span></p>
-      <div class="parent-plan">
-        <h4>Рекомендованный план на 7 дней</h4>
-        <ul id="parent-plan-list"></ul>
-      </div>
+      <p id="parent-student-name" class="parent-modal__student"></p>
+      <div id="parent-modal-dashboard"></div>
     </article>
   </section>
 
   <footer class="site-footer">
-    AI School Quest · демо-продукт · Наталья Царицинская
+    Проект создан Натальей Царицинской | AI School Quest
   </footer>
 
   <script src="script.js"></script>

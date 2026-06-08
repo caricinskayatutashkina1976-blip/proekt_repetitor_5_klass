@@ -1,0 +1,94 @@
+    <section id="screen-start" class="screen screen--active card screen-start">
+      <div class="hero-ambient" aria-hidden="true">
+        <div class="hero-ambient__gradient"></div>
+        <div class="hero-particles">
+          <span class="hero-particle hero-particle--1"></span>
+          <span class="hero-particle hero-particle--2"></span>
+          <span class="hero-particle hero-particle--3"></span>
+          <span class="hero-particle hero-particle--4"></span>
+          <span class="hero-particle hero-particle--5"></span>
+          <span class="hero-particle hero-particle--6"></span>
+          <span class="hero-particle hero-particle--7"></span>
+          <span class="hero-particle hero-particle--8"></span>
+        </div>
+      </div>
+
+      <div class="screen__content screen__content--start">
+        <header class="start-hero" aria-label="AI School Quest — главный экран">
+          <div class="start-hero__copy">
+            <p class="badge badge--hero hero-fade hero-fade--1">AI School Quest</p>
+            <h1 class="hero-title hero-title--emotional">
+              <span class="hero-line hero-fade hero-fade--2">Ребёнок не хочет делать уроки?</span>
+              <span class="hero-line hero-line--accent hero-fade hero-fade--3">Пусть он проходит их как игру.</span>
+            </h1>
+            <p class="hero-subtitle hero-fade hero-fade--4">
+              AI School Quest — персональный AI-наставник, который помогает ученику 5 класса понимать материал, а не списывать ответы.
+            </p>
+
+            <div class="hero-actions hero-fade hero-fade--5" role="group" aria-label="Действия на главной">
+              <button type="button" id="demo-lesson-btn" class="btn btn--primary btn--hero-cta btn--touch">
+                <span class="btn__icon" aria-hidden="true">✅</span>
+                Попробовать демо
+              </button>
+              <a href="#how-it-works" class="btn btn--ghost btn--hero-secondary btn--hero-cta btn--touch">
+                <span class="btn__icon" aria-hidden="true">✅</span>
+                Как это работает
+              </a>
+            </div>
+          </div>
+
+          <figure class="start-hero__visual hero-fade hero-fade--6" aria-hidden="true">
+            <svg class="hero-illustration" viewBox="0 0 420 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ученик за ноутбуком и светящийся AI-наставник">
+              <defs>
+                <linearGradient id="heroGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#7f53ff" stop-opacity="0.35"/>
+                  <stop offset="100%" stop-color="#2ad1a3" stop-opacity="0.2"/>
+                </linearGradient>
+                <linearGradient id="mentorAura" x1="50%" y1="0%" x2="50%" y2="100%">
+                  <stop offset="0%" stop-color="#a78bfa"/>
+                  <stop offset="100%" stop-color="#5b7cfa"/>
+                </linearGradient>
+                <filter id="heroSoftGlow" x="-40%" y="-40%" width="180%" height="180%">
+                  <feGaussianBlur stdDeviation="12" result="blur"/>
+                  <feMerge>
+                    <feMergeNode in="blur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+              </defs>
+              <ellipse cx="210" cy="320" rx="150" ry="18" fill="#1f2453" opacity="0.06"/>
+              <rect x="48" y="248" width="200" height="12" rx="6" fill="#e8ecff"/>
+              <rect x="72" y="218" width="152" height="34" rx="8" fill="#f5f7ff" stroke="#d3d9ff" stroke-width="1.5"/>
+              <rect x="88" y="168" width="120" height="72" rx="10" fill="#fff" stroke="#c5cff8" stroke-width="2"/>
+              <rect x="96" y="176" width="104" height="56" rx="6" fill="#eef2ff"/>
+              <rect x="102" y="182" width="48" height="6" rx="3" fill="#5b7cfa" opacity="0.5"/>
+              <rect x="102" y="194" width="72" height="4" rx="2" fill="#7f53ff" opacity="0.35"/>
+              <rect x="102" y="204" width="60" height="4" rx="2" fill="#2ad1a3" opacity="0.45"/>
+              <circle cx="148" cy="148" r="28" fill="#ffe8d6"/>
+              <path d="M120 148c0-16 12-28 28-28s28 12 28 28" fill="#3d2a1f"/>
+              <ellipse cx="148" cy="182" rx="34" ry="28" fill="#5b7cfa"/>
+              <circle cx="138" cy="144" r="3" fill="#3d2a1f"/>
+              <circle cx="158" cy="144" r="3" fill="#3d2a1f"/>
+              <path d="M142 154q6 4 12 0" stroke="#3d2a1f" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <g class="hero-illustration__mentor" filter="url(#heroSoftGlow)">
+                <circle cx="300" cy="118" r="52" fill="url(#heroGlow)"/>
+                <circle cx="300" cy="108" r="38" fill="url(#mentorAura)" opacity="0.92"/>
+                <circle cx="300" cy="108" r="48" fill="none" stroke="#a78bfa" stroke-width="2" opacity="0.5"/>
+                <circle cx="288" cy="100" r="5" fill="#fff"/>
+                <circle cx="312" cy="100" r="5" fill="#fff"/>
+                <circle cx="288" cy="100" r="2" fill="#3a2db8"/>
+                <circle cx="312" cy="100" r="2" fill="#3a2db8"/>
+                <path d="M292 118q8 6 16 0" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <path d="M268 148c8-20 24-32 32-32s24 12 32 32" fill="url(#mentorAura)" opacity="0.85"/>
+                <rect x="276" y="168" width="48" height="8" rx="4" fill="#2ad1a3" opacity="0.7"/>
+                <text x="300" y="172" text-anchor="middle" font-size="7" font-family="Segoe UI, sans-serif" fill="#fff" font-weight="700">AI</text>
+              </g>
+              <path d="M248 130 Q274 108 288 100" stroke="#c4b5fd" stroke-width="2" fill="none" stroke-dasharray="4 6" opacity="0.7"/>
+              <circle cx="248" cy="130" r="4" fill="#2ad1a3"/>
+              <circle cx="288" cy="100" r="4" fill="#fd5e9a"/>
+            </svg>
+          </figure>
+        </header>
+
+        <div id="how-it-works" class="start-below-hero">
+        <section class="why-kids" aria-label="Почему ребёнку понравится">

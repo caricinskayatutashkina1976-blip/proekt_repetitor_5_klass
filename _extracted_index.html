@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI School Quest</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <div class="bg-decoration bg-decoration--top" aria-hidden="true"></div>
+    <div class="bg-decoration bg-decoration--bottom" aria-hidden="true"></div>
+
+    <section id="screen-start" class="screen screen--active card">
+      <div class="screen__content">
+        <p class="badge">AI School Quest</p>
+        <h1>AI School Quest</h1>
+        <p class="subtitle">Учёба как игра с AI-наставником</p>
+        <p class="description">
+          Выбери школьный предмет, познакомься с героем-наставником и проходи учебный квест в формате дружелюбного чата.
+        </p>
+        <button type="button" id="start-btn" class="btn btn--primary">Начать приключение</button>
+      </div>
+    </section>
+
+    <section id="screen-onboarding" class="screen card">
+      <div class="screen__content">
+        <h2>Расскажи о себе</h2>
+        <p class="description">Это поможет сделать урок более персональным и полезным.</p>
+        <form id="onboarding-form" class="onboarding-form">
+          <label class="field">
+            <span>Имя ребёнка</span>
+            <input id="student-name-input" type="text" maxlength="30" placeholder="Например, Миша" required>
+          </label>
+          <label class="field">
+            <span>Класс</span>
+            <input id="student-grade-input" type="text" maxlength="20" placeholder="Например, 5А" required>
+          </label>
+          <label class="field">
+            <span>Цель обучения</span>
+            <select id="learning-goal-select" required>
+              <option value="">Выбери цель</option>
+              <option value="Домашка">Домашка</option>
+              <option value="Подготовка к контрольной">Подготовка к контрольной</option>
+              <option value="Подтянуть знания">Подтянуть знания</option>
+              <option value="Учиться в игре">Учиться в игре</option>
+            </select>
+          </label>
+          <button type="submit" class="btn btn--primary">Продолжить</button>
+        </form>
+      </div>
+    </section>
+
+    <section id="screen-subject" class="screen card">
+      <div class="screen__content">
+        <h2>Выбери предмет</h2>
+        <p class="description">Каждый предмет — это отдельная игровая миссия.</p>
+        <div id="subject-grid" class="grid"></div>
+      </div>
+    </section>
+
+    <section id="screen-hero" class="screen card">
+      <div class="screen__content">
+        <h2>Выбери героя-наставника</h2>
+        <p class="description">Твой герой будет помогать и подсказывать в чате.</p>
+        <div id="hero-grid" class="grid"></div>
+        <button type="button" id="back-to-subject-btn" class="btn btn--ghost">Назад к предметам</button>
+      </div>
+    </section>
+
+    <section id="screen-mode" class="screen card">
+      <div class="screen__content">
+        <h2>Выбери режим урока</h2>
+        <p class="description">Режим влияет на стиль объяснений и формат занятий.</p>
+        <div id="mode-grid" class="grid"></div>
+        <button type="button" id="back-to-hero-btn" class="btn btn--ghost">Назад к герою</button>
+      </div>
+    </section>
+
+    <section id="screen-chat" class="screen card">
+      <div class="screen__content screen__content--chat">
+        <header class="chat-header">
+          <div>
+            <p class="chat-label">Ученик</p>
+            <p id="chat-student" class="chat-value">—</p>
+          </div>
+          <div>
+            <p class="chat-label">Предмет</p>
+            <p id="chat-subject" class="chat-value">—</p>
+          </div>
+          <div>
+            <p class="chat-label">Наставник</p>
+            <p id="chat-hero" class="chat-value">—</p>
+          </div>
+          <div>
+            <p class="chat-label">Режим</p>
+            <p id="chat-mode" class="chat-value">—</p>
+          </div>
+        </header>
+
+        <div class="chat-actions">
+          <button type="button" id="change-hero-btn" class="btn btn--ghost btn--small">Сменить героя</button>
+          <button type="button" id="change-subject-btn" class="btn btn--ghost btn--small">Сменить предмет</button>
+          <button type="button" id="change-mode-btn" class="btn btn--ghost btn--small">Сменить режим</button>
+          <button type="button" id="parent-mode-btn" class="btn btn--ghost btn--small">Режим родителя</button>
+          <button type="button" id="soft-reset-btn" class="btn btn--ghost btn--small">Мягкий сброс</button>
+          <button type="button" id="reset-progress-btn" class="btn btn--danger btn--small">Сбросить прогресс</button>
+        </div>
+
+        <section class="progress">
+          <h3>Прогресс квеста</h3>
+          <div class="progress-stats">
+            <p>Уровень: <span id="level-value">1</span></p>
+            <p>XP: <span id="xp-value">0</span></p>
+            <p>Медаль: <span id="medal-value">Пока нет</span></p>
+          </div>
+          <div class="xp-bar">
+            <div id="xp-bar-fill" class="xp-bar__fill"></div>
+          </div>
+        </section>
+
+        <section class="quest-panel">
+          <h3>Квест-дневник</h3>
+          <div class="quest-panel__stats">
+            <p>Серия дней: <span id="streak-value">0</span></p>
+            <p>Ежедневная цель: <span id="daily-goal-value">0/3</span></p>
+          </div>
+          <p id="daily-task-text" class="quest-panel__task">Задание дня: —</p>
+          <p id="achievement-text" class="quest-panel__achievement">Достижение: пока нет</p>
+        </section>
+
+        <div id="messages" class="messages" aria-live="polite"></div>
+
+        <section id="parent-report" class="parent-report parent-report--hidden">
+          <h3>Родительский отчёт</h3>
+          <p>Предмет: <span id="report-subject">—</span></p>
+          <p>Активность ученика: <span id="report-activity">—</span></p>
+          <p>XP: <span id="report-xp">0</span></p>
+          <p>Рекомендация: <span id="report-recommendation">—</span></p>
+        </section>
+
+        <form id="chat-form" class="chat-form">
+          <input id="chat-input" type="text" placeholder="Напиши вопрос по теме..." autocomplete="off" maxlength="200" required>
+          <button type="submit" class="btn btn--primary">Отправить</button>
+        </form>
+
+        <section class="cta">
+          <h3>Хотите такого AI-репетитора для своего ребёнка?</h3>
+          <button type="button" id="show-offer-btn" class="btn btn--primary btn--small">Оставить заявку</button>
+          <article id="offer-card" class="offer-card offer-card--hidden">
+            Наталья Царицинская — создаю AI-ассистентов, обучающих ботов и сервисы под задачи семьи, экспертов и бизнеса.
+          </article>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <section id="parent-modal" class="parent-modal parent-modal--hidden" aria-hidden="true">
+    <div class="parent-modal__backdrop"></div>
+    <article class="parent-modal__content">
+      <div class="parent-modal__header">
+        <h3>Режим родителя</h3>
+        <button type="button" id="close-parent-modal-btn" class="btn btn--ghost btn--small">Закрыть</button>
+      </div>
+      <p class="parent-modal__line">Ученик: <span id="parent-student-name">—</span></p>
+      <p class="parent-modal__line">Текущий предмет: <span id="parent-current-subject">—</span></p>
+      <p class="parent-modal__line">Текущий режим: <span id="parent-current-mode">—</span></p>
+      <p class="parent-modal__line">Прогресс по сессиям: <span id="parent-session-progress">—</span></p>
+      <p class="parent-modal__line">Зоны для повторения: <span id="parent-weak-topics">—</span></p>
+      <div class="parent-plan">
+        <h4>Рекомендованный план на 7 дней</h4>
+        <ul id="parent-plan-list"></ul>
+      </div>
+    </article>
+  </section>
+
+  <footer class="site-footer">
+    Проект создан Натальей Царицинской | AI School Quest
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

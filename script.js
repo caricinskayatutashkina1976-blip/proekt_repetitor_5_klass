@@ -217,6 +217,47 @@ const QUEST_FLARES = [
 
 const QUICK_PHRASES = ["Объясни проще", "Дай пример", "Дай задание"];
 
+const MENTOR_EMOTIONS = {
+  happy: { emoji: "😊", label: "Молодец, так держать!" },
+  thinking: { emoji: "🤔", label: "Думаю вместе с тобой…" },
+  cheer: { emoji: "👏", label: "Отличный ход!" },
+  hint: { emoji: "💡", label: "Лови подсказку!" },
+  medal: { emoji: "😄", label: "Медаль — супер!" },
+};
+
+const AI_QUOTES_TODAY = [
+  "Сегодня мы не ищем лёгкий путь. Мы ищем понятный.",
+  "Ошибки — это подсказки, а не наказание.",
+  "Я не буду делать домашку за тебя. Но помогу её понять.",
+  "Каждый правильный ответ делает тебя сильнее.",
+  "Ты можешь больше, чем думаешь.",
+  "Сомневаться — нормально. Главное — не останавливаться на сомнении.",
+  "Один маленький шаг сегодня важнее идеального ответа завтра.",
+  "Вопрос — это не слабость. Это ключ к пониманию.",
+  "Учиться можно в своём темпе — быстрее не значит лучше.",
+  "Сегодняшняя задача: не угадать, а разобраться.",
+  "Если что-то непонятно — это начало квеста, а не тупик.",
+  "Твоя смекалка растёт каждый раз, когда ты пробуешь сам.",
+  "Правило запоминается, когда ты его проговариваешь своими словами.",
+  "Сложное становится простым — по кусочкам, шаг за шагом.",
+  "Я рядом, чтобы подсветить путь. Идти по нему — твоя суперсила.",
+  "Не бойся ошибиться: ошибка показывает, куда смотреть дальше.",
+  "Сегодня хороший день, чтобы понять то, что вчера казалось «невозможным».",
+  "Умный ученик не тот, кто всё знает. А тот, кто не сдаётся.",
+  "Домашка — не битва. Это тренировка для твоего мозга.",
+  "Каждый ответ, который ты нашёл сам, — настоящий трофей.",
+  "Спроси «почему?» один раз — и тема станет интереснее.",
+  "Ты уже молодец: ты здесь и готов учиться.",
+  "Понимание важнее скорости. Спешка — друг ошибок.",
+  "Сегодня можно начать с самого простого вопроса.",
+  "Твоя цель — не идеальная пятёрка, а уверенность в теме.",
+  "Даже короткая сессия — шаг вперёд. Шаги складываются в путь.",
+  "Если застрял — скажи об этом. Вместе найдём следующий ход.",
+  "Учёба как игра: проигрыш — это подсказка, как пройти уровень.",
+  "Сегодня AI верит в тебя. Попробуй поверить тоже.",
+  "Главное — не сравнивать себя с другими, а сравнивать с собой вчерашним.",
+];
+
 const LESSON_MOTIVATIONS = [
   "Ты не сдаёшься — это редкий и ценный навык.",
   "Каждый вопрос открывает следующую дверь. Ты их уже открыл несколько.",
@@ -251,6 +292,7 @@ const state = {
   sessionXpGained: 0,
   sessionHistory: [],
   weakTopics: {},
+  mentorEmotion: "happy",
 };
 
 const STORAGE_KEY = "ai-school-quest-progress-v1";
@@ -275,6 +317,7 @@ const screens = {
 
 const demoLessonBtn = document.getElementById("demo-lesson-btn");
 const parentPreviewBtn = document.getElementById("parent-preview-btn");
+const aiQuoteText = document.getElementById("ai-quote-text");
 const onboardingForm = document.getElementById("onboarding-form");
 const studentNameInput = document.getElementById("student-name-input");
 const studentGradeInput = document.getElementById("student-grade-input");
@@ -294,6 +337,9 @@ const resetProgressBtn = document.getElementById("reset-progress-btn");
 const chatStudent = document.getElementById("chat-student");
 const chatSubject = document.getElementById("chat-subject");
 const chatHero = document.getElementById("chat-hero");
+const mentorMoodEmoji = document.getElementById("mentor-mood-emoji");
+const mentorMoodLabel = document.getElementById("mentor-mood-label");
+const demoMentorMood = document.getElementById("demo-mentor-mood");
 const chatMode = document.getElementById("chat-mode");
 const messages = document.getElementById("messages");
 const chatForm = document.getElementById("chat-form");
@@ -308,29 +354,14 @@ const dailyGoalValue = document.getElementById("daily-goal-value");
 const dailyTaskText = document.getElementById("daily-task-text");
 const achievementText = document.getElementById("achievement-text");
 const parentReport = document.getElementById("parent-report");
-const reportSessionLead = document.getElementById("report-session-lead");
-const reportXpTotal = document.getElementById("report-xp-total");
-const reportXpSession = document.getElementById("report-xp-session");
-const reportLevel = document.getElementById("report-level");
-const reportXpBarFill = document.getElementById("report-xp-bar-fill");
-const reportXpBarWrap = document.getElementById("report-xp-bar-wrap");
-const reportMessagesSession = document.getElementById("report-messages-session");
-const reportMessagesTotal = document.getElementById("report-messages-total");
-const reportRepeat = document.getElementById("report-repeat");
-const reportNextHint = document.getElementById("report-next-hint");
-const reportStrengthsList = document.getElementById("report-strengths-list");
-const reportPlanList = document.getElementById("report-plan-list");
+const startParentDashboard = document.getElementById("start-parent-dashboard");
+const parentModalDashboard = document.getElementById("parent-modal-dashboard");
 const ctaAiMentorBtn = document.getElementById("cta-ai-mentor-btn");
 const ctaDemoBtn = document.getElementById("cta-demo-btn");
 const offerCard = document.getElementById("offer-card");
 const parentModal = document.getElementById("parent-modal");
 const closeParentModalBtn = document.getElementById("close-parent-modal-btn");
 const parentStudentName = document.getElementById("parent-student-name");
-const parentCurrentSubject = document.getElementById("parent-current-subject");
-const parentCurrentMode = document.getElementById("parent-current-mode");
-const parentSessionProgress = document.getElementById("parent-session-progress");
-const parentWeakTopics = document.getElementById("parent-weak-topics");
-const parentPlanList = document.getElementById("parent-plan-list");
 const endLessonBtn = document.getElementById("end-lesson-btn");
 const lessonContinueBtn = document.getElementById("lesson-continue-btn");
 const lessonXpEarned = document.getElementById("lesson-xp-earned");
@@ -529,37 +560,256 @@ function buildWeeklyPlan() {
   ];
 }
 
+function getParentDashboardHTML() {
+  return `
+    <header class="parent-dash__header">
+      <div class="parent-dash__head-text">
+        <h3 id="parent-dash-title" class="parent-dash__title">Для родителей</h3>
+        <p class="parent-dash__lead" data-dash="lead">—</p>
+      </div>
+      <span class="parent-dash__badge">Dashboard</span>
+    </header>
+    <div class="parent-dash__grid">
+      <article class="parent-dash__card">
+        <div class="parent-dash__card-top">
+          <span class="parent-dash__icon" aria-hidden="true">⭐</span>
+          <h4 class="parent-dash__card-title">Уровень ребёнка</h4>
+        </div>
+        <p class="parent-dash__value" data-dash="level">1</p>
+        <div class="parent-dash__bar" data-dash-bar="level" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Прогресс до следующего уровня">
+          <div class="parent-dash__fill parent-dash__fill--level"></div>
+        </div>
+        <p class="parent-dash__hint">до следующего уровня</p>
+      </article>
+      <article class="parent-dash__card">
+        <div class="parent-dash__card-top">
+          <span class="parent-dash__icon" aria-hidden="true">🔥</span>
+          <h4 class="parent-dash__card-title">Серия дней</h4>
+        </div>
+        <p class="parent-dash__value" data-dash="streak">0</p>
+        <div class="parent-dash__bar" data-dash-bar="streak" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Серия дней">
+          <div class="parent-dash__fill parent-dash__fill--streak"></div>
+        </div>
+        <p class="parent-dash__hint">цель — 7 дней подряд</p>
+      </article>
+      <article class="parent-dash__card">
+        <div class="parent-dash__card-top">
+          <span class="parent-dash__icon" aria-hidden="true">🏆</span>
+          <h4 class="parent-dash__card-title">Получено медалей</h4>
+        </div>
+        <p class="parent-dash__value" data-dash="medals">0</p>
+        <div class="parent-dash__bar" data-dash-bar="medals" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Медали и значки">
+          <div class="parent-dash__fill parent-dash__fill--medals"></div>
+        </div>
+        <p class="parent-dash__hint">медали за упорство</p>
+      </article>
+      <article class="parent-dash__card">
+        <div class="parent-dash__card-top">
+          <span class="parent-dash__icon" aria-hidden="true">📈</span>
+          <h4 class="parent-dash__card-title">Рост знаний</h4>
+        </div>
+        <p class="parent-dash__value" data-dash="growth">0%</p>
+        <div class="parent-dash__bar" data-dash-bar="growth" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Рост знаний">
+          <div class="parent-dash__fill parent-dash__fill--growth"></div>
+        </div>
+        <p class="parent-dash__hint">динамика XP и диалога</p>
+      </article>
+      <article class="parent-dash__card parent-dash__card--wide">
+        <div class="parent-dash__card-top">
+          <span class="parent-dash__icon" aria-hidden="true">📚</span>
+          <h4 class="parent-dash__card-title">Любимый предмет</h4>
+        </div>
+        <p class="parent-dash__value parent-dash__value--subject" data-dash="subject">—</p>
+        <div class="parent-dash__bar" data-dash-bar="subject" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Активность по предмету">
+          <div class="parent-dash__fill parent-dash__fill--subject"></div>
+        </div>
+        <p class="parent-dash__hint">где больше всего вопросов</p>
+      </article>
+    </div>
+    <div class="parent-dash__split">
+      <div class="parent-dash__insight parent-dash__insight--good">
+        <h4 class="parent-dash__insight-title"><span aria-hidden="true">💪</span> Что улучшилось</h4>
+        <ul class="parent-dash__list" data-dash="improved-list"></ul>
+      </div>
+      <div class="parent-dash__insight parent-dash__insight--repeat">
+        <h4 class="parent-dash__insight-title"><span aria-hidden="true">📌</span> Что повторить</h4>
+        <p class="parent-dash__repeat-text" data-dash="repeat">—</p>
+        <div class="parent-dash__bar parent-dash__bar--repeat" data-dash-bar="repeat" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Зона для повторения">
+          <div class="parent-dash__fill parent-dash__fill--repeat"></div>
+        </div>
+      </div>
+    </div>
+    <div class="parent-dash__plan">
+      <h4 class="parent-dash__plan-title">План на 7 дней</h4>
+      <ol class="parent-dash__plan-list" data-dash="plan-list"></ol>
+    </div>
+  `;
+}
+
+function mountParentDashboards() {
+  const html = getParentDashboardHTML();
+  [parentReport, parentModalDashboard, startParentDashboard].forEach((root) => {
+    if (!root) {
+      return;
+    }
+    root.classList.add("parent-dash");
+    if (root === startParentDashboard) {
+      root.classList.add("parent-dash--preview");
+    }
+    root.innerHTML = html;
+  });
+}
+
+function computeParentDashboardMetrics() {
+  const level = Math.floor(state.xp / 50) + 1;
+  const levelPercent = ((state.xp % 50) / 50) * 100;
+  const streak = state.streakDays;
+  const streakPercent = Math.min(100, (streak / 7) * 100);
+
+  let medalCount = state.medalAwarded ? 1 : 0;
+  medalCount += Math.min(4, state.achievements.length);
+  const medalPercent = Math.min(100, (medalCount / 5) * 100);
+
+  const growthPercent = Math.min(
+    100,
+    Math.round(state.xp * 1.1 + state.totalMessages * 1.8 + state.sessionHistory.length * 6)
+  );
+
+  const subjectCounts = {};
+  state.sessionHistory.forEach((entry) => {
+    subjectCounts[entry.subject] = (subjectCounts[entry.subject] || 0) + (Number(entry.messages) || 1);
+  });
+  if (state.selectedSubject && state.sessionMessages > 0) {
+    const name = state.selectedSubject.name;
+    subjectCounts[name] = (subjectCounts[name] || 0) + state.sessionMessages;
+  }
+
+  let favoriteSubject = "Пока не выбран";
+  let subjectPercent = 8;
+  const sortedSubjects = Object.entries(subjectCounts).sort((a, b) => b[1] - a[1]);
+  if (sortedSubjects.length) {
+    favoriteSubject = sortedSubjects[0][0];
+    const total = sortedSubjects.reduce((sum, [, count]) => sum + count, 0) || 1;
+    subjectPercent = Math.round((sortedSubjects[0][1] / total) * 100);
+  } else if (state.selectedSubject) {
+    favoriteSubject = state.selectedSubject.name;
+    subjectPercent = state.sessionMessages > 0 ? 45 : 18;
+  }
+
+  const repeatEntries = Object.entries(state.weakTopics).sort((a, b) => b[1] - a[1]);
+  const repeatText = repeatEntries.length
+    ? `Спокойно повторить: ${repeatEntries
+        .slice(0, 2)
+        .map(([name]) => name)
+        .join(", ")} — там чаще просили подсказку.`
+    : state.selectedSubject
+      ? `Закрепить базу по «${state.selectedSubject.name}»: два спокойных примера без таймера.`
+      : "Начните демо-урок — появятся подсказки, что повторить.";
+
+  const repeatPercent = repeatEntries.length
+    ? Math.min(100, Math.round((repeatEntries[0][1] / Math.max(state.totalMessages, 1)) * 200))
+    : 12;
+
+  const child = state.studentName || "Ребёнок";
+  const grade = state.studentGrade || "5 класс";
+  const subj = state.selectedSubject ? state.selectedSubject.name : "предмет не выбран";
+  const lead = `${child} (${grade}) · ${subj} · ${state.totalMessages} сообщ. в чате`;
+
+  return {
+    level,
+    levelPercent,
+    streak,
+    streakPercent,
+    medalCount,
+    medalPercent,
+    growthPercent,
+    favoriteSubject,
+    subjectPercent,
+    repeatText,
+    repeatPercent,
+    improved: buildParentStrengthBullets(),
+    lead,
+    plan: buildWeeklyPlan(),
+  };
+}
+
+function renderParentDashboard(root) {
+  if (!root) {
+    return;
+  }
+
+  const m = computeParentDashboardMetrics();
+
+  const setText = (key, value) => {
+    const el = root.querySelector(`[data-dash="${key}"]`);
+    if (el) {
+      el.textContent = value;
+    }
+  };
+
+  const setBar = (key, percent) => {
+    const wrap = root.querySelector(`[data-dash-bar="${key}"]`);
+    const fill = wrap ? wrap.querySelector(".parent-dash__fill") : null;
+    const safe = Math.max(0, Math.min(100, percent));
+    if (fill) {
+      fill.style.width = `${safe}%`;
+    }
+    if (wrap) {
+      wrap.setAttribute("aria-valuenow", String(Math.round(safe)));
+    }
+  };
+
+  setText("lead", m.lead);
+  setText("level", String(m.level));
+  setText("streak", String(m.streak));
+  setText("medals", String(m.medalCount));
+  setText("growth", `${m.growthPercent}%`);
+  setText("subject", m.favoriteSubject);
+  setText("repeat", m.repeatText);
+
+  setBar("level", m.levelPercent);
+  setBar("streak", m.streakPercent);
+  setBar("medals", m.medalPercent);
+  setBar("growth", m.growthPercent);
+  setBar("subject", m.subjectPercent);
+  setBar("repeat", m.repeatPercent);
+
+  const improvedList = root.querySelector('[data-dash="improved-list"]');
+  if (improvedList) {
+    improvedList.innerHTML = "";
+    m.improved.forEach((line) => {
+      const li = document.createElement("li");
+      li.textContent = line;
+      improvedList.append(li);
+    });
+  }
+
+  const planList = root.querySelector('[data-dash="plan-list"]');
+  if (planList) {
+    planList.innerHTML = "";
+    m.plan.forEach((item) => {
+      const li = document.createElement("li");
+      const match = item.match(/^День \d+:/);
+      if (match) {
+        const strong = document.createElement("strong");
+        strong.textContent = match[0];
+        li.append(strong, ` ${item.slice(match[0].length).trim()}`);
+      } else {
+        li.textContent = item;
+      }
+      planList.append(li);
+    });
+  }
+}
+
 /*
   Обновляем контент модального окна родительского режима.
 */
 function updateParentModal() {
-  if (!parentStudentName || !parentPlanList) {
-    return;
+  if (parentStudentName) {
+    parentStudentName.textContent = `${state.studentName || "Ученик"} (${state.studentGrade || "5 класс"})`;
   }
-
-  parentStudentName.textContent = `${state.studentName || "Ученик"} (${state.studentGrade || "5 класс"})`;
-  parentCurrentSubject.textContent = state.selectedSubject ? state.selectedSubject.name : "—";
-  parentCurrentMode.textContent = state.selectedMode ? state.selectedMode.name : "—";
-
-  const sessionsCount = state.sessionHistory.length;
-  const avgXp = sessionsCount
-    ? Math.round(state.sessionHistory.reduce((sum, entry) => sum + (Number(entry.xp) || 0), 0) / sessionsCount)
-    : 0;
-  parentSessionProgress.textContent = `Сессий: ${sessionsCount}, средний XP за сессию: ${avgXp}`;
-
-  const sortedTopics = Object.entries(state.weakTopics)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 2)
-    .map((entry) => entry[0]);
-  parentWeakTopics.textContent = sortedTopics.length ? sortedTopics.join(", ") : "Пока недостаточно данных";
-
-  const planItems = buildWeeklyPlan();
-  parentPlanList.innerHTML = "";
-  planItems.forEach((item) => {
-    const li = document.createElement("li");
-    li.textContent = item;
-    parentPlanList.append(li);
-  });
+  renderParentDashboard(parentModalDashboard);
 }
 
 function openParentModal() {
@@ -735,6 +985,7 @@ function softResetSession() {
   updateProgressUI();
   updateQuestUI();
   saveProgress();
+  setMentorEmotion("happy");
 
   addMessage("system", "Сессию обнулили, но серия дней и значки остались — можно начать чистый лист без стресса.");
 }
@@ -821,6 +1072,69 @@ const DEMO_MESSENGER_REPLIES = {
     "Мини-квест на пару минут: одной строкой — что именно непонятно, и одна твоя догадка, даже если неуверенная. Я отвечу маленьким следующим шагом, без готового ответа в лоб.",
 };
 
+function getMentorEmotionEmoji(key) {
+  const emotion = MENTOR_EMOTIONS[key] || MENTOR_EMOTIONS.happy;
+  return emotion.emoji;
+}
+
+function setMentorEmotion(key, options = {}) {
+  const emotion = MENTOR_EMOTIONS[key] || MENTOR_EMOTIONS.happy;
+  state.mentorEmotion = key in MENTOR_EMOTIONS ? key : "happy";
+
+  const targets = [];
+  if (mentorMoodEmoji) {
+    targets.push(mentorMoodEmoji);
+  }
+  if (options.syncDemo !== false && demoMentorMood) {
+    targets.push(demoMentorMood);
+  }
+
+  targets.forEach((el) => {
+    el.classList.remove("mentor-mood__emoji--pop");
+    void el.offsetWidth;
+    el.textContent = emotion.emoji;
+    el.classList.add("mentor-mood__emoji--pop");
+  });
+
+  if (mentorMoodLabel) {
+    mentorMoodLabel.textContent = emotion.label;
+  }
+}
+
+function resolveMentorEmotion(userText) {
+  const t = userText.trim().toLowerCase();
+
+  if (/^(a|b|c|а|б|в)$/.test(t) || /(вариант|ответ|думаю|потому что|получилось|верно|правильно|согласен)/.test(t)) {
+    return "cheer";
+  }
+
+  if (/\d/.test(t) && t.length > 6 && /(равно|получ|ответ|делю|умнож|слож|вычит)/.test(t)) {
+    return "cheer";
+  }
+
+  if (/(понял|понятно|ясно|спасибо|круто|разобрался|теперь знаю|получается|молодец)/.test(t)) {
+    return "happy";
+  }
+
+  if (isQuickPhrase(userText)) {
+    return "hint";
+  }
+
+  if (state.selectedMode && (state.selectedMode.id === "homework" || state.selectedMode.id === "simple")) {
+    return "hint";
+  }
+
+  if (/(не понимаю|не знаю|помоги|сложно|как|почему|что такое|объясни|подскаж)/.test(t)) {
+    return "hint";
+  }
+
+  if (t.length >= 12) {
+    return "happy";
+  }
+
+  return "hint";
+}
+
 /*
   Вставка сообщения в стиле мессенджера (пузыри, для бота — аватар).
 */
@@ -829,7 +1143,10 @@ function appendChatBubble(container, type, text, options = {}) {
     return;
   }
 
-  const botEmoji = options.botEmoji || (state.selectedSubject ? state.selectedSubject.heroEmoji : "✨");
+  const botEmoji =
+    options.botEmoji ||
+    getMentorEmotionEmoji(state.mentorEmotion) ||
+    (state.selectedSubject ? state.selectedSubject.heroEmoji : "✨");
 
   if (type === "system") {
     const row = document.createElement("div");
@@ -856,7 +1173,7 @@ function appendChatBubble(container, type, text, options = {}) {
     const inner = document.createElement("div");
     inner.className = "msg-row__inner";
     const av = document.createElement("span");
-    av.className = "msg-row__avatar";
+    av.className = "msg-row__avatar msg-row__avatar--emotion";
     av.setAttribute("aria-hidden", "true");
     av.textContent = botEmoji;
     const bubble = document.createElement("div");
@@ -870,6 +1187,14 @@ function appendChatBubble(container, type, text, options = {}) {
   container.scrollTop = container.scrollHeight;
 }
 
+function showAiQuoteToday() {
+  if (!aiQuoteText || !AI_QUOTES_TODAY.length) {
+    return;
+  }
+  const index = Math.floor(Math.random() * AI_QUOTES_TODAY.length);
+  aiQuoteText.textContent = AI_QUOTES_TODAY[index];
+}
+
 function initDemoMessenger() {
   const feed = document.getElementById("demo-messenger-feed");
   if (!feed) {
@@ -877,13 +1202,17 @@ function initDemoMessenger() {
   }
 
   feed.innerHTML = "";
+  setMentorEmotion("happy", { syncDemo: true });
+
   appendChatBubble(feed, "user", "Я не понимаю задачу по математике.");
+  setMentorEmotion("thinking", { syncDemo: true });
   appendChatBubble(
     feed,
     "bot",
     "Привет! Давай разберём вместе. Готовый ответ сразу не подставлю — зато проведу шаг за шагом, чтобы ты сам дошёл до сути.",
-    { botEmoji: "🧙‍♂️" }
+    { botEmoji: getMentorEmotionEmoji("hint") }
   );
+  setMentorEmotion("hint", { syncDemo: true });
 
   document.querySelectorAll("[data-demo-quick]").forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -891,9 +1220,13 @@ function initDemoMessenger() {
       if (!label || !Object.prototype.hasOwnProperty.call(DEMO_MESSENGER_REPLIES, label)) {
         return;
       }
+      setMentorEmotion("thinking", { syncDemo: true });
       appendChatBubble(feed, "user", label);
       window.setTimeout(() => {
-        appendChatBubble(feed, "bot", DEMO_MESSENGER_REPLIES[label], { botEmoji: "🧙‍♂️" });
+        setMentorEmotion("hint", { syncDemo: true });
+        appendChatBubble(feed, "bot", DEMO_MESSENGER_REPLIES[label], {
+          botEmoji: getMentorEmotionEmoji("hint"),
+        });
       }, 450);
     });
   });
@@ -980,81 +1313,16 @@ function buildParentStrengthBullets() {
   показываем после 3 сообщений ученика и обновляем динамически.
 */
 function updateParentReport() {
-  if (
-    !parentReport ||
-    !reportSessionLead ||
-    !reportXpTotal ||
-    !reportXpSession ||
-    !reportLevel ||
-    !reportXpBarFill ||
-    !reportMessagesSession ||
-    !reportMessagesTotal ||
-    !reportRepeat ||
-    !reportNextHint ||
-    !reportStrengthsList ||
-    !reportPlanList
-  ) {
+  if (!parentReport) {
     return;
   }
+
+  renderParentDashboard(parentReport);
 
   if (state.totalMessages < 3) {
     parentReport.classList.add("parent-report--hidden");
     return;
   }
-
-  const subj = state.selectedSubject ? state.selectedSubject.name : "предмет не выбран";
-  const mode = state.selectedMode ? state.selectedMode.name : "режим не выбран";
-  const child = state.studentName || "Ребёнок";
-  reportSessionLead.textContent = `${child} · ${subj} · режим «${mode}»`;
-
-  reportXpTotal.textContent = String(state.xp);
-  reportXpSession.textContent = String(state.sessionXpGained);
-  reportMessagesSession.textContent = String(state.sessionMessages);
-  reportMessagesTotal.textContent = String(state.totalMessages);
-
-  const level = Math.floor(state.xp / 50) + 1;
-  reportLevel.textContent = String(level);
-  const progressToNextLevel = state.xp % 50;
-  const widthPercent = (progressToNextLevel / 50) * 100;
-  reportXpBarFill.style.width = `${widthPercent}%`;
-  if (reportXpBarWrap) {
-    reportXpBarWrap.setAttribute("aria-valuenow", String(Math.round(progressToNextLevel)));
-  }
-
-  reportStrengthsList.innerHTML = "";
-  buildParentStrengthBullets().forEach((line) => {
-    const li = document.createElement("li");
-    li.textContent = line;
-    reportStrengthsList.append(li);
-  });
-
-  const sortedTopics = Object.entries(state.weakTopics)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 2)
-    .map((entry) => entry[0]);
-  reportRepeat.textContent = sortedTopics.length
-    ? `Спокойно повторить: ${sortedTopics.join(", ")} — там чаще всего просили подсказку, значит тема ещё крутится в голове.`
-    : `Закрепить базу по «${subj}»: проговорить правило вслух и разобрать два спокойных примера без таймера.`;
-
-  const goal = state.learningGoal || "подтянуть знания";
-  reportNextHint.textContent = `На ближайшие 10–15 минут: «${subj}», фокус «${goal}». Спроси у себя «что уже ясно?» — и сделай один маленький шаг или перескажи условие своими словами.`;
-
-  const planItems = buildWeeklyPlan();
-  reportPlanList.innerHTML = "";
-  planItems.forEach((item) => {
-    const li = document.createElement("li");
-    const m = item.match(/^День \d+:/);
-    if (m) {
-      const head = m[0];
-      const rest = item.slice(head.length).trim();
-      const strong = document.createElement("strong");
-      strong.textContent = head;
-      li.append(strong, ` ${rest}`);
-    } else {
-      li.textContent = item;
-    }
-    reportPlanList.append(li);
-  });
 
   parentReport.classList.remove("parent-report--hidden");
 }
@@ -1118,6 +1386,7 @@ function addXp(amount) {
     if (medalValue) {
       medalValue.textContent = "Смекалка 🏅";
     }
+    setMentorEmotion("medal");
     addMessage("system", "Есть медаль «Смекалка» — за то, что не сдался и докрутил разговор до ясности. Красота!");
   }
 
@@ -1276,15 +1545,19 @@ function runBotTurn(userText) {
     if (!state.hasGreetedInChat) {
       const introName = state.studentName || "друг";
       const goal = state.learningGoal || "спокойно разобраться и чуть поиграть с темой";
+      setMentorEmotion("happy");
       addMessage(
         "bot",
-        `${heroGreetings[state.selectedSubject.id]}\n\n${introName}, держим в фокусе цель: «${goal}». Пойдём маленькими шагами — сначала твоя мысль, потом моя подсказка.`
+        `${heroGreetings[state.selectedSubject.id]}\n\n${introName}, держим в фокусе цель: «${goal}». Пойдём маленькими шагами — сначала твоя мысль, потом моя подсказка.`,
+        { botEmoji: getMentorEmotionEmoji("happy") }
       );
       state.hasGreetedInChat = true;
     }
 
     const reply = buildBotReply(userText);
-    addMessage("bot", reply);
+    const emotion = resolveMentorEmotion(userText);
+    setMentorEmotion(emotion);
+    addMessage("bot", reply, { botEmoji: getMentorEmotionEmoji(emotion) });
 
     addXp(10);
     pulseXpBar();
@@ -1353,8 +1626,9 @@ function startChat(subject) {
     chatSubject.textContent = `${subject.emoji} ${subject.name}`;
   }
   if (chatHero) {
-    chatHero.textContent = `${subject.heroEmoji} ${subject.hero}`;
+    chatHero.textContent = `${subject.hero}`;
   }
+  setMentorEmotion("happy");
   if (chatMode) {
     chatMode.textContent = state.selectedMode ? `${state.selectedMode.emoji} ${state.selectedMode.name}` : "—";
   }
@@ -1536,6 +1810,7 @@ if (chatForm) {
       return;
     }
 
+    setMentorEmotion("thinking");
     addMessage("user", text);
     chatInput.value = "";
     runBotTurn(text);
@@ -1548,6 +1823,7 @@ document.querySelectorAll(".quick-replies__btn").forEach((btn) => {
     if (!text || !state.selectedSubject) {
       return;
     }
+    setMentorEmotion("thinking");
     addMessage("user", text);
     runBotTurn(text);
   });
@@ -1556,12 +1832,14 @@ document.querySelectorAll(".quick-replies__btn").forEach((btn) => {
 function initApp() {
   loadProgress();
   syncDailySession();
+  mountParentDashboards();
   renderSubjectCards();
   renderModeCards();
   updateProgressUI();
   updateQuestUI();
   updateParentReport();
   updateParentModal();
+  renderParentDashboard(startParentDashboard);
 
   if (studentNameInput) {
     studentNameInput.value = state.studentName;
@@ -1574,6 +1852,7 @@ function initApp() {
   }
 
   showScreen("start");
+  showAiQuoteToday();
   initDemoMessenger();
 }
 

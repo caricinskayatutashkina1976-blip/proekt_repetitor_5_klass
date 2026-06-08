@@ -1,0 +1,355 @@
+=== PATCH line 44 ===
+NEW:
+  </main>
+
+  <footer class="site-footer">
+    Проект создан Натальей Царицинской | AI School Quest
+  </footer>
+
+  <!-- Модальное окно: расширенная аналитика для родителей -->
+
+=== PATCH line 46 ===
+NEW:
+  </main>
+
+  <!-- Модальное окно: расширенная аналитика для родителей -->
+  <section id="parent-modal" class="parent-modal parent-modal--hidden" aria-hidden="true">
+
+=== PATCH line 46 ===
+NEW:
+    </article>
+  </section>
+
+  <footer class="site-footer">
+    Проект создан Натальей Царицинской | AI School Quest
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+
+=== PATCH line 78 ===
+NEW:
+        <p class="description">
+          Выбери школьный предмет, познакомься с героем-наставником и проходи учебный квест в формате дружелюбного чата.
+        </p>
+
+        <section class="why-kids" aria-label="Почему ребёнку понравится">
+          <h2 class="why-kids__title">Почему ребёнку понравится</h2>
+          <ul class="why-kids__list">
+            <li><strong>Обучение как игра</strong> — задания ощущаются как квест, а не скучная тетрадь.</li>
+            <li><strong>Герои-наставники</strong> — каждый предмет со своим персонажем и стилем общения.</li>
+            <li><strong>XP и медали</strong> — видно прогресс, хочется возвращаться и «прокачиваться».</li>
+            <li><strong>Помощь с домашкой без готовых ответов</strong> — наставник ведёт вопросами, а не списывает за тебя.</li>
+          </ul>
+        </section>
+
+        <button type="button" id="start-btn" class="btn btn--primary">Начать приключение</button>
+
+=== PATCH line 78 ===
+NEW:
+        <section id="parent-report" class="parent-report parent-report--hidden">
+          <h3>Родительский отчёт</h3>
+          <p>Предмет: <span id="report-subject">—</span></p>
+          <p>Активность ученика: <span id="report-activity">—</span></p>
+          <p>XP: <span id="report-xp">0</span></p>
+          <p>Рекомендация: <span id="report-recommendation">—</span></p>
+        </section>
+
+        <section class="cta">
+          <h3>Хотите такого AI-репетитора для своего ребёнка?</h3>
+          <button type="button" id="show-details-btn" class="btn btn--primary btn--small">Узнать подробнее</button>
+          <article id="offer-card" class="offer-card offer-card--hidden">
+            <p class="offer-card__lead">
+              Наталья Царицинская — создаю AI-ассистентов, обучающих ботов и мини-сервисы для семьи, экспертов и бизнеса.
+            </p>
+            <p class="offer-card__text">Помогаю превращать идеи в работающие AI-продукты.</p>
+            <p class="offer-card__contact">Контакт: <a href="tel:+79129145382">89129145382</a></p>
+          </article>
+        </section>
+
+        <div class="quick-replies" role="group" aria-label="Быстрые действия">
+          <button type="button" class="btn btn--ghost btn--small quick-replies__btn" data-quick="Объясни проще">Объясни проще</button>
+          <button type="button" class="btn btn--ghost btn--small quick-replies__btn" data-quick="Дай пример">Дай пример</button>
+          <button type="button" class="btn btn--ghost btn--small quick-replies__btn" data-quick="Дай задание">Дай задание</button>
+        </div>
+
+        <form id="chat-form" class="chat-form">
+          <input id="chat-input" type="text" placeholder="Напиши вопрос по теме..." autocomplete="off" maxlength="200" required>
+          <button type="submit" class="btn btn--primary">Отправить</button>
+        </form>
+
+=== PATCH line 91 ===
+NEW:
+    <section id="screen-onboarding" class="screen card" hidden>
+
+=== PATCH line 91 ===
+NEW:
+    <section id="screen-subject" class="screen card" hidden>
+
+=== PATCH line 91 ===
+NEW:
+    <section id="screen-hero" class="screen card" hidden>
+
+=== PATCH line 91 ===
+NEW:
+    <section id="screen-mode" class="screen card" hidden>
+
+=== PATCH line 91 ===
+NEW:
+    <section id="screen-chat" class="screen card" hidden>
+
+=== PATCH line 99 ===
+NEW:
+        <section class="why-kids" aria-label="Почему ребёнку понравится">
+          <h2 class="why-kids__title">Почему ребёнку понравится</h2>
+          <ul class="why-kids__list">
+            <li><strong>Обучение как игра</strong> — задания ощущаются как квест, а не скучная тетрадь.</li>
+            <li><strong>Герои-наставники</strong> — каждый предмет со своим персонажем и стилем общения.</li>
+            <li><strong>XP и медали</strong> — видно прогресс, хочется возвращаться и «прокачиваться».</li>
+            <li><strong>Помощь с домашкой без готовых ответов</strong> — наставник ведёт вопросами, а не списывает за тебя.</li>
+          </ul>
+        </section>
+
+        <section class="what-tutor" aria-label="Что умеет AI-репетитор">
+          <h2 class="what-tutor__title">Что умеет AI-репетитор</h2>
+          <ul class="what-tutor__list">
+            <li><strong>Объясняет простыми словами</strong> — без «взрослой» воды, шаг за шагом.</li>
+            <li><strong>Превращает задания в квесты</strong> — цель, подсказки, чувство приключения.</li>
+            <li><strong>Помогает с домашкой без готового списывания</strong> — наводящие вопросы вместо готового решения.</li>
+            <li><strong>Мотивирует XP и медалями</strong> — ребёнок видит рост и хочет продолжать.</li>
+          </ul>
+        </section>
+
+        <button type="button" id="start-btn" class="btn btn--primary">Начать приключение</button>
+
+=== PATCH line 99 ===
+NEW:
+        <div id="messages" class="messages" aria-live="polite"></div>
+
+        <div class="quick-replies" role="group" aria-label="Быстрые действия">
+          <button type="button" class="btn btn--ghost btn--small quick-replies__btn" data-quick="Объясни проще">Объясни проще</button>
+          <button type="button" class="btn btn--ghost btn--small quick-replies__btn" data-quick="Дай пример">Дай пример</button>
+          <button type="button" class="btn btn--ghost btn--small quick-replies__btn" data-quick="Дай задание">Дай задание</button>
+        </div>
+
+        <section id="parent-report" class="parent-report parent-report--hidden">
+          <h3>Родительский отчёт</h3>
+          <p>Что сделал ребёнок: <span id="report-what-done">—</span></p>
+          <p>XP всего: <span id="report-xp-total">0</span> · за эту сессию: <span id="report-xp-session">0</span></p>
+          <p>Что стоит повторить: <span id="report-repeat">—</span></p>
+          <p>Следующий урок: <span id="report-next-lesson">—</span></p>
+        </section>
+
+        <section class="cta">
+          <h3 class="cta__title">Хочу такого помощника</h3>
+          <p class="cta__value">
+            Персональный наставник в чате: ребёнок учится без стресса, родители видят прогресс, а ответы не «списываются» — формируется мышление и привычка доводить дело до конца.
+          </p>
+          <div class="cta__actions">
+            <button type="button" id="contact-natalia-btn" class="btn btn--primary btn--small">Связаться с Натальей</button>
+          </div>
+          <article id="offer-card" class="offer-card offer-card--hidden">
+            <p class="offer-card__lead">
+              Наталья Царицинская — создаю AI-ассистентов, обучающих ботов и мини-сервисы для семьи, экспертов и бизнеса.
+            </p>
+            <p class="offer-card__text">Помогаю превращать идеи в работающие AI-продукты.</p>
+            <p class="offer-card__contact">Контакт в Telegram: <span class="offer-card__handle">@указать_ник</span></p>
+          </article>
+        </section>
+
+=== PATCH line 119 ===
+NEW:
+    <section id="screen-onboarding" class="screen card">
+
+=== PATCH line 119 ===
+NEW:
+    <section id="screen-subject" class="screen card">
+
+=== PATCH line 119 ===
+NEW:
+    <section id="screen-hero" class="screen card">
+
+=== PATCH line 119 ===
+NEW:
+    <section id="screen-mode" class="screen card">
+
+=== PATCH line 119 ===
+NEW:
+    <section id="screen-chat" class="screen card">
+
+=== PATCH line 126 ===
+NEW:
+          <button type="button" id="end-lesson-btn" class="btn btn--primary btn--small">Завершить урок</button>
+          <button type="button" id="soft-reset-btn" class="btn btn--ghost btn--small">Мягкий сброс</button>
+          <button type="button" id="reset-progress-btn" class="btn btn--danger btn--small">Сбросить прогресс</button>
+        </div>
+
+=== PATCH line 126 ===
+NEW:
+        <form id="chat-form" class="chat-form">
+          <input id="chat-input" type="text" placeholder="Напиши вопрос по теме..." autocomplete="off" maxlength="200" required>
+          <button type="submit" class="btn btn--primary">Отправить</button>
+        </form>
+      </div>
+    </section>
+
+    <section id="screen-lesson-summary" class="screen card">
+      <div class="screen__content lesson-summary">
+        <p class="badge">Урок пройден</p>
+        <h2>Квест завершён!</h2>
+        <p id="lesson-summary-motivation" class="lesson-summary__lead">Ты молодец!</p>
+        <ul class="lesson-summary__stats">
+          <li>XP за этот урок: <strong id="lesson-xp-earned">0</strong></li>
+          <li>Медаль: <strong id="lesson-medal-text">—</strong></li>
+          <li>Сообщений наставнику: <strong id="lesson-messages-count">0</strong></li>
+        </ul>
+        <button type="button" id="lesson-continue-btn" class="btn btn--primary">Продолжить обучение</button>
+      </div>
+    </section>
+  </main>
+
+=== PATCH line 157 ===
+NEW:
+        <section class="quest-panel">
+          <h3>Квест-дневник и миссия дня</h3>
+
+=== PATCH line 177 ===
+NEW:
+    <section id="screen-start" class="screen screen--active card screen-start">
+      <div class="hero-ambient" aria-hidden="true">
+        <div class="hero-ambient__gradient"></div>
+        <div class="hero-particles">
+          <span class="hero-particle hero-particle--1"></span>
+          <span class="hero-particle hero-particle--2"></span>
+          <span class="hero-particle hero-particle--3"></span>
+          <span class="hero-particle hero-particle--4"></span>
+          <span class="hero-particle hero-particle--5"></span>
+          <span class="hero-particle hero-particle--6"></span>
+          <span class="hero-particle hero-particle--7"></span>
+          <span class="hero-particle hero-particle--8"></span>
+        </div>
+      </div>
+
+      <div class="screen__content screen__content--start">
+        <header class="start-hero" aria-label="AI School Quest — главный экран">
+          <div class="start-hero__copy">
+            <p class="badge badge--hero hero-fade hero-fade--1">AI School Quest</p>
+            <h1 class="hero-title hero-title--emotional">
+              <span class="hero-line hero-fade hero-fade--2">Ребёнок не хочет делать уроки?</span>
+              <span class="hero-line hero-line--accent hero-fade hero-fade--3">Пусть он проходит их как игру.</span>
+            </h1>
+            <p class="hero-subtitle hero-fade hero-fade--4">
+              AI School Quest — персональный AI-наставник, который помогает ученику 5 класса понимать материал, а не списывать ответы.
+            </p>
+
+            <div class="hero-actions hero-fade hero-fade--5" role="group" aria-label="Действия на главной">
+              <button type="button" id="demo-lesson-btn" class="btn btn--primary btn--hero-cta btn--touch">
+                <span class="btn__icon" aria-hidden="true">✅</span>
+                Попробовать демо
+              </button>
+              <a href="#how-it-works" class="btn btn--ghost btn--hero-secondary btn--hero-cta btn--touch">
+                <span class="btn__icon" aria-hidden="true">✅</span>
+                Как это работает
+              </a>
+            </div>
+          </div>
+
+          <figure class="start-hero__visual hero-fade hero-fade--6" aria-hidden="true">
+            <svg class="hero-illustration" viewBox="0 0 420 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ученик за ноутбуком и светящийся AI-наставник">
+              <defs>
+                <linearGradient id="heroGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#7f53ff" stop-opacity="0.35"/>
+                  <stop offset="100%" stop-color="#2ad1a3" stop-opacity="0.2"/>
+                </linearGradient>
+                <linearGradient id="mentorAura" x1="50%" y1="0%" x2="50%" y2="100%">
+                  <stop offset="0%" stop-color="#a78bfa"/>
+                  <stop offset="100%" stop-color="#5b7cfa"/>
+                </linearGradient>
+                <filter id="heroSoftGlow" x="-40%" y="-40%" width="180%" height="180%">
+                  <feGaussianBlur stdDeviation="12" result="blur"/>
+                  <feMerge>
+                    <feMergeNode in="blur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+              </defs>
+              <ellipse cx="210" cy="320" rx="150" ry="18" fill="#1f2453" opacity="0.06"/>
+              <rect x="48" y="248" width="200" height="12" rx="6" fill="#e8ecff"/>
+              <rect x="72" y="218" width="152" height="34" rx="8" fill="#f5f7ff" stroke="#d3d9ff" stroke-width="1.5"/>
+              <rect x="88" y="168" width="120" height="72" rx="10" fill="#fff" stroke="#c5cff8" stroke-width="2"/>
+              <rect x="96" y="176" width="104" height="56" rx="6" fill="#eef2ff"/>
+              <rect x="102" y="182" width="48" height="6" rx="3" fill="#5b7cfa" opacity="0.5"/>
+              <rect x="102" y="194" width="72" height="4" rx="2" fill="#7f53ff" opacity="0.35"/>
+              <rect x="102" y="204" width="60" height="4" rx="2" fill="#2ad1a3" opacity="0.45"/>
+              <circle cx="148" cy="148" r="28" fill="#ffe8d6"/>
+              <path d="M120 148c0-16 12-28 28-28s28 12 28 28" fill="#3d2a1f"/>
+              <ellipse cx="148" cy="182" rx="34" ry="28" fill="#5b7cfa"/>
+              <circle cx="138" cy="144" r="3" fill="#3d2a1f"/>
+              <circle cx="158" cy="144" r="3" fill="#3d2a1f"/>
+              <path d="M142 154q6 4 12 0" stroke="#3d2a1f" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <g class="hero-illustration__mentor" filter="url(#heroSoftGlow)">
+                <circle cx="300" cy="118" r="52" fill="url(#heroGlow)"/>
+                <circle cx="300" cy="108" r="38" fill="url(#mentorAura)" opacity="0.92"/>
+                <circle cx="300" cy="108" r="48" fill="none" stroke="#a78bfa" stroke-width="2" opacity="0.5"/>
+                <circle cx="288" cy="100" r="5" fill="#fff"/>
+                <circle cx="312" cy="100" r="5" fill="#fff"/>
+                <circle cx="288" cy="100" r="2" fill="#3a2db8"/>
+                <circle cx="312" cy="100" r="2" fill="#3a2db8"/>
+                <path d="M292 118q8 6 16 0" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <path d="M268 148c8-20 24-32 32-32s24 12 32 32" fill="url(#mentorAura)" opacity="0.85"/>
+                <rect x="276" y="168" width="48" height="8" rx="4" fill="#2ad1a3" opacity="0.7"/>
+                <text x="300" y="172" text-anchor="middle" font-size="7" font-family="Segoe UI, sans-serif" fill="#fff" font-weight="700">AI</text>
+              </g>
+              <path d="M248 130 Q274 108 288 100" stroke="#c4b5fd" stroke-width="2" fill="none" stroke-dasharray="4 6" opacity="0.7"/>
+              <circle cx="248" cy="130" r="4" fill="#2ad1a3"/>
+              <circle cx="288" cy="100" r="4" fill="#fd5e9a"/>
+            </svg>
+          </figure>
+        </header>
+
+        <div id="how-it-works" class="start-below-hero">
+        <section class="why-kids" aria-label="Почему ребёнку понравится">
+
+=== PATCH line 177 ===
+NEW:
+          <p class="demo-messenger__note">Это демо: в настоящем уроке наставник смотрит на предмет, режим и твои ответы — как настоящий спутник по учёбе.</p>
+        </section>
+        </div>
+      </div>
+    </section>
+
+=== PATCH line 185 ===
+NEW:
+        </header>
+
+        <blockquote id="ai-quote-today" class="ai-quote-card hero-fade hero-fade--7" aria-label="Сегодня AI говорит">
+          <div class="ai-quote-card__head">
+            <span class="ai-quote-card__icon" aria-hidden="true">✨</span>
+            <p class="ai-quote-card__label">Сегодня AI говорит</p>
+          </div>
+          <p id="ai-quote-text" class="ai-quote-card__text"></p>
+        </blockquote>
+
+        <div id="how-it-works" class="start-below-hero">
+
+=== PATCH line 195 ===
+NEW:
+          <div class="chat-header__mentor">
+            <p class="chat-label">Наставник</p>
+            <div class="mentor-mood" id="mentor-mood" aria-live="polite">
+              <span id="mentor-mood-emoji" class="mentor-mood__emoji" aria-hidden="true">😊</span>
+              <div class="mentor-mood__info">
+                <p id="chat-hero" class="chat-value">—</p>
+                <p id="mentor-mood-label" class="mentor-mood__label">Рад помочь!</p>
+              </div>
+            </div>
+          </div>
+
+=== PATCH line 195 ===
+NEW:
+          <div class="demo-messenger__head">
+            <div class="demo-messenger__avatar-wrap">
+              <span class="demo-messenger__avatar" aria-hidden="true">🧙‍♂️</span>
+              <span id="demo-mentor-mood" class="mentor-mood__emoji mentor-mood__emoji--badge" aria-hidden="true">😊</span>
+            </div>
+
