@@ -56,26 +56,48 @@
           </div>
         </div>
 
-        <div class="entry__copy">
-          <h1 class="entry__title">Домашние задания без ежедневных споров</h1>
-          <p class="entry__subtitle">Персональный AI-наставник для учеников 5 класса.</p>
+        <div class="entry__intro">
+          <div class="entry__copy">
+            <h1 class="entry__title">Домашние задания без ежедневных споров</h1>
+            <p class="entry__subtitle">Персональный AI-наставник для учеников 5 класса.</p>
+          </div>
+
+          <form id="start-entry-form" class="entry__form" novalidate>
+            <label class="entry__field">
+              <span class="visually-hidden">Ваш вопрос</span>
+              <input
+                id="start-entry-input"
+                class="entry__input"
+                type="text"
+                maxlength="200"
+                placeholder="Что сегодня оказалось непонятным?"
+                autocomplete="off"
+                autofocus
+              >
+            </label>
+            <button type="submit" id="start-entry-btn" class="entry__submit">Начать</button>
+          </form>
         </div>
 
-        <form id="start-entry-form" class="entry__form" novalidate>
-          <label class="entry__field">
-            <span class="visually-hidden">Ваш вопрос</span>
-            <input
-              id="start-entry-input"
-              class="entry__input"
-              type="text"
-              maxlength="200"
-              placeholder="Что сегодня оказалось непонятным?"
-              autocomplete="off"
-              autofocus
-            >
-          </label>
-          <button type="submit" id="start-entry-btn" class="entry__submit">Начать</button>
-        </form>
+        <div id="entry-chat" class="entry__chat" hidden>
+          <div id="entry-messages" class="entry__messages messages" aria-live="polite"></div>
+          <form id="entry-chat-form" class="entry__chat-form" novalidate>
+            <label class="entry__chat-field">
+              <span class="visually-hidden">Сообщение наставнику</span>
+              <input
+                id="entry-chat-input"
+                class="entry__chat-input"
+                type="text"
+                maxlength="200"
+                placeholder="Напиши ответ..."
+                autocomplete="off"
+              >
+            </label>
+            <button type="submit" class="entry__chat-send" aria-label="Отправить">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </form>
+        </div>
       </div>
     </section>
 

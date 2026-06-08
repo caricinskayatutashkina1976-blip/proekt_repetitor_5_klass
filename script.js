@@ -325,7 +325,13 @@ const state = {
   sessionHistory: [],
   weakTopics: {},
   mentorEmotion: "happy",
+  entryChatActive: false,
+  entryPhase: null,
+  pendingEntryQuestion: "",
 };
+
+const ENTRY_OPENING_MESSAGE =
+  "Добрый вечер.\n\nЯ помогу тебе разобраться.\n\nНо у меня есть одно правило —\nя не делаю домашние задания вместо детей.\n\nЯ помогаю им научиться думать.\n\nКак тебя зовут?";
 
 const STORAGE_KEY = "ai-school-quest-progress-v1";
 
@@ -349,6 +355,10 @@ const screens = {
 
 const startEntryForm = document.getElementById("start-entry-form");
 const startEntryInput = document.getElementById("start-entry-input");
+const entryChat = document.getElementById("entry-chat");
+const entryMessages = document.getElementById("entry-messages");
+const entryChatForm = document.getElementById("entry-chat-form");
+const entryChatInput = document.getElementById("entry-chat-input");
 const aiCompanion = document.getElementById("ai-companion");
 const parentPreviewBtn = document.getElementById("parent-preview-btn");
 const onboardingForm = document.getElementById("onboarding-form");
@@ -939,6 +949,7 @@ function resetProgress() {
   state.sessionXpGained = 0;
   state.sessionHistory = [];
   state.weakTopics = {};
+  resetEntryConversationUI();
 
   if (chatStudent) {
     chatStudent.textContent = "—";
@@ -1333,37 +1344,134 @@ function initCompanionPresence() {
   window.addEventListener("blur", resetCompanionPose);
 }
 
+function getActiveMessagesContainer() {
+  if (state.entryChatActive && entryMessages) {
+    return entryMessages;
+  }
+  return messages;
+}
+
+function activateEntryConversation() {
+  if (screens.start) {
+    screens.start.classList.add("entry--conversation");
+  }
+  if (entryChat) {
+    entryChat.hidden = false;
+  }
+  if (entryChatInput) {
+    window.setTimeout(() => {
+      entryChatInput.focus();
+    }, 280);
+  }
+}
+
+function resetEntryConversationUI() {
+  state.entryChatActive = false;
+  state.entryPhase = null;
+  state.pendingEntryQuestion = "";
+
+  if (screens.start) {
+    screens.start.classList.remove("entry--conversation");
+  }
+  if (entryChat) {
+    entryChat.hidden = true;
+  }
+  if (entryMessages) {
+    entryMessages.innerHTML = "";
+  }
+  if (entryChatInput) {
+    entryChatInput.value = "";
+  }
+  if (startEntryInput) {
+    startEntryInput.value = "";
+  }
+}
+
+function handleEntryNameReply(name) {
+  const trimmedName = name.trim();
+  if (!trimmedName) {
+    return;
+  }
+
+  state.studentName = trimmedName;
+  state.studentGrade = state.studentGrade || "5 класс";
+  state.learningGoal = state.learningGoal || "Домашка";
+  state.entryPhase = "active";
+  saveProgress();
+
+  setMentorEmotion("happy");
+  addMessage("bot", `Приятно познакомиться, ${trimmedName}!`, {
+    botIcon: getMentorEmotionIcon("happy"),
+  });
+
+  const pendingQuestion = state.pendingEntryQuestion;
+  state.pendingEntryQuestion = "";
+
+  if (pendingQuestion) {
+    window.setTimeout(() => {
+      setMentorEmotion("thinking");
+      addMessage("user", pendingQuestion);
+      runBotTurn(pendingQuestion);
+    }, 520);
+    return;
+  }
+
+  window.setTimeout(() => {
+    setMentorEmotion("hint");
+    addMessage("bot", "Что сегодня оказалось непонятным?", {
+      botIcon: getMentorEmotionIcon("hint"),
+    });
+  }, 480);
+}
+
+function handleEntryChatSubmit(text) {
+  const trimmedText = text.trim();
+  if (!trimmedText) {
+    return;
+  }
+
+  addMessage("user", trimmedText);
+
+  if (state.entryPhase === "asking_name") {
+    handleEntryNameReply(trimmedText);
+    return;
+  }
+
+  if (!state.selectedSubject) {
+    state.selectedSubject = subjects.find((item) => item.id === "math") || subjects[0];
+  }
+  if (!state.selectedMode) {
+    state.selectedMode = lessonModes.find((mode) => mode.id === "homework") || lessonModes[0];
+  }
+
+  setMentorEmotion("thinking");
+  runBotTurn(trimmedText);
+}
+
 function beginFromStartScreen() {
-  const question = startEntryInput ? startEntryInput.value.trim() : "";
-
-  if (!state.studentName) {
-    state.studentName = "Ученик";
-  }
-  if (!state.studentGrade) {
-    state.studentGrade = "5 класс";
-  }
-  if (!state.learningGoal) {
-    state.learningGoal = "Домашка";
-  }
-
+  state.pendingEntryQuestion = startEntryInput ? startEntryInput.value.trim() : "";
+  state.studentName = "";
+  state.studentGrade = "5 класс";
+  state.learningGoal = "Домашка";
   state.selectedMode = lessonModes.find((mode) => mode.id === "homework") || lessonModes[0];
-  const subject = subjects.find((item) => item.id === "math") || subjects[0];
+  state.selectedSubject = subjects.find((item) => item.id === "math") || subjects[0];
+  state.entryChatActive = true;
+  state.entryPhase = "asking_name";
+  state.hasGreetedInChat = true;
+  state.sessionMessages = 0;
+  state.sessionXpGained = 0;
 
-  startChat(subject);
+  if (entryMessages) {
+    entryMessages.innerHTML = "";
+  }
+
+  activateEntryConversation();
   saveProgress();
 
   window.setTimeout(() => {
-    if (question) {
-      setMentorEmotion("thinking");
-      addMessage("user", question);
-      runBotTurn(question);
-      return;
-    }
-
     setMentorEmotion("happy");
-    addMessage("bot", heroGreetings[subject.id], { botIcon: getMentorEmotionIcon("happy") });
-    state.hasGreetedInChat = true;
-  }, 120);
+    addMessage("bot", ENTRY_OPENING_MESSAGE, { botIcon: getMentorEmotionIcon("happy") });
+  }, 180);
 }
 
 /*
@@ -1374,7 +1482,7 @@ function beginFromStartScreen() {
   - "system" => техническое/наградное сообщение
 */
 function addMessage(type, text, options = {}) {
-  appendChatBubble(messages, type, text, options);
+  appendChatBubble(getActiveMessagesContainer(), type, text, options);
 }
 
 /*
@@ -1793,6 +1901,18 @@ if (startEntryForm) {
   startEntryForm.addEventListener("submit", (event) => {
     event.preventDefault();
     beginFromStartScreen();
+  });
+}
+
+if (entryChatForm) {
+  entryChatForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!entryChatInput) {
+      return;
+    }
+    const text = entryChatInput.value;
+    entryChatInput.value = "";
+    handleEntryChatSubmit(text);
   });
 }
 
